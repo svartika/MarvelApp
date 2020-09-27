@@ -47,7 +47,7 @@ public class CharactersListActivity extends AppCompatActivity {
         loadCharacters();
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(x -> {
-            Intent intent = new Intent(this, CharacterDetails.class);
+            Intent intent = new Intent(this, CharacterDetailsActivity.class);
             startActivity(intent);
         });
     }

@@ -1,7 +1,6 @@
 package com.example.networkcontroller;
 
 import com.example.controllers.retrofit.CharacterDetailNetworkInterface;
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.MarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
 

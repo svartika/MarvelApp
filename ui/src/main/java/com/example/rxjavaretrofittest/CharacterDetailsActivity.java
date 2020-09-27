@@ -1,28 +1,25 @@
 package com.example.rxjavaretrofittest;
 
 import android.os.Bundle;
-
-import com.example.controllers.retrofit.CharacterDetailPageController;
-import com.example.ui.databinding.ActivityCharacterDetailBinding;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
+import com.example.controllers.retrofit.CharacterDetailPageController;
 import com.example.ui.R;
+import com.example.ui.databinding.ActivityCharacterDetailBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class CharacterDetails extends AppCompatActivity {
+public class CharacterDetailsActivity extends AppCompatActivity {
 
     @Inject
     CharacterDetailPageController controller;
@@ -59,17 +56,6 @@ public class CharacterDetails extends AppCompatActivity {
     void loadCharacter() {
         characterId = "1011334";
         controller.loadCharacterDetails(characterId);
-        /*Disposable disposable = marvelCharacter
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(x -> {
-                    Log.d("VartikaHilt", x.toString());
-                    displayCharacter(x);
-                }, err -> {
-                    Log.d("VartikaHilt", err.getLocalizedMessage());
-                }, () -> {
-                    Log.d("VartikaHilt", "On Completed");
-                });*/
     }
 
     void displayCharacter(CharacterDetailPageController.State state) {

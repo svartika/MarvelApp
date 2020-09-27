@@ -4,8 +4,6 @@ import com.example.entitiy.models.MarvelCharacter;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class ProcessedMarvelCharacter {
     int id;
     public String name, imageurl, description, modified;
