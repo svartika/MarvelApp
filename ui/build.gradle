@@ -27,10 +27,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "androidx.core:core-ktx:+"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation project(path: ':controllers')
     implementation project(path: ':entitiy')

@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.example.controllers.retrofit.CharactersListController;
+import com.example.controllers.retrofit.CharactersListNetworkInterface;
 import com.example.entitiy.models.MarvelCharacter;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class CharactersListActivity extends AppCompatActivity {
 
 
     @Inject
-    CharactersListController charactersListController;// = new RetrofitControllerImpl();
+    CharactersListNetworkInterface charactersListNetworkInterface;// = new RetrofitControllerImpl();
     //RecyclerView rvChanges;
     RecyclerView rvMarvelCharacters;
     //ChangesAdapter changesAdapter;
@@ -96,8 +96,8 @@ public class CharactersListActivity extends AppCompatActivity {
 
     }*/
     void loadCharacters() {
-        Log.d("VartikaHilt", "retrofitController object hash -> " + charactersListController.hashCode());
-        Observable<List<MarvelCharacter>> marvelCharacters = charactersListController.loadMarvelCharacters();
+        Log.d("VartikaHilt", "retrofitController object hash -> " + charactersListNetworkInterface.hashCode());
+        Observable<List<MarvelCharacter>> marvelCharacters = charactersListNetworkInterface.loadMarvelCharacters();
         Disposable disposable = marvelCharacters
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

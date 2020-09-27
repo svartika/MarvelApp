@@ -1,6 +1,7 @@
 package com.example.networkcontroller;
 
-import com.example.controllers.retrofit.CharacterDetailPageController;
+import com.example.controllers.retrofit.CharacterDetailNetworkInterface;
+import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.MarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
 
@@ -8,13 +9,15 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
-public class CharacterDetailPageControllerImpl extends CharacterDetailPageController {
+public class CharacterDetailNetworkInterfaceImpl extends CharacterDetailNetworkInterface {
     Logger logger;
     @Inject
     MarvelRetrofitEndpointApi marvelRetrofitEndpointApi;
     @Inject
     RetrofitEndpointApi retrofitEndpointApi;
-    CharacterDetailPageControllerImpl(Logger logger) {
+
+    @Inject
+    CharacterDetailNetworkInterfaceImpl(Logger logger) {
         this.logger = logger;
     }
     @Override

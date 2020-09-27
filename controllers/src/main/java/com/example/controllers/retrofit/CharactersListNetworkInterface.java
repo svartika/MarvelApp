@@ -9,9 +9,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-public interface CharactersListController {
+public interface CharactersListNetworkInterface {
     Observable<List<MarvelCharacter>> loadMarvelCharacters();
     Observable<List<Change>> loadChanges();
-
-    Observable<MarvelCharacter> loadMarvelCharacter(String characterId);
 }

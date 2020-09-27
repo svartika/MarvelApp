@@ -1,6 +1,6 @@
 package com.example.networkcontroller;
 
-import com.example.controllers.retrofit.CharactersListController;
+import com.example.controllers.retrofit.CharactersListNetworkInterface;
 import com.example.entitiy.models.logs.Logger;
 import com.example.entitiy.models.Change;
 import com.example.entitiy.models.MarvelCharacter;
@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
-public class CharactersListControllerImpl implements CharactersListController {
+public class CharactersListNetworkInterfaceImpl implements CharactersListNetworkInterface {
     Logger logger;
 
     @Inject
@@ -20,7 +20,7 @@ public class CharactersListControllerImpl implements CharactersListController {
     RetrofitEndpointApi retrofitEndpointApi;
 
     @Inject
-    public CharactersListControllerImpl(Logger logger) {
+    public CharactersListNetworkInterfaceImpl(Logger logger) {
         this.logger = logger;
     }
 
@@ -39,14 +39,6 @@ public class CharactersListControllerImpl implements CharactersListController {
         return call;
     }
 
-    public Observable<MarvelCharacter> loadMarvelCharacter(String characterId) {
-        logger.d("VartikaHilt", "loading marvel character");
-        Observable<MarvelCharacter> call = marvelRetrofitEndpointApi.loadCharacter(characterId).map(
-                marvelCharacterResponse -> {
-                    return marvelCharacterResponse.data.characters.get(0);
-                }
-        );
-        return call;
-    }
+
 }
 

@@ -2,13 +2,14 @@ package com.example.rxjavaretrofittest;
 
 import android.os.Bundle;
 
-import com.example.controllers.retrofit.CharactersListController;
-import com.example.entitiy.models.MarvelCharacter;
+import com.example.controllers.retrofit.CharacterDetailPageController;
+import com.example.ui.databinding.ActivityCharacterDetailBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 
 import android.util.Log;
 import android.view.View;
@@ -19,23 +20,21 @@ import com.example.ui.R;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class CharacterDetails extends AppCompatActivity {
 
     @Inject
-    CharactersListController charactersListController;
+    CharacterDetailPageController controller;
+
     String characterId;
     TextView name;
+    ActivityCharacterDetailBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second_screen2);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_character_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,14 +48,18 @@ public class CharacterDetails extends AppCompatActivity {
         });
 
         name = findViewById(R.id.name);
+        controller.getCharacterDetailLiveData().observe(this,
+                (state -> {
+                    displayCharacter(state);
+                }
+                ));
         loadCharacter();
     }
 
     void loadCharacter() {
-        Log.d("VartikaHilt", "retrofitController object hash -> " + charactersListController.hashCode());
         characterId = "1011334";
-        Observable<MarvelCharacter> marvelCharacter = charactersListController.loadMarvelCharacter(characterId);
-        Disposable disposable = marvelCharacter
+        controller.loadCharacterDetails(characterId);
+        /*Disposable disposable = marvelCharacter
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(x -> {
@@ -66,11 +69,11 @@ public class CharacterDetails extends AppCompatActivity {
                     Log.d("VartikaHilt", err.getLocalizedMessage());
                 }, () -> {
                     Log.d("VartikaHilt", "On Completed");
-                });
+                });*/
     }
 
-    void displayCharacter(MarvelCharacter marvelCharacter) {
-        Log.d("VartikaHilt", "marvelCharacter.name->" + marvelCharacter.name);
-        name.setText(marvelCharacter.name);
+    void displayCharacter(CharacterDetailPageController.State state) {
+        //Log.d("VartikaHilt", "marvelCharacter.name->" + state.character.name);
+        binding.setState(state);
     }
 }

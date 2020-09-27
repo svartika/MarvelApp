@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 public class ProcessedMarvelCharacter {
     int id;
-    String name, imageurl, description, modified;
+    public String name, imageurl, description, modified;
     List<MarvelCharacter.URL> urls;
 
     MarvelCharacter.Collection comics, series, stories, events;
