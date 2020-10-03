@@ -381,7 +381,7 @@ In the activity_character_detail.xml for this activity,
 	
 	Next, we need to pass this to the individual elements in the recycler view. 
 	In the item layout, marvel_character_rv_item.xml, i just added the data element and used it to populate the items.
-	<layout
+	<layout>
 		...
 		<data>
 			<variable
@@ -397,6 +397,66 @@ In the activity_character_detail.xml for this activity,
 			android:id="@+id/mCharacter"
 			...
 			android:text="@{marvelItem.name}"/>
+		...
+	</layout>
 	
+	In MarvelCharacterListAdapter, I added the following code to use the above binding
+	public class MarvelCharacterListAdapter ...
+		...
+		public MarvelCharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		   LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+		   MarvelCharacterRvItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.marvel_character_rv_item, parent, false);
+		   return new MarvelCharacterViewHolder(binding);
+		}
+		...
+		public void onBindViewHolder(@NonNull MarvelCharacterViewHolder holder, int position) {
+			...
+			holder.bind(marvelCharacter);
+		}
 	
+		class MarvelCharacterViewHolder extends RecyclerView.ViewHolder {
+			private final ViewDataBinding binding;
+
+			public MarvelCharacterViewHolder(ViewDataBinding binding) {
+			   super(binding.getRoot());
+			   this.binding = binding;
+			}
+
+			public void bind(ProcessedMarvelCharacter obj) {
+				binding.setVariable(BR.marvelItem, obj);
+				binding.executePendingBindings();
+			}
+		}
+	}
+	I would like to point out that the image view loading was taken care by @BindingAdapter("url"). I had created this earlier for the detail page display.
 	
+	Now I am going to try to use an algorithm AsyncListDiffer with recycler view. This will take care of changing the list elements with updates happening in the updated elements. The algo works in the background while the diff is being calculated.
+	In MarvelCharacterListAdapter I integrated the class AsyncListDiffer and provided the areItemsTheSame and areContentsTheSame in the ItemCallback for the algo.
+	public class MarvelCharacterListAdapter ...
+		...
+		private final AsyncListDiffer<ProcessedMarvelCharacter> differ = new AsyncListDiffer<ProcessedMarvelCharacter>(this, diffCallBack);
+		public static final DiffUtil.ItemCallback<ProcessedMarvelCharacter> diffCallBack = new DiffUtil.ItemCallback<ProcessedMarvelCharacter>() {
+			@Override
+			public boolean areItemsTheSame(@NonNull ProcessedMarvelCharacter oldItem, @NonNull ProcessedMarvelCharacter newItem) {
+				return (oldItem.name.compareToIgnoreCase(newItem.name) == 0);
+			}
+
+			@Override
+			public boolean areContentsTheSame(@NonNull ProcessedMarvelCharacter oldItem, @NonNull ProcessedMarvelCharacter newItem) {
+				return (oldItem.imageurl.compareToIgnoreCase(newItem.imageurl) == 0);
+			}
+		};
+		...
+		public void onBindViewHolder(@NonNull MarvelCharacterViewHolder holder, int position) {
+			ProcessedMarvelCharacter marvelCharacter = differ.getCurrentList().get(position);
+			...
+		}
+		...
+		public int getItemCount() {
+			return differ.getCurrentList().size();
+		}
+		public void submitList(List<ProcessedMarvelCharacter> list) {
+			differ.submitList(list);
+		}
+		...
+	}
