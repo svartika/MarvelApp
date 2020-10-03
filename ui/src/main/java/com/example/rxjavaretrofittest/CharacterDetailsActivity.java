@@ -47,7 +47,7 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         controller.getCharacterDetailLiveData().observe(this,
                 (state -> {
-                    displayCharacter(state);
+                    setState(state);
                 }
                 ));
         loadCharacter();
@@ -58,7 +58,7 @@ public class CharacterDetailsActivity extends AppCompatActivity {
         controller.loadCharacterDetails(characterId);
     }
 
-    void displayCharacter(CharacterDetailPageController.State state) {
+    void setState(CharacterDetailPageController.State state) {
         //Log.d("VartikaHilt", "marvelCharacter.name->" + state.character.name);
         binding.setState(state);
     }

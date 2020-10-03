@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
-public class CharactersListNetworkInterfaceImpl implements CharactersListNetworkInterface {
+public class CharactersListNetworkInterfaceImpl extends CharactersListNetworkInterface {
     Logger logger;
 
     @Inject
@@ -24,12 +24,12 @@ public class CharactersListNetworkInterfaceImpl implements CharactersListNetwork
         this.logger = logger;
     }
 
-    public Observable<List<Change>> loadChanges() {
+    /*public Observable<List<Change>> loadChanges() {
         Observable<List<Change>> call = retrofitEndpointApi.loadChanges("status:open");
         return call;
-    }
+    }*/
 
-    public Observable<List<MarvelCharacter>> loadMarvelCharacters() {
+    public Observable<List<MarvelCharacter>> loadMarvelCharactersRaw() {
         logger.d("Indivar", "Loading marvel characters");
         Observable<List<MarvelCharacter>> call = marvelRetrofitEndpointApi.loadCharacters().map(
                 marvelCharactersLoadResponse -> {
