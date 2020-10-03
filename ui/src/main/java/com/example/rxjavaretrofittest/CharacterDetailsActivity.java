@@ -12,7 +12,6 @@ import com.example.controllers.retrofit.CharacterDetailPageController;
 import com.example.ui.R;
 import com.example.ui.databinding.ActivityCharacterDetailBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import javax.inject.Inject;
 
