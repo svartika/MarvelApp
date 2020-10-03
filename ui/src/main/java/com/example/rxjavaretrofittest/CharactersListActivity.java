@@ -10,7 +10,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.controllers.retrofit.AbsCharactersListPageController;
 import com.example.controllers.retrofit.CharactersListPageController;
+import com.example.entitiy.models.logs.Logger;
 import com.example.ui.R;
 import com.example.ui.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,11 +25,13 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class CharactersListActivity extends AppCompatActivity {
 
     @Inject
-    CharactersListPageController controller;
+    AbsCharactersListPageController controller;
     RecyclerView rvMarvelCharacters;
     @Inject
     MarvelCharacterListAdapter marvelCharacterListAdapter;
     ActivityMainBinding binding;
+    @Inject
+    Logger logger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
