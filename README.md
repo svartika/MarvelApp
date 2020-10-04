@@ -1,72 +1,86 @@
-# MarvelApp ![Android CI](https://github.com/svartika/MarvelApp/workflows/Android%20CI/badge.svg)
+﻿# MarvelApp ![Android CI](https://github.com/svartika/MarvelApp/workflows/Android%20CI/badge.svg)
+
+## Introduction
 
 I am trying to make a simple application to view Marvel Characters and their details.
 
-The technologies that I am using here are -> RxJava2, Retrofit, Hilt, MVC Architecture, LiveData, Data binding & Glide
+The technologies that I am using here are -> **RxJava2, Retrofit, Hilt, MVC Architecture, LiveData, Data binding, Glide, AsyncDiffer**
 This is a project in progress and I will be updating the newer things as and when I use them.
 
 The first screen(CharactersListActivity) fetches the list of all characters and displays it in a recycler view.
 
 The second screen(CharacterDetailsActivity) shows the details of a character.
 
-I integrated the following libraries
-RxJava2 ->
-	implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-	Note: I did not use RxJava3 as its adapter for retrofit was still meant for RxJava2.
-	implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
-Retrofit ->
-	implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+## Question: Use the best way to fetch Marvel Characters
+The most reliable way currently in android to make network calls is via retrofit.
+And the best way to parse response is by using Rx Java. 
 
-At first, My first screen simply used Retrofit to get the list of marvel characters.
-	void loadCharacters() {
-        Observable<List<MarvelCharacter>> marvelCharacters = charactersListNetworkInterface.loadMarvelCharacters();
-        Disposable disposable = marvelCharacters
-                .subscribeOn(Schedulers.io())  //create a background worker thread on which observable will carry out its task
-                .observeOn(AndroidSchedulers.mainThread()) //get hold of the main thread so that results can be sent back to the UI 
-                .subscribe(marvelCharactersList -> {
-                            Log.d("VartikaHilt", "Marvel Characters: " + marvelCharactersList.size());
-                            displayMarvelCharacters(marvelCharactersList);
-                        },
-                        err -> Log.d("VartikaHilt", err.getLocalizedMessage()),
-                        () -> Log.d("VartikaHilt", "OnCompleted")
-					);
-	}
+**Gradle Dependencies**
+I integrated the following libraries
+**RxJava2** ->
+ - implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+ - implementation 'io.reactivex.rxjava2:rxandroid:2.1.1' 	
+   Note: I did not use RxJava3 as its adapter for retrofit was still meant for
+   RxJava2. 	
+ - implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+ - implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+ 
+**Retrofit** ->
+ - implementation 'com.google.code.gson:gson:2.8.5'
+ - implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+ - implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+I created MarvelRetrofitEndpointApi endpoint interface  as follows. This defines the api and the query and path parameters for all network calls.
+
+    public interface MarvelRetrofitEndpointApi {
+    		@GET("/v1/public/characters")
+    		Observable<MarvelCharactersLoadResponse> loadCharacters();
+    	}
+    	
+loadMarvelCharacters is defined in the network implementation class as follows
 	
-	loadMarvelCharacters is defined in the network implementation class as follows
-	public Observable<List<MarvelCharacter>> loadMarvelCharacters() {
-        logger.d("Indivar", "Loading marvel characters");
-        Observable<List<MarvelCharacter>> call = marvelRetrofitEndpointApi.loadCharacters().map(
-                marvelCharactersLoadResponse -> {
-                    return marvelCharactersLoadResponse.data.characters;
-                }
-        );
-        return call;
+    public Observable<List<MarvelCharacter>> loadMarvelCharacters() {
+            logger.d("Indivar", "Loading marvel characters");
+            Observable<List<MarvelCharacter>> call = marvelRetrofitEndpointApi.loadCharacters().map(
+                    marvelCharactersLoadResponse -> {
+                        return marvelCharactersLoadResponse.data.characters;
+                    }
+            );
+            return call;
     }
+    
+My first screen simply used Retrofit to get the list of marvel characters and RxJava to parse these results.
+
+    void loadCharacters() {
+                Observable<List<MarvelCharacter>> marvelCharacters = charactersListNetworkInterface.loadMarvelCharacters();
+                Disposable disposable = marvelCharacters
+                        .subscribeOn(Schedulers.io())  //create a background worker thread on which observable will carry out its task
+                        .observeOn(AndroidSchedulers.mainThread()) //get hold of the main thread so that results can be sent back to the UI 
+                        .subscribe(marvelCharactersList -> {
+                                    Log.d("VartikaHilt", "Marvel Characters: " + marvelCharactersList.size());
+                                    displayMarvelCharacters(marvelCharactersList);
+                                },
+                                err -> Log.d("VartikaHilt", err.getLocalizedMessage()),
+                                () -> Log.d("VartikaHilt", "OnCompleted")
+		    );
+      }
 	
-	marvelRetrofitEndpointApi is defined in the retrofit endpoint interface  as follows
-	public interface MarvelRetrofitEndpointApi {
-		@GET("/v1/public/characters")
-		Observable<MarvelCharactersLoadResponse> loadCharacters();
-	}
+## Question: How to make my code more readable and maintainable?
+
+I worked on separating the files in to different modules in order to follow the principles of **Clean Architecture** and **Model View Controller**.
+I made the following modules 
+ - App -> this module is aware of all the components in my project.
+ - UI -> this contains the View components.
+ - Controller -> this contains the business logic. I only included contract for the client here in form of interfaces.
+ - ControllerImplementation -> this contains the implementation files for the contract that the controller made with the client. As of now it is only the network call related implementation (Retrofit)
+ - Entity -> this contains the Model components. This module is expected to change only when we make fundamental changes to the application. 
+
+This organization helped me to separate the project in to clear roles and responsibility. And since all the modules were not changed every time I made changes, it reduced the build time.
 	
-	
-I worked on separating the files in to different modules in order to follow the principles of Clean Architecture and Model View Controller
-	I made the following modules 
-	App -> this was aware of all the components in my project.
-	UI -> this contains the View components.
-	Controller -> this contains the business logic. I only included contract for the client here in form of interfaces. (dependency inversion principle)
-	ControllerImplementation -> this contains the implementation files for the contract that the controller made with the client. As of now it is only the network call related implementation (Retrofit)
-	Entity -> this contains the Model components. This module is expected to change only when we make fundamental changes to the application. 
-	This organization helped me to separate the project in to clear roles and responsibility. And since all the modules were not changed everytime I made changes, it reduced the build time.
-	
-	<<<include image here>>>
-	
-	[alt text](https://github.com/svartika/MarvelApp/blob/master/documents/MVC.jpg?raw=true)
-	
+![Modules to implement MVC](https://github.com/svartika/MarvelApp/blob/master/documents/MVC.jpg?raw=true)
+
+## Question
+
 At this point I started to integrate Dagger2 for dependency injection in my project. However, Android developer asked me to use Hilt. The documentation is well written. I do not know Dagger2 but I was able to use Hilt with out many issues. 
 I created my Logger class and used contructor and property based dependency injection for it.
 I modified retrofit to get initialized using method based dependency injection
