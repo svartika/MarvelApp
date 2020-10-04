@@ -65,6 +65,8 @@ I worked on separating the files in to different modules in order to follow the 
 	
 	<<<include image here>>>
 	
+	[alt text](https://github.com/svartika/MarvelApp/blob/master/documents/MVC.jpg?raw=true)
+	
 At this point I started to integrate Dagger2 for dependency injection in my project. However, Android developer asked me to use Hilt. The documentation is well written. I do not know Dagger2 but I was able to use Hilt with out many issues. 
 I created my Logger class and used contructor and property based dependency injection for it.
 I modified retrofit to get initialized using method based dependency injection
@@ -459,4 +461,36 @@ In the activity_character_detail.xml for this activity,
 			differ.submitList(list);
 		}
 		...
+	}
+	
+	At this point, I noticed that on configuration change the list of marvel characters were all reloaded. This got me to the point where I could now learn about ViewModel. It is used to retain the instance of data across configuration changes. However, In this case I have something akin to ViewModel in my project. My controller instance is being injected by Hilt. Hilt allows me to inject my controller ActivityRetainedComponent. ActivityRetainedComponent lives across configuration changes, so it is created at the first Activity#onCreate() and destroyed at the last Activity#onDestroy().
+	I created a module with this component and injected CharactersListPageController from here. However, this gave compile time error as Hilt was finding two paths of injection (one from activity module and one from constructer). Therefore, I had to create an interface AbsCharactersListPageController which was implemented by CharactersListPageController. I then created this in the module and used it in the activity. The instance was retained across configuration changes eliminating my need to use ViewModel. I have to find another use case for learning ViewModel now :)
+
+	I created AbsCharactersListPageController
+	public interface AbsCharactersListPageController {
+		LiveData<State> getCharactersLiveData();
+
+		void loadCharacters();
+
+		class State {
+			public boolean loading;
+			public boolean error;
+			public List<ProcessedMarvelCharacter> marvelCharactersList;
+
+			public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList) {
+				this.loading = loading;
+				this.error = error;
+				this.marvelCharactersList = marvelCharactersList;
+			}
+		}
+	}
+	In ActivityModule.java, i declared
+	@Module
+	@InstallIn(ActivityRetainedComponent.class)
+	public abstract class ActivityRetainedModule {
+		@ActivityRetainedScoped
+		@Binds
+		public abstract AbsCharactersListPageController createCharactersListPageController(
+				CharactersListPageController charactersListPageController
+		);
 	}
