@@ -1,4 +1,4 @@
-# MarvelApp
+# MarvelApp ![Android CI](https://github.com/svartika/MarvelApp/workflows/Android%20CI/badge.svg)
 
 I am trying to make a simple application to view Marvel Characters and their details.
 
