@@ -5,9 +5,10 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public interface AbsCharactersListPageController {
-    LiveData<State> getCharactersLiveData();
+    LiveData<State> stateLiveData();
 
     void loadCharacters();
+    void searchCharacter(String nameStartsWith);
 
     class State {
         public boolean loading;

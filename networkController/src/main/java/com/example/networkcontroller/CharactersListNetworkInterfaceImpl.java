@@ -39,6 +39,17 @@ public class CharactersListNetworkInterfaceImpl extends CharactersListNetworkInt
         return call;
     }
 
+    public Observable<List<MarvelCharacter>> searchCharacterRaw(String nameStartsWith) {
+        logger.d("Vartika", "search marvel characters");
+        Observable<List<MarvelCharacter>> call = marvelRetrofitEndpointApi.searchNameStartsWith(nameStartsWith)
+                .map(
+                        marvelCharactersLoadResponse -> {
+                            return  marvelCharactersLoadResponse.data.characters;
+                        }
+                );
+        return call;
+    }
+
 
 }
 
