@@ -124,7 +124,7 @@ public class CharactersListPageController implements AbsCharactersListPageContro
         @Override
         public void invoke(ProcessedMarvelCharacter item) {
             logger.d("Vartika", "OnMarvelCharacterClicked: "+item);
-            effectLiveData.postValue(new Effect(SharedVars.ACTION.ACTION_CLICK_MARVEL_CHARACTER_ON_LIST, item));
+            effectLiveData.postValue(new ClickEffect(item));
         }
     }
 

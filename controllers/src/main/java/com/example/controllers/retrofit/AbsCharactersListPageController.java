@@ -27,12 +27,10 @@ public interface AbsCharactersListPageController {
     abstract class AbsMarvelCharacterClickedListener<T> {
         public abstract void invoke(T item);
     }
-    public class Effect<T> {
-        public SharedVars.ACTION action;
+    public class ClickEffect<T> extends Effect{
         public T item;
 
-        public Effect(SharedVars.ACTION action, T item) {
-            this.action = action;
+        public ClickEffect(T item) {
             this.item = item;
         }
     }

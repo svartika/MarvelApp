@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controllers.retrofit.AbsCharactersListPageController;
 import com.example.controllers.retrofit.CharactersListPageController;
+import com.example.controllers.retrofit.Effect;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
 import com.example.ui.R;
@@ -101,14 +102,13 @@ public class CharactersListActivity extends AppCompatActivity {
         binding.setState(state);
     }
 
-    private void setEffect(AbsCharactersListPageController.Effect effect) {
-        switch (effect.action) {
-            case ACTION_CLICK_MARVEL_CHARACTER_ON_LIST:
-                ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) effect.item;
-                Intent intent = new Intent(this, CharacterDetailsActivity.class);
-                intent.putExtra("MARVEL_CHARACTER_ID", marvelCharacter.id);
-                startActivity(intent);
-                break;
+    private void setEffect(Effect effect) {
+        if(effect instanceof AbsCharactersListPageController.ClickEffect) {
+
+            ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) ((AbsCharactersListPageController.ClickEffect)effect).item;
+            Intent intent = new Intent(this, CharacterDetailsActivity.class);
+            intent.putExtra("MARVEL_CHARACTER_ID", marvelCharacter.id);
+            startActivity(intent);
         }
     }
 }
