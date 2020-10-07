@@ -20,7 +20,7 @@ public class CharacterDetailNetworkInterfaceImpl extends CharacterDetailNetworkI
         this.logger = logger;
     }
     @Override
-    public Observable<MarvelCharacter> loadMarvelCharacter(String characterId){
+    public Observable<MarvelCharacter> loadMarvelCharacter(int characterId){
         logger.d("VartikaHilt", "loading marvel character");
         Observable<MarvelCharacter> call = marvelRetrofitEndpointApi.loadCharacter(characterId).map(
                 marvelCharacterResponse -> {

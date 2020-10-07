@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AbsCharactersListPageController {
     LiveData<State> stateLiveData();
-
+    LiveData<Effect> effectLiveData();
     void loadCharacters();
     void searchCharacter(String nameStartsWith);
 
@@ -14,11 +14,26 @@ public interface AbsCharactersListPageController {
         public boolean loading;
         public boolean error;
         public List<ProcessedMarvelCharacter> marvelCharactersList;
+        public AbsMarvelCharacterClickedListener marvelCharacterClickedListener;
 
-        public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList) {
+        public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList, AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {
             this.loading = loading;
             this.error = error;
             this.marvelCharactersList = marvelCharactersList;
+            this.marvelCharacterClickedListener = marvelCharacterClickedListener;
+        }
+
+    }
+    abstract class AbsMarvelCharacterClickedListener<T> {
+        public abstract void invoke(T item);
+    }
+    public class Effect<T> {
+        public SharedVars.ACTION action;
+        public T item;
+
+        public Effect(SharedVars.ACTION action, T item) {
+            this.action = action;
+            this.item = item;
         }
     }
 }

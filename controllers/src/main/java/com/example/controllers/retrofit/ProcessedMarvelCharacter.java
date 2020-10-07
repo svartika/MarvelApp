@@ -5,7 +5,7 @@ import com.example.entitiy.models.MarvelCharacter;
 import java.util.List;
 
 public class ProcessedMarvelCharacter {
-    int id;
+    public int id;
     public String name, imageurl, description, modified;
     List<MarvelCharacter.URL> urls;
 

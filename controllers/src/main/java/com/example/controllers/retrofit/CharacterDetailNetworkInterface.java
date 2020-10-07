@@ -6,9 +6,9 @@ import io.reactivex.Observable;
 
 public abstract class CharacterDetailNetworkInterface {
 
-    public abstract Observable<MarvelCharacter> loadMarvelCharacter(String characterId);
+    public abstract Observable<MarvelCharacter> loadMarvelCharacter(int characterId);
 
-    Observable<ProcessedMarvelCharacter> loadCharacterDetail(String characterId) {
+    Observable<ProcessedMarvelCharacter> loadCharacterDetail(int characterId) {
         return loadMarvelCharacter(characterId).map(character -> {
             return new ProcessedMarvelCharacter(character);
 

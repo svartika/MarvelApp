@@ -15,7 +15,7 @@ public interface MarvelRetrofitEndpointApi {
     Observable<MarvelCharactersLoadResponse> loadCharacters();
 
     @GET("/v1/public/characters/{characterId}")
-    Observable<MarvelCharacterResponse> loadCharacter(@Path("characterId") String characterId);
+    Observable<MarvelCharacterResponse> loadCharacter(@Path("characterId") int characterId);
 
     @GET("/v1/public/characters")
     Observable<MarvelCharactersLoadResponse> searchNameStartsWith(@Query("nameStartsWith") String nameStartsWith);

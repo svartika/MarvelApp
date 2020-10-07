@@ -1,5 +1,6 @@
 package com.example.rxjavaretrofittest;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -24,12 +25,14 @@ public class CharacterDetailsActivity extends AppCompatActivity {
     @Inject
     CharacterDetailPageController controller;
 
-    String characterId;
+    int characterId;
     TextView name;
     ActivityCharacterDetailBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        characterId = intent.getIntExtra("MARVEL_CHARACTER_ID", 0);
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_character_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -53,7 +56,7 @@ public class CharacterDetailsActivity extends AppCompatActivity {
     }
 
     void loadCharacter() {
-        characterId = "1011334";
+       // characterId = "1011334";
         controller.loadCharacterDetails(characterId);
     }
 

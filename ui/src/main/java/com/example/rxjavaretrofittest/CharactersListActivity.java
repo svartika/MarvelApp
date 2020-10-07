@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controllers.retrofit.AbsCharactersListPageController;
 import com.example.controllers.retrofit.CharactersListPageController;
+import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
 import com.example.ui.R;
 import com.example.ui.databinding.ActivityMainBinding;
@@ -31,8 +32,8 @@ public class CharactersListActivity extends AppCompatActivity {
     AbsCharactersListPageController controller;
     RecyclerView rvMarvelCharacters;
     EditText searchView;
-    @Inject
-    MarvelCharacterListAdapter marvelCharacterListAdapter;
+
+
     ActivityMainBinding binding;
     @Inject
     Logger logger;
@@ -44,6 +45,9 @@ public class CharactersListActivity extends AppCompatActivity {
         setUpRecyclerView();
         controller.stateLiveData().observe(this, state -> {
             setState(state);
+        });
+        controller.effectLiveData().observe(this, effect -> {
+            setEffect(effect);
         });
         //controller.loadCharacters();
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -97,4 +101,14 @@ public class CharactersListActivity extends AppCompatActivity {
         binding.setState(state);
     }
 
+    private void setEffect(AbsCharactersListPageController.Effect effect) {
+        switch (effect.action) {
+            case ACTION_CLICK_MARVEL_CHARACTER_ON_LIST:
+                ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) effect.item;
+                Intent intent = new Intent(this, CharacterDetailsActivity.class);
+                intent.putExtra("MARVEL_CHARACTER_ID", marvelCharacter.id);
+                startActivity(intent);
+                break;
+        }
+    }
 }

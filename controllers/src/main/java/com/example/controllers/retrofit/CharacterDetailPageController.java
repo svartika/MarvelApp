@@ -23,7 +23,7 @@ public class CharacterDetailPageController {
     CharacterDetailPageController() {
     }
 
-    public void loadCharacterDetails(String characterID) {
+    public void loadCharacterDetails(int characterID) {
         marvelCharacterLiveData.postValue(new State(true, false, null));
         Observable<ProcessedMarvelCharacter> marvelCharacterObservable = characterDetailNetworkInterface.loadCharacterDetail(characterID);
         marvelCharacterObservable

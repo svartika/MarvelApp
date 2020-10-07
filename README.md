@@ -467,7 +467,7 @@ In MarvelCharacterListAdapter, I added the following code to use the above bindi
     		}
     	}
 
-I would like to point out that the image view loading was taken care by @BindingAdapter("url"). I had created this earlier for the detail page display. Yay to Reusable code! 
+I would like to point out that the image view loading was taken care by @BindingAdapter("url"). I had created this earlier for the detail page display. Yay to reusable code! 
 
 ## How can I optimizing the refresh list calls in the Recyclerview?
 
@@ -503,37 +503,41 @@ I integrated the class AsyncListDiffer in MarvelCharacterListAdapter and provide
 			...
 		}
 	
-At this point, I noticed that on configuration change the list of marvel characters were all reloaded. This got me to the point where I could now learn about ViewModel. It is used to retain the instance of data across configuration changes. However, In this case I have something akin to ViewModel in my project. My controller instance is being injected by Hilt. Hilt allows me to inject my controller ActivityRetainedComponent. ActivityRetainedComponent lives across configuration changes, so it is created at the first Activity#onCreate() and destroyed at the last Activity#onDestroy().
-	I created a module with this component and injected CharactersListPageController from here. However, this gave compile time error as Hilt was finding two paths of injection (one from activity module and one from constructer). Therefore, I had to create an interface AbsCharactersListPageController which was implemented by CharactersListPageController. I then created this in the module and used it in the activity. The instance was retained across configuration changes eliminating my need to use ViewModel. I have to find another use case for learning ViewModel now :)
 
-	I created AbsCharactersListPageController
-	public interface AbsCharactersListPageController {
-		LiveData<State> getCharactersLiveData();
+## More Optimizations! How to stop the list from reloading on configuration changed?
 
-		void loadCharacters();
+I noticed that on configuration change the list of marvel characters were all reloaded. This got me to the conclusion that I could now use ViewModel. ViewModel is used to retain the instance of data across configuration changes. However, In this case I already have something akin to ViewModel in my project. My controller instance is being injected by Hilt and Hilt allows me to inject my controller using the scope ActivityRetainedComponent. An ActivityRetainedComponent lives across configuration changes, so it is created at the first Activity#onCreate() and destroyed at the last Activity#onDestroy().
 
-		class State {
-			public boolean loading;
-			public boolean error;
-			public List<ProcessedMarvelCharacter> marvelCharactersList;
+I created a module with this component and injected CharactersListPageController from here. However, this gave compile time error as Hilt was finding two paths of injection (one from this module and one from constructer). Therefore, I had to create an interface AbsCharactersListPageController which was implemented by CharactersListPageController. I then used this interface to create the instance of CharactersListPageController in the module and used it in the activity. The instance was retained across configuration changes eliminating my need to use ViewModel. I have to find another use case for using ViewModel now :)
 
-			public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList) {
-				this.loading = loading;
-				this.error = error;
-				this.marvelCharactersList = marvelCharactersList;
-			}
-		}
-	}
-	In ActivityModule.java, i declared
-	@Module
-	@InstallIn(ActivityRetainedComponent.class)
-	public abstract class ActivityRetainedModule {
-		@ActivityRetainedScoped
-		@Binds
-		public abstract AbsCharactersListPageController createCharactersListPageController(
-				CharactersListPageController charactersListPageController
-		);
-	}
+I created AbsCharactersListPageController
+		
+	    public interface AbsCharactersListPageController {
+    		LiveData<State> getCharactersLiveData();
+    		void loadCharacters();
+    		class State {
+    			public boolean loading;
+    			public boolean error;
+    			public List<ProcessedMarvelCharacter> marvelCharactersList;
+    
+    			public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList) {
+    				this.loading = loading;
+    				this.error = error;
+    				this.marvelCharactersList = marvelCharactersList;
+    			}
+    		}
+    	}
+   In ActivityModule.java,  I declared
+	    
+	    @Module
+    	@InstallIn(ActivityRetainedComponent.class)
+    	public abstract class ActivityRetainedModule {
+    		@ActivityRetainedScoped
+    		@Binds
+    		public abstract AbsCharactersListPageController createCharactersListPageController(
+    				CharactersListPageController charactersListPageController
+    		);
+    	}
 
 
 
