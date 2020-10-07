@@ -11,7 +11,7 @@ The first screen(CharactersListActivity) fetches the list of all characters and 
 
 The second screen(CharacterDetailsActivity) shows the details of a character.
 
-## Question: Use the best way to fetch Marvel Characters
+## What's the best way to fetch Marvel Characters?
 The most reliable way currently in android to make network calls is via retrofit.
 And the best way to parse response is by using Rx Java. 
 
@@ -65,7 +65,7 @@ My first screen simply used Retrofit to get the list of marvel characters and Rx
 		    );
       }
 	
-## Question: How to make my code more readable and maintainable?
+## How to make my code more readable and maintainable?
 
 I worked on separating the files in to different modules in order to follow the principles of **Clean Architecture** and **Model View Controller**.
 I made the following modules 
@@ -79,96 +79,100 @@ This organization helped me to separate the project in to clear roles and respon
 	
 ![Modules to implement MVC](https://github.com/svartika/MarvelApp/blob/master/documents/MVC.jpg?raw=true)
 
-## Question
+## How to make my code more stable and reusable?
 
-At this point I started to integrate Dagger2 for dependency injection in my project. However, Android developer asked me to use Hilt. The documentation is well written. I do not know Dagger2 but I was able to use Hilt with out many issues. 
-I created my Logger class and used contructor and property based dependency injection for it.
-I modified retrofit to get initialized using method based dependency injection
-
-	a) For hilt I included the following libraries 
-	apply plugin: 'kotlin-android'
-	apply plugin: 'kotlin-kapt'
-	apply plugin: 'dagger.hilt.android.plugin'
-	implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+Using dependency injection makes our code more decoupled. It moves a lot of boiler plate code away from the logic in to injection classes. The to go library for this in Android is Dagger 2. I started to integrate Dagger2 for dependency injection in my project. However, Android developer website suggested that I use Hilt. The documentation for Hilt is well written. I do not know Dagger2 but I was able to use Hilt with out many issues. 
+I created my Logger class and used constructor and property based dependency injection for it.
+I moved the logic for creation of retrofit so that it was created using method based dependency injection.
+ 1.  For hilt I included the following libraries 
+ - apply plugin: 'kotlin-android'
+ - apply plugin: 'kotlin-kapt'
+ - apply plugin: 'dagger.hilt.android.plugin'
+ - implementation "com.google.dagger:hilt-android:$hilt_version"
+ - kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+ 2. In my Application class I gave the annotation @HiltAndroidApp
+    @HiltAndroidApp
+    	public class MarvelApplication extends Application {}
+3. I added the Logger class in entity and marked its constructer with 
+		
+	    annotation @Inject
+	    public class Logger {
+    		@Inject
+    		public Logger() { 
+    		}
+    		public void d(String tag, String message) {
+    			Log.d(tag, message);
+    		}
+    	}
 	
-	b) In my Application class I gave the annotation @HiltAndroidApp
-	@HiltAndroidApp
-	public class MarvelApplication extends Application {}
+4. Usage of constructor based dependency injection
 	
-	c) I added the Logger class in entity and marked the constructer with annotation @Inject
-	public class Logger {
 		@Inject
-		public Logger() {
+	    Logger logger;
+	
+5. In order to try out property based dependency injection, I used it as follows in the NetworkImpementationController class
 
+		Logger logger; //declaration
+		@Inject
+	    public CharactersListNetworkInterfaceImpl(Logger logger) { //passed as a parameter in the constructer
+	        this.logger = logger; 
+	    }
+6. Now, I moved to porting the retrofit instantiation to Hilt. 
+	For this, I created a Hilt Module with Binds for creating my network controller 
+	
+		@Module
+		@InstallIn(ApplicationComponent.class) // inject the binding in Application class -> this is scoping (keeping the instance alive) 
+		public abstract class InjectionModule {
+			@Binds
+			public abstract CharactersListNetworkInterface createRetrofit(
+				CharactersListNetworkInterfaceImpl retrofitImpl
+			);
 		}
-
-		public void d(String tag, String message) {
-			Log.d(tag, message);
-		}
-	}
-	
-	d) constuctor based dependency injection
-	@Inject
-    Logger logger;
-	
-	e) In order to try out the property based dependency injection, I used it as follows in the NetworkImpementationController class
-	Logger logger; //declaration
-	@Inject
-    public CharactersListNetworkInterfaceImpl(Logger logger) { //passed as a parameter in the constructer
-        this.logger = logger; 
-    }
-	
-	f) Now, I moved to porting the retrofit instantiation to Hilt
-	I created Hilt Module with Binds for creating my network controller 
-	@Module
-	@InstallIn(ApplicationComponent.class) // inject the binding in Application class -> this is about scoping..keeping the instance alive 
-	public abstract class InjectionModule {
-		@Binds
-		public abstract CharactersListNetworkInterface createRetrofit(
-			CharactersListNetworkInterfaceImpl retrofitImpl
-		);
-	}
 	
 	I use this in the CharactersListActivity as follows
-	@Inject
-    CharactersListNetworkInterface charactersListNetworkInterface; // declaration
-	Observable<List<MarvelCharacter>> marvelCharacters = charactersListNetworkInterface.loadMarvelCharacters(); //usage
+	
+	    @Inject
+	    CharactersListNetworkInterface charactersListNetworkInterface; // declaration
+	    ...
+	    Observable<List<MarvelCharacter>> marvelCharacters = charactersListNetworkInterface.loadMarvelCharacters(); //usage
 	
 	The loadMarvelCharacters() is implemented in class CharactersListNetworkInterfaceImpl 
-	public class CharactersListNetworkInterfaceImpl implements CharactersListNetworkInterface {
-		@Inject
-		MarvelRetrofitEndpointApi marvelRetrofitEndpointApi;
-		public Observable<List<MarvelCharacter>> loadMarvelCharacters() {
-			Observable<List<MarvelCharacter>> call = marvelRetrofitEndpointApi.loadCharacters().map(
-					marvelCharactersLoadResponse -> {
-						return marvelCharactersLoadResponse.data.characters;
-					}
-			);
-			return call;
-		}
-	}
 	
-	I then created MarvelRetrofitEndpointApi marvelRetrofitEndpointApi. 
-	I had to use the @Provides annotation because the instance of EndpointApi had to be created using builder pattern. 
-	The function body in the annotated function tells Hilt how to provide an instance of the corresponding type. Hilt executes the function body every time it needs to provide an instance of that type.
-	@Module
-	@InstallIn(ApplicationComponent.class)
-	public class InjectionModule2 {
-		@Provides
-		public MarvelRetrofitEndpointApi getEndPoint(@Marvel Retrofit retrofit) {
-			return retrofit.create(MarvelRetrofitEndpointApi.class);
-		}
-		@Marvel// custom qualifier for creating different instances of Retrofit 
-				//(in case my url changes or new query interceptors need to be used)
-		@Provides
-		public Retrofit bindRetrofit() {
-			Gson gson = new GsonBuilder().setLenient().create();
-			RxJava2CallAdapterFactory rxAdapter = RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io());
-			HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-			loggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
-			OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new QueryInterceptor()).addInterceptor(loggingInterceptor).build();
-			return new Retrofit.Builder()
+	    public class CharactersListNetworkInterfaceImpl implements CharactersListNetworkInterface {
+	    		@Inject
+	    		MarvelRetrofitEndpointApi marvelRetrofitEndpointApi;
+	    		...
+	    		public Observable<List<MarvelCharacter>> loadMarvelCharacters() {
+	    			Observable<List<MarvelCharacter>> call = marvelRetrofitEndpointApi.loadCharacters()
+								    		  .map( marvelCharactersLoadResponse -> {
+						    						return marvelCharactersLoadResponse.data.characters;
+			    	});
+	    			return call;
+	    		}
+	    	}
+	
+	I then created MarvelRetrofitEndpointApi marvelRetrofitEndpointApi. I had to use the @Provides annotation because the instance of EndpointApi had to be created using builder pattern. The function body in the annotated function tells Hilt how to provide an instance of the corresponding type. Hilt executes the function body every time it needs to provide an instance of that type.
+	
+		@Module
+		@InstallIn(ApplicationComponent.class)
+		public class InjectionModule2 {
+			@Provides
+			public MarvelRetrofitEndpointApi getEndPoint(@Marvel Retrofit retrofit {
+				return retrofit.create(MarvelRetrofitEndpointApi.class);
+			}
+			@Marvel// custom qualifier for creating different instances of Retrofit 
+				   //(in case my url changes or new query interceptors need to be used)
+			@Provides
+			public Retrofit bindRetrofit() {
+				Gson gson = new GsonBuilder().setLenient().create();
+				RxJava2CallAdapterFactory rxAdapter = RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io());
+				HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+				loggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
+				OkHttpClient okHttpClient = new OkHttpClient.Builder()
+					.addInterceptor(new QueryInterceptor())
+					.addInterceptor(loggingInterceptor)
+					.build();
+				return new Retrofit.Builder()
 					.baseUrl(BASE_URL)
 					.client(okHttpClient)
 					.addConverterFactory(GsonConverterFactory.create(gson))
@@ -178,137 +182,153 @@ I modified retrofit to get initialized using method based dependency injection
 	}
 	
 	I created the qualifier in an interface
-	@Qualifier
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface Marvel {}
-	//This means that if Retrofit bindRetrofit() has multiple bindings, I can use the annotation @Marvel to pick the binding I need
+		
+	    @Qualifier
+    	@Retention(RetentionPolicy.RUNTIME)
+    	public @interface Marvel {}
+
+This means that if Retrofit bindRetrofit() has multiple bindings, I can use the annotation @Marvel to pick the binding I need
 
 My first screen is quite ok now.
 I used the above mentioned libraries in my second screen as well.
 
-I now want to fetch marvel character detail in a State element and then use Livedata to notify UI component.
-The UI component in turn will use data binding to update itself.
-
+## How to conform to MVC?
+To confirm to MVC, I want to move all the data processing and decision making to controller modules. The View should just observe the controller and update itself. 
+I started with applying this idea to the second screen (the detail activity)
+I fetch marvel character detail in a State element and then use Livedata to notify UI component. The UI component in turn will use data binding to update itself.
 In class CharacterDetailPageController, 
-	I created a class State to hold information about the Character, error and/or progress.
-	I created MutableLiveData of type State. I provided a getter for this LiveData, so the activity can access it.
-	I then changed my retrofit to post this LiveData once RxJava2 Observable completes its subscribe.
-		public class CharacterDetailPageController {
-			MutableLiveData<State> marvelCharacterLiveData = new MutableLiveData<>();
-			...
-			public void loadCharacterDetails(String characterID) {
-				marvelCharacterLiveData.postValue(new State(true, false, null));
-				Observable<ProcessedMarvelCharacter> marvelCharacterObservable = characterDetailNetworkInterface.loadCharacterDetail(characterID);
-				marvelCharacterObservable
-						.subscribeOn(Schedulers.io())
-						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe(
-								processedMarvelCharacter -> {
-									marvelCharacterLiveData.postValue(new State(false, false, processedMarvelCharacter));
-								},
-								err -> {
-									marvelCharacterLiveData.postValue(new State(false, true, null));
-									logger.d("VartikaHilt", err.getLocalizedMessage());
-								},
-								() -> {
+ - I created a class State to hold information about the Character,
+   error and/or progress. I created MutableLiveData of type State. 
+ - I provided a getter for this LiveData, so the activity can access it. 
+ - I then changed my retrofit to post this LiveData once RxJava2
+   Observable completes its subscribe.
 
-								});
-			}
-			public LiveData<State> getCharacterDetailLiveData() {
-			return marvelCharacterLiveData;
-			}
+		
 
-			public static class State {
-				public boolean loading;
-				public boolean error;
-				public ProcessedMarvelCharacter character;
-
-				public State(boolean loading, boolean error, ProcessedMarvelCharacter character) {
-					this.loading = loading;
-					this.error = error;
-					this.character = character;
-				}
-			}
-		}
+		    public class CharacterDetailPageController {
+    			MutableLiveData<State> marvelCharacterLiveData = new MutableLiveData<>();
+    			...
+    			public void loadCharacterDetails(String characterID) {
+    				marvelCharacterLiveData.postValue(new State(true, false, null));
+    				Observable<ProcessedMarvelCharacter> marvelCharacterObservable = characterDetailNetworkInterface.loadCharacterDetail(characterID);
+    				marvelCharacterObservable
+    						.subscribeOn(Schedulers.io())
+    						.observeOn(AndroidSchedulers.mainThread())
+    						.subscribe(
+    								processedMarvelCharacter -> {
+    									marvelCharacterLiveData.postValue(new State(false, false, processedMarvelCharacter));
+    								},
+    								err -> {
+    									marvelCharacterLiveData.postValue(new State(false, true, null));
+    									logger.d("VartikaHilt", err.getLocalizedMessage());
+    								},
+    								() -> {
+    
+    								});
+    			}
+    			public LiveData<State> getCharacterDetailLiveData() {
+	    			return marvelCharacterLiveData;
+    			}
+    
+    			public static class State {
+    				public boolean loading;
+    				public boolean error;
+    				public ProcessedMarvelCharacter character;
+    
+    				public State(boolean loading, boolean error, ProcessedMarvelCharacter character) {
+    					this.loading = loading;
+    					this.error = error;
+    					this.character = character;
+    				}
+    			}
+    		}
 
 In CharacterDetailsActivity,
-	I created a DataBinding for this activity
-	I observed on the LiveData which I had created earlier in the CharacterDetailPageController. 
-	Once I received the State variable, I simply passed this value to the binding which set this variable in the layout xml
-
-	public class CharacterDetailsActivity extends AppCompatActivity {	
-		@Inject
-		CharacterDetailPageController controller;
-		ActivityCharacterDetailBinding binding;
-		...
-		@Override
-		protected void onCreate(Bundle savedInstanceState) {
-			binding = DataBindingUtil.setContentView(this, R.layout.activity_character_detail);
-			...
-			controller.getCharacterDetailLiveData().observe(this,
-                (state -> {
-                    setState(state);
-
-					}
-                ));
-			...
-		}
-		void setState(CharacterDetailPageController.State state) {
-			binding.setState(state);
-		}
-	}
 	
+
+ - I created a DataBinding for this activity
+ - I observed on the LiveData which I had created earlier in the CharacterDetailPageController. 
+ - Once I received the State variable, I simply passed this value to the binding which set this variable in the layout xml
+
+	    public class CharacterDetailsActivity extends AppCompatActivity {	
+    		@Inject
+    		CharacterDetailPageController controller;
+    		ActivityCharacterDetailBinding binding;
+    		...
+    		@Override
+    		protected void onCreate(Bundle savedInstanceState) {
+    			binding = DataBindingUtil.setContentView(this, R.layout.activity_character_detail);
+    			...
+    			controller.getCharacterDetailLiveData().observe(this,
+                    (state -> {
+                        setState(state);
+    
+    					}
+                    ));
+    			...
+    		}
+    		void setState(CharacterDetailPageController.State state) {
+    			binding.setState(state);
+    		}
+    	}
+
 In the activity_character_detail.xml for this activity, 
-	I have added a data element with the variable element. I have received the State variable here and passed it on to the content layout.
-	...
-	<data>
-        <variable
-            name="state"
-            type="com.example.controllers.retrofit.CharacterDetailPageController.State" />
-    </data>
-	...
-	<include layout="@layout/content_character_detail"
-        app:contentstate="@{state}"/>
+ - I have added a data element with the variable element.  	
+ - I have received the State variable here and passed it on to the content
+   layout.
+
+		...
+    	<data>
+            <variable
+                name="state"
+                type="com.example.controllers.retrofit.CharacterDetailPageController.State" />
+        </data>
+    	...
+    	<include layout="@layout/content_character_detail"
+            app:contentstate="@{state}"/>
 		
-	In content_character_detail.xml, I have used this variable to set the name and load image for the marvel character using Glide
-	//setting name was just a matter of using the name property in the ProcessedMarvelCharacter.
-	//setting image required me to use Glide 
-	...
-	<data>
-        <import type="android.view.View"/>
-        <variable
-            name="contentstate"
-            type="com.example.controllers.retrofit.CharacterDetailPageController.State" />
-    </data>
-	<TextView
-        android:id="@+id/name"
-        android:text="@{contentstate.character.name}"
-		...
-	/>
-	<ImageView
-        android:id="@+id/image"
-		app:url="@{contentstate.character.imageurl}"
-		...
-	/>
-	...
+	In content_character_detail.xml, I have used this variable to set the name and load image for the marvel character using Glide. Setting name was just a matter of using the name property in the ProcessedMarvelCharacter. Setting image required me to use Glide. 
 	
-	So, You can see above that I have created an element called url in the ImageView.
-	I need to create a static function with annotation @BindingAdapter(url) to receive the url value and load it in ImageView using Glide.
-	I included the following libraries for Glide
-	implementation 'com.github.bumptech.glide:glide:4.11.0'
-    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+	    ...
+    	<data>
+            <import type="android.view.View"/>
+            <variable
+                name="contentstate"
+                type="com.example.controllers.retrofit.CharacterDetailPageController.State" />
+        </data>
+    	<TextView
+            android:id="@+id/name"
+            android:text="@{contentstate.character.name}"
+    		...
+    	/>
+    	<ImageView
+            android:id="@+id/image"
+    		app:url="@{contentstate.character.imageurl}"
+    		...
+    	/>
+    	...
+
+	
+You can see above that I had created an element called url in the ImageView.
+I now needed to create a static function with annotation @BindingAdapter(url) to receive the url value and load it in ImageView using Glide.
+
+I included the following libraries for Glide
+ - implementation 'com.github.bumptech.glide:glide:4.11.0'
+ - kapt 'com.github.bumptech.glide:compiler:4.11.0'
+ - 																																																																																	
 	I created a class for receiving all binding information for images
-	public class BindingUtils {
-		@BindingAdapter("url")
-		public static void loadImage(ImageView imageView, String url) {
-			new Logger().d("VartikaHilt", "load image: " + url);
-			Glide.with(imageView.getContext())
-					.load(url)
-					.apply(new RequestOptions().circleCrop())
-					.into(imageView);
-		}
-	}
 	
+	    public class BindingUtils {
+    		@BindingAdapter("url")
+    		public static void loadImage(ImageView imageView, String url) {
+    			new Logger().d("VartikaHilt", "load image: " + url);
+    			Glide.with(imageView.getContext())
+    					.load(url)
+    					.apply(new RequestOptions().circleCrop())
+    					.into(imageView);
+    		}
+    	}
+    	
 	I am going to try to implement data binding in the first screen also now.
 	I created CharactersListPageController to hold the instance of CharactersListNetworkInterface. This will load the marvel characters using retrofit and pass these to the processed marvel characters list in the State variable. The State is held in a MutableLiveData which is observed by the activity.
 	public class CharactersListPageController {
@@ -508,3 +528,7 @@ In the activity_character_detail.xml for this activity,
 				CharactersListPageController charactersListPageController
 		);
 	}
+
+
+
+
