@@ -329,175 +329,181 @@ I included the following libraries for Glide
     		}
     	}
     	
-	I am going to try to implement data binding in the first screen also now.
-	I created CharactersListPageController to hold the instance of CharactersListNetworkInterface. This will load the marvel characters using retrofit and pass these to the processed marvel characters list in the State variable. The State is held in a MutableLiveData which is observed by the activity.
-	public class CharactersListPageController {
-		MutableLiveData<State> charactersLiveData = new MutableLiveData<State>();
-		@Inject
-		CharactersListNetworkInterface charactersListNetworkInterface;
-		@Inject
-		Logger logger;
-		@Inject
-		CharactersListPageController() { }
+I applied the same flow in the List screen (first screen) also now. The twist here is that the data should be passed to the adapter of the recycler view.
+Initial set up up is the same as the detail screen. I created CharactersListPageController to hold the instance of CharactersListNetworkInterface. This loads the marvel characters using retrofit and pass these to the processed marvel characters list in the State variable. The State is held in a MutableLiveData which is observed by the activity.
 
-		public void loadCharacters() {
-			charactersLiveData.postValue(new State(true, false, null));
-			Log.d("VartikaHilt", "retrofitController object hash -> " + charactersListNetworkInterface.hashCode());
-			Observable<List<ProcessedMarvelCharacter>> marvelCharacters = charactersListNetworkInterface.loadMarvelCharacters();
-			Disposable disposable = marvelCharacters
-					.subscribeOn(Schedulers.io()) //create a background worker thread on which observable will carry out its task
-					.observeOn(AndroidSchedulers.mainThread()) //get hold of the main thread so that results can be sent back to the UI
-					.subscribe(marvelCharactersList -> {
-								Log.d("VartikaHilt", "Marvel Characters: " + marvelCharactersList.size());
-								charactersLiveData.postValue(new State(false, false, marvelCharactersList));
-								//displayMarvelCharacters(marvelCharactersList);
-							},
-							err -> {
-								Log.d("VartikaHilt", err.getLocalizedMessage());
-								charactersLiveData.postValue(new State(false, true, null));
-							});
-
-
-		}
-
-		public LiveData<State> getCharactersLiveData() {
-			return charactersLiveData;
-		}
-
-		public static class State {
-			public boolean loading;
-			public boolean error;
-			public List<ProcessedMarvelCharacter> marvelCharactersList;
-
-			public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList) {
-				this.loading = loading;
-				this.error = error;
-				this.marvelCharactersList = marvelCharactersList;
-			}
-		}
-	}
-	When the state is updated. The activity sets this in the layout using binding. At this point the list is provided in the recycler view. 
-	public class CharactersListActivity extends AppCompatActivity {
-		...
-		ActivityMainBinding binding;
-		protected void onCreate(Bundle savedInstanceState) {
-			...
-			binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-			...
-			controller.getCharactersLiveData().observe(this, state -> { setState (state); });
-			controller.loadCharacters();
-			...
-		}
-		private void setState(CharactersListPageController.State state) {
-			binding.setState(state);
-		}
-	}
-	In activity_main.xml
-	<layout 
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools">			
-		<data>
-			<variable
-				name="state"
-				type="com.example.controllers.retrofit.CharactersListPageController.State"/>
-		</data>
-		...
-		<androidx.recyclerview.widget.RecyclerView
-			...
-			app:datasource="@{state.marvelCharactersList}"/>
-	</layout>
-	In BindingUtils, we define the BindingAdapter for datasource and set the adapter of the recyclerview.
-	@BindingAdapter("datasource")
-    public static void loadDataSource(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList) {
-        MarvelCharacterListAdapter marvelCharacterListAdapter = new MarvelCharacterListAdapter();
-        rvMarvelCharacters.setAdapter(marvelCharacterListAdapter);
-        marvelCharacterListAdapter.submitList(marvelCharactersList); // using submitList instead of notify data set changed  was a whole new topic for me. I will cover it next :)
-    }
+	    public class CharactersListPageController {
+    		MutableLiveData<State> charactersLiveData = new MutableLiveData<State>();
+    		@Inject
+    		CharactersListNetworkInterface charactersListNetworkInterface;
+    		@Inject
+    		CharactersListPageController() { }
+    
+    		public void loadCharacters() {
+    			charactersLiveData.postValue(new State(true, false, null));
+    			Observable<List<ProcessedMarvelCharacter>> marvelCharacters = charactersListNetworkInterface.loadMarvelCharacters();
+    			Disposable disposable = marvelCharacters
+    					.subscribeOn(Schedulers.io()) 
+    					.observeOn(AndroidSchedulers.mainThread()) 
+    					.subscribe(marvelCharactersList -> {
+    								charactersLiveData.postValue(new State(false, false, marvelCharactersList));
+    							},
+    							err -> {
+    								charactersLiveData.postValue(new State(false, true, null));
+    							});
+    		}
+    
+    		public LiveData<State> getCharactersLiveData() {
+    			return charactersLiveData;
+    		}
+    
+    		public static class State {
+    			public boolean loading;
+    			public boolean error;
+    			public List<ProcessedMarvelCharacter> marvelCharactersList;
+    
+    			public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList) {
+    				this.loading = loading;
+    				this.error = error;
+    				this.marvelCharactersList = marvelCharactersList;
+    			}
+    		}
+    	}
+    	
+When the state is updated. The activity sets this in the layout using binding. At this point the list is provided in the recycler view. 
 	
-	Next, we need to pass this to the individual elements in the recycler view. 
-	In the item layout, marvel_character_rv_item.xml, i just added the data element and used it to populate the items.
-	<layout>
-		...
-		<data>
-			<variable
-				name="marvelItem"
-				type="com.example.controllers.retrofit.ProcessedMarvelCharacter" />
-		</data>
-		...
-		<ImageView
-			android:id="@+id/mCharacterImage"
-			...
-			app:url="@{marvelItem.imageurl}"/>
-		<TextView
-			android:id="@+id/mCharacter"
-			...
-			android:text="@{marvelItem.name}"/>
-		...
-	</layout>
+    public class CharactersListActivity extends AppCompatActivity {
+    		...
+    		ActivityMainBinding binding;
+    		protected void onCreate(Bundle savedInstanceState) {
+    			...
+    			binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+    			...
+    			controller.getCharactersLiveData().observe(this, state -> { setState (state); });
+    			controller.loadCharacters();
+    			...
+    		}
+    		private void setState(CharactersListPageController.State state) {
+    			binding.setState(state);
+    		}
+    	}
 	
-	In MarvelCharacterListAdapter, I added the following code to use the above binding
-	public class MarvelCharacterListAdapter ...
-		...
-		public MarvelCharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		   LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-		   MarvelCharacterRvItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.marvel_character_rv_item, parent, false);
-		   return new MarvelCharacterViewHolder(binding);
-		}
-		...
-		public void onBindViewHolder(@NonNull MarvelCharacterViewHolder holder, int position) {
-			...
-			holder.bind(marvelCharacter);
-		}
+In activity_main.xml
 	
-		class MarvelCharacterViewHolder extends RecyclerView.ViewHolder {
-			private final ViewDataBinding binding;
+	   <layout xmlns:android="http://schemas.android.com/apk/res/android"
+		       xmlns:app="http://schemas.android.com/apk/res-auto"
+		       xmlns:tools="http://schemas.android.com/tools">			
+    		<data>
+    			<variable
+    				name="state"
+					type="com.example.controllers.retrofit.CharactersListPageController.State"/>
+    		</data>
+    		...
+    		<androidx.recyclerview.widget.RecyclerView
+    			...
+    			app:datasource="@{state.marvelCharactersList}"/>
+    	</layout>
 
-			public MarvelCharacterViewHolder(ViewDataBinding binding) {
-			   super(binding.getRoot());
-			   this.binding = binding;
-			}
-
-			public void bind(ProcessedMarvelCharacter obj) {
-				binding.setVariable(BR.marvelItem, obj);
-				binding.executePendingBindings();
-			}
-		}
-	}
-	I would like to point out that the image view loading was taken care by @BindingAdapter("url"). I had created this earlier for the detail page display.
+In BindingUtils, we define the BindingAdapter for datasource and set the adapter of the recyclerview.
 	
-	Now I am going to try to use an algorithm AsyncListDiffer with recycler view. This will take care of changing the list elements with updates happening in the updated elements. The algo works in the background while the diff is being calculated.
-	In MarvelCharacterListAdapter I integrated the class AsyncListDiffer and provided the areItemsTheSame and areContentsTheSame in the ItemCallback for the algo.
-	public class MarvelCharacterListAdapter ...
-		...
-		private final AsyncListDiffer<ProcessedMarvelCharacter> differ = new AsyncListDiffer<ProcessedMarvelCharacter>(this, diffCallBack);
-		public static final DiffUtil.ItemCallback<ProcessedMarvelCharacter> diffCallBack = new DiffUtil.ItemCallback<ProcessedMarvelCharacter>() {
-			@Override
-			public boolean areItemsTheSame(@NonNull ProcessedMarvelCharacter oldItem, @NonNull ProcessedMarvelCharacter newItem) {
-				return (oldItem.name.compareToIgnoreCase(newItem.name) == 0);
-			}
 
-			@Override
-			public boolean areContentsTheSame(@NonNull ProcessedMarvelCharacter oldItem, @NonNull ProcessedMarvelCharacter newItem) {
-				return (oldItem.imageurl.compareToIgnoreCase(newItem.imageurl) == 0);
+    @BindingAdapter("datasource")
+        public static void loadDataSource(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList) {
+            MarvelCharacterListAdapter marvelCharacterListAdapter = new MarvelCharacterListAdapter();
+            rvMarvelCharacters.setAdapter(marvelCharacterListAdapter);
+            marvelCharacterListAdapter.submitList(marvelCharactersList); // using submitList instead of notify data set changed  was a whole new topic for me. I will cover it next :)
+        }
+	
+Next, we need to pass this to the individual elements in the recycler view.  In the item layout, marvel_character_rv_item.xml, i just added the data element and used it to populate the items.
+	
+
+    <layout>
+    		...
+    		<data>
+    			<variable
+    				name="marvelItem"
+    				type="com.example.controllers.retrofit.ProcessedMarvelCharacter" />
+    		</data>
+    		...
+    		<ImageView
+    			android:id="@+id/mCharacterImage"
+    			...
+    			app:url="@{marvelItem.imageurl}"/>
+    			
+    		<TextView
+    			android:id="@+id/mCharacter"
+    			...
+    			android:text="@{marvelItem.name}"/>
+    		...
+    	</layout>
+
+In MarvelCharacterListAdapter, I added the following code to use the above binding
+	
+    public class MarvelCharacterListAdapter ...
+    		...
+    		public MarvelCharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    		   LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    		   MarvelCharacterRvItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.marvel_character_rv_item, parent, false);
+    		   return new MarvelCharacterViewHolder(binding);
+    		}
+    		...
+    		public void onBindViewHolder(@NonNull MarvelCharacterViewHolder holder, int position) {
+    			...
+    			holder.bind(marvelCharacter);
+    		}
+    	
+    		class MarvelCharacterViewHolder extends RecyclerView.ViewHolder {
+    			private final ViewDataBinding binding;
+    
+    			public MarvelCharacterViewHolder(ViewDataBinding binding) {
+    			   super(binding.getRoot());
+    			   this.binding = binding;
+    			}
+    
+    			public void bind(ProcessedMarvelCharacter obj) {
+    				binding.setVariable(BR.marvelItem, obj);
+    				binding.executePendingBindings();
+    			}
+    		}
+    	}
+
+I would like to point out that the image view loading was taken care by @BindingAdapter("url"). I had created this earlier for the detail page display. Yay to Reusable code! 
+
+## How can I optimizing the refresh list calls in the Recyclerview?
+
+The most common way to refresh a recycler view is via notifyDataSetChanged or notifyItemChanged. However, sometimes the list will change. DiffUtils calculates the minimal number of updates to convert one list into another. However, the calculateDiff function runs on the main thread and blocks the thread if the difference between two lists is too large. The algorithm AsyncListDiffer does the same job but on a background thread.
+I integrated the class AsyncListDiffer in MarvelCharacterListAdapter and provided the areItemsTheSame and areContentsTheSame in the ItemCallback for the algo.
+		
+		public class MarvelCharacterListAdapter ...
+			...
+			private final AsyncListDiffer<ProcessedMarvelCharacter> differ = new AsyncListDiffer<ProcessedMarvelCharacter>(this, diffCallBack);
+			public static final DiffUtil.ItemCallback<ProcessedMarvelCharacter> diffCallBack = new DiffUtil.ItemCallback<ProcessedMarvelCharacter>() {
+				@Override
+				public boolean areItemsTheSame(@NonNull ProcessedMarvelCharacter oldItem, @NonNull ProcessedMarvelCharacter newItem) {
+					return (oldItem.name.compareToIgnoreCase(newItem.name) == 0);
+				}
+
+				@Override
+				public boolean areContentsTheSame(@NonNull ProcessedMarvelCharacter oldItem, @NonNull ProcessedMarvelCharacter newItem) {
+					return (oldItem.imageurl.compareToIgnoreCase(newItem.imageurl) == 0);
+				}
+			};
+			...
+			public void onBindViewHolder(@NonNull MarvelCharacterViewHolder holder, int position) {
+				ProcessedMarvelCharacter marvelCharacter = differ.getCurrentList().get(position);
+				...
 			}
-		};
-		...
-		public void onBindViewHolder(@NonNull MarvelCharacterViewHolder holder, int position) {
-			ProcessedMarvelCharacter marvelCharacter = differ.getCurrentList().get(position);
+			...
+			public int getItemCount() {
+				return differ.getCurrentList().size();
+			}
+			public void submitList(List<ProcessedMarvelCharacter> list) {
+				differ.submitList(list);
+			}
 			...
 		}
-		...
-		public int getItemCount() {
-			return differ.getCurrentList().size();
-		}
-		public void submitList(List<ProcessedMarvelCharacter> list) {
-			differ.submitList(list);
-		}
-		...
-	}
 	
-	At this point, I noticed that on configuration change the list of marvel characters were all reloaded. This got me to the point where I could now learn about ViewModel. It is used to retain the instance of data across configuration changes. However, In this case I have something akin to ViewModel in my project. My controller instance is being injected by Hilt. Hilt allows me to inject my controller ActivityRetainedComponent. ActivityRetainedComponent lives across configuration changes, so it is created at the first Activity#onCreate() and destroyed at the last Activity#onDestroy().
+At this point, I noticed that on configuration change the list of marvel characters were all reloaded. This got me to the point where I could now learn about ViewModel. It is used to retain the instance of data across configuration changes. However, In this case I have something akin to ViewModel in my project. My controller instance is being injected by Hilt. Hilt allows me to inject my controller ActivityRetainedComponent. ActivityRetainedComponent lives across configuration changes, so it is created at the first Activity#onCreate() and destroyed at the last Activity#onDestroy().
 	I created a module with this component and injected CharactersListPageController from here. However, this gave compile time error as Hilt was finding two paths of injection (one from activity module and one from constructer). Therefore, I had to create an interface AbsCharactersListPageController which was implemented by CharactersListPageController. I then created this in the module and used it in the activity. The instance was retained across configuration changes eliminating my need to use ViewModel. I have to find another use case for learning ViewModel now :)
 
 	I created AbsCharactersListPageController
@@ -528,6 +534,9 @@ I included the following libraries for Glide
 				CharactersListPageController charactersListPageController
 		);
 	}
+
+
+
 
 
 
