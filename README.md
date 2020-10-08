@@ -118,6 +118,7 @@ I moved the logic for creation of retrofit so that it was created using method b
 	        this.logger = logger; 
 	    }
 6. Now, I moved to porting the retrofit instantiation to Hilt. 
+	
 	For this, I created a Hilt Module with Binds for creating my network controller 
 	
 		@Module
@@ -187,10 +188,10 @@ I moved the logic for creation of retrofit so that it was created using method b
     	@Retention(RetentionPolicy.RUNTIME)
     	public @interface Marvel {}
 
-This means that if Retrofit bindRetrofit() has multiple bindings, I can use the annotation @Marvel to pick the binding I need
+	This means that if Retrofit bindRetrofit() has multiple bindings, I can use the annotation @Marvel to pick the binding I need
 
-My first screen is quite ok now.
-I used the above mentioned libraries in my second screen as well.
+7. My first screen is quite ok now.
+	I used the above mentioned libraries in my second screen as well.
 
 ## How to conform to MVC?
 To confirm to MVC, I want to move all the data processing and decision making to controller modules. The View should just observe the controller and update itself. 
@@ -287,7 +288,10 @@ In the activity_character_detail.xml for this activity,
     	<include layout="@layout/content_character_detail"
             app:contentstate="@{state}"/>
 		
-	In content_character_detail.xml, I have used this variable to set the name and load image for the marvel character using Glide. Setting name was just a matter of using the name property in the ProcessedMarvelCharacter. Setting image required me to use Glide. 
+In content_character_detail.xml, 
+
+ - I have used this variable to set the name and load image for the marvel character using Glide. 
+ - Setting name was just a matter of using the name property in the ProcessedMarvelCharacter. Setting image required me to use Glide. 
 	
 	    ...
     	<data>
@@ -315,8 +319,7 @@ I now needed to create a static function with annotation @BindingAdapter(url) to
 I included the following libraries for Glide
  - implementation 'com.github.bumptech.glide:glide:4.11.0'
  - kapt 'com.github.bumptech.glide:compiler:4.11.0'
- - 																																																																																	
-	I created a class for receiving all binding information for images
+  																																																																																																																																																																I created a class for receiving all binding information for images
 	
 	    public class BindingUtils {
     		@BindingAdapter("url")
@@ -330,7 +333,10 @@ I included the following libraries for Glide
     	}
     	
 I applied the same flow in the List screen (first screen) also now. The twist here is that the data should be passed to the adapter of the recycler view.
-Initial set up up is the same as the detail screen. I created CharactersListPageController to hold the instance of CharactersListNetworkInterface. This loads the marvel characters using retrofit and pass these to the processed marvel characters list in the State variable. The State is held in a MutableLiveData which is observed by the activity.
+
+Initial set up up is the same as the detail screen. 
+
+I created CharactersListPageController to hold the instance of CharactersListNetworkInterface. This loads the marvel characters using retrofit and pass these to the processed marvel characters list in the State variable. The State is held in a MutableLiveData which is observed by the activity.
 
 	    public class CharactersListPageController {
     		MutableLiveData<State> charactersLiveData = new MutableLiveData<State>();
@@ -471,7 +477,10 @@ I would like to point out that the image view loading was taken care by @Binding
 
 ## How can I optimizing the refresh list calls in the Recyclerview?
 
-The most common way to refresh a recycler view is via notifyDataSetChanged or notifyItemChanged. However, sometimes the list will change. DiffUtils calculates the minimal number of updates to convert one list into another. However, the calculateDiff function runs on the main thread and blocks the thread if the difference between two lists is too large. The algorithm AsyncListDiffer does the same job but on a background thread.
+The most common way to refresh a recycler view is via notifyDataSetChanged or notifyItemChanged. However, sometimes the list will change in parts and at different places. 
+
+DiffUtils calculates the minimal number of updates to convert one list into another. However, the calculateDiff function runs on the main thread and blocks the thread if the difference between two lists is too large. The algorithm AsyncListDiffer does the same job but on a background thread.
+
 I integrated the class AsyncListDiffer in MarvelCharacterListAdapter and provided the areItemsTheSame and areContentsTheSame in the ItemCallback for the algo.
 		
 		public class MarvelCharacterListAdapter ...
@@ -506,9 +515,15 @@ I integrated the class AsyncListDiffer in MarvelCharacterListAdapter and provide
 
 ## More Optimizations! How to stop the list from reloading on configuration changed?
 
-I noticed that on configuration change the list of marvel characters were all reloaded. This got me to the conclusion that I could now use ViewModel. ViewModel is used to retain the instance of data across configuration changes. However, In this case I already have something akin to ViewModel in my project. My controller instance is being injected by Hilt and Hilt allows me to inject my controller using the scope ActivityRetainedComponent. An ActivityRetainedComponent lives across configuration changes, so it is created at the first Activity#onCreate() and destroyed at the last Activity#onDestroy().
+I noticed that on configuration change the list of marvel characters were all reloaded. This got me to the conclusion that I could now use ViewModel. ViewModel is used to retain the instance of data across configuration changes. 
 
-I created a module with this component and injected CharactersListPageController from here. However, this gave compile time error as Hilt was finding two paths of injection (one from this module and one from constructer). Therefore, I had to create an interface AbsCharactersListPageController which was implemented by CharactersListPageController. I then used this interface to create the instance of CharactersListPageController in the module and used it in the activity. The instance was retained across configuration changes eliminating my need to use ViewModel. I have to find another use case for using ViewModel now :)
+However, In this case I already have something akin to ViewModel in my project. My controller instance is being injected by Hilt and Hilt allows me to inject my controller using the scope ActivityRetainedComponent. An ActivityRetainedComponent lives across configuration changes, so it is created at the first Activity#onCreate() and destroyed at the last Activity#onDestroy().
+
+I created a module with this component and injected CharactersListPageController from here. 
+
+However, this gave compile time error as Hilt was finding two paths of injection (one from this module and one from constructer). Therefore, I had to create an interface AbsCharactersListPageController which was implemented by CharactersListPageController. I then used this interface to create the instance of CharactersListPageController in the module and used it in the activity.
+
+The instance was retained across configuration changes eliminating my need to use ViewModel. I have to find another use case for using ViewModel now :)
 
 I created AbsCharactersListPageController
 		
@@ -539,9 +554,115 @@ I created AbsCharactersListPageController
     		);
     	}
 
+## How to bind a generic ClickEventListener to my RecyclerView and trigger actions from it
+I created an Effect class in controller. I did this instead of using and enum with actions defined in it so that effect can be more generic.
 
+    public abstract class Effect {  }
 
+In AbsCharactersListPageController,
 
+    abstract class AbsMarvelCharacterClickedListener<T> {  
+        public abstract void invoke(T item);  
+    }
+    public class ClickEffect<T> extends Effect{  
+	    public T item;  
+  
+	    public ClickEffect(T item) {  
+	        this.item = item;  
+	    }  
+	}
 
+In CharactersListPageController
 
+	
+	    MutableLiveData<Effect> effectLiveData = new MutableLiveData<>();
+    	public LiveData<Effect> effectLiveData() { return effectLiveData; }  
+    public class MarvelCharacterClickedListener extends AbsMarvelCharacterClickedListener<ProcessedMarvelCharacter> {  
+      
+        @Override  
+      public void invoke(ProcessedMarvelCharacter item) {  
+            logger.d("Vartika", "OnMarvelCharacterClicked: "+item);  
+            effectLiveData.postValue(new ClickEffect(item));  
+        }  
+    }
+Now, that my listener is in place. I added the listener in the View.
+In marvel_character_rv_item.xml
+
+    ...
+    	<data>
+    	...
+    	<variable  
+	      name="clickHandler"  
+		  type="com.example.controllers.retrofit.AbsCharactersListPageController.AbsMarvelCharacterClickedListener" />
+      </data>
+      ...
+      <androidx.cardview.widget.CardView
+    	  ...
+    	  app:onClick="@{clickHandler}">
+      ....
+
+I declared the tag app:onClick as BindingAdapter in BindingUtils
+INDIVAR -> where is marvelCharacterClickHandler defined and used
+
+	    @BindingAdapter(value = {"datasource", "marvelCharacterClickHandler"}, requireAll = true)  
+	    public static void loadDataSource(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList, AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {   
+	      MarvelCharacterListAdapter marvelCharacterListAdapter = new MarvelCharacterListAdapter(marvelCharacterClickedListener);  
+	      rvMarvelCharacters.setAdapter(marvelCharacterListAdapter);  
+		  marvelCharacterListAdapter.submitList(marvelCharactersList);  
+	    }  
+	    
+	    @BindingAdapter(value = {"onClick", "item"}, requireAll = true)  
+	    public static void onCharacterClicked(View view, AbsCharactersListPageController.AbsMarvelCharacterClickedListener clickedListener, Object item) {  
+	        view.setOnClickListener(new View.OnClickListener() {  
+	            @Override  
+			    public void onClick(View view) {  
+	                clickedListener.invoke(item);  
+	            }  
+	        });  
+	    }
+INDIVAR -> how is theclick passed to main activity from here
+In MarvelCharacterListAdapter, 
+
+       public class MarvelCharacterListAdapter ...
+        	AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener;
+        	public MarvelCharacterListAdapter(AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {  
+		        this.marvelCharacterClickedListener = marvelCharacterClickedListener;  
+		    }
+        	class MarvelCharacterViewHolder ...
+        	public void bind(ProcessedMarvelCharacter obj) {
+        		...
+        		binding.setVariable(BR.clickHandler, marvelCharacterClickedListener);
+        		binding.executePendingBindings();
+        	}
+        }
+In CharactersListActivity
+
+    	public class CharactersListActivity ...
+    		protected void onCreate(Bundle savedInstanceState) {
+    			...
+    			controller.effectLiveData().observe(this, effect -> 			
+    			{  
+    			    setEffect(effect);  
+    			}); 
+    			...
+    		}
+    		private void setEffect(Effect effect) {  
+    		   if(effect instanceof AbsCharactersListPageController.ClickEffect) {  
+    		   ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) ((AbsCharactersListPageController.ClickEffect)effect).item;  
+	           Intent intent = new Intent(this, CharacterDetailsActivity.class);  
+	           intent.putExtra("MARVEL_CHARACTER_ID", marvelCharacter.id);  
+	           startActivity(intent);  
+	        }  
+	    }
+	}
+In CharacterDetailsActivity
+
+    public class CharacterDetailsActivity ...
+    	protected void onCreate(Bundle savedInstanceState) {  
+    	    Intent intent = getIntent();  
+    	    characterId = intent.getIntExtra("MARVEL_CHARACTER_ID", 0);
+    		...
+    	}
+    ...
+    }
 
