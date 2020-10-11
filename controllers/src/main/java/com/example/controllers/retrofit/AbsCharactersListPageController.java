@@ -6,8 +6,11 @@ import java.util.List;
 
 public interface AbsCharactersListPageController {
     LiveData<State> stateLiveData();
-    LiveData<Effect> effectLiveData();
+
+    ControlledLiveData<Effect> effectLiveData();
+
     void loadCharacters();
+
     void searchCharacter(String nameStartsWith);
 
     class State {
@@ -24,10 +27,12 @@ public interface AbsCharactersListPageController {
         }
 
     }
+
     abstract class AbsMarvelCharacterClickedListener<T> {
         public abstract void invoke(T item);
     }
-    public class ClickEffect<T> extends Effect{
+
+    public class ClickEffect<T> extends Effect {
         public T item;
 
         public ClickEffect(T item) {

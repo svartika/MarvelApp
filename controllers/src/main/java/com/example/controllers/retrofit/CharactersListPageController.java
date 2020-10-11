@@ -16,10 +16,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.UnicastSubject;
 
 public class CharactersListPageController implements AbsCharactersListPageController {
     MutableLiveData<State> charactersLiveData = new MutableLiveData<State>();
-    MutableLiveData<Effect> effectLiveData = new MutableLiveData<>();
+    UnicastSubject<Effect> effectLiveData = UnicastSubject.create();
+    ControlledLiveData<Effect> effectLiveDataControlled = new ControlledLiveData<>(effectLiveData);
 
     CharactersListNetworkInterface charactersListNetworkInterface;
     @Inject
@@ -41,7 +43,7 @@ public class CharactersListPageController implements AbsCharactersListPageContro
 
                 .subscribe(marvelCharactersList -> {
                             logger.d("Vartika", "marvelCharactersList: " + marvelCharactersList);
-                            charactersLiveData.postValue(new State(false, false, marvelCharactersList, marvelCharacterClickedListener) );
+                            charactersLiveData.postValue(new State(false, false, marvelCharactersList, marvelCharacterClickedListener));
                         },
                         err -> {
                             logger.d("Vartika", err.getMessage());
@@ -118,13 +120,16 @@ public class CharactersListPageController implements AbsCharactersListPageContro
         return charactersLiveData;
     }
 
-    public LiveData<Effect> effectLiveData() { return effectLiveData; }
+    public ControlledLiveData<Effect> effectLiveData() {
+        return effectLiveDataControlled;
+    }
+
     public class MarvelCharacterClickedListener extends AbsMarvelCharacterClickedListener<ProcessedMarvelCharacter> {
 
         @Override
         public void invoke(ProcessedMarvelCharacter item) {
-            logger.d("Vartika", "OnMarvelCharacterClicked: "+item);
-            effectLiveData.postValue(new ClickEffect(item));
+            logger.d("Vartika", "OnMarvelCharacterClicked: " + item);
+            effectLiveData.onNext(new ClickEffect(item));
         }
     }
 
