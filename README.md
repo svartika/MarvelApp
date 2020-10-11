@@ -555,26 +555,34 @@ I created AbsCharactersListPageController
     	}
 
 ## How to bind a generic ClickEventListener to my RecyclerView and trigger actions from it
-I created an Effect class in controller. I did this instead of using and enum with actions defined in it so that effect can be more generic.
+I created an Effect class in controller. I did this instead of using enum with actions defined in it so that effect can be more generic.
 
     public abstract class Effect {  }
 
-In AbsCharactersListPageController,
-
-    abstract class AbsMarvelCharacterClickedListener<T> {  
-        public abstract void invoke(T item);  
-    }
-    public class ClickEffect<T> extends Effect{  
-	    public T item;  
-  
-	    public ClickEffect(T item) {  
-	        this.item = item;  
-	    }  
-	}
-
-In CharactersListPageController
-
+In AbsCharactersListPageController, I declared ClickListener, ClickEffect and passed the ClickListener to the State.
 	
+	...
+	    class State {  
+		      ...;  
+	        public AbsMarvelCharacterClickedListener marvelCharacterClickedListener;  
+	        public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList, AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {  
+	            ... 
+	            this.marvelCharacterClickedListener = marvelCharacterClickedListener;  
+	        }  
+	    }
+        abstract class AbsMarvelCharacterClickedListener<T> {  
+            public abstract void invoke(T item);  
+        }
+        public class ClickEffect<T> extends Effect{  
+    	    public T item;  
+      
+    	    public ClickEffect(T item) {  
+    	        this.item = item;  
+    	    }  
+    	}
+
+In CharactersListPageController, I created LiveData of type Effect. I implemented the invoke function of ClickListener and I posted a ClickEffect instance to the LiveData of type Effect.
+
 	    MutableLiveData<Effect> effectLiveData = new MutableLiveData<>();
     	public LiveData<Effect> effectLiveData() { return effectLiveData; }  
     public class MarvelCharacterClickedListener extends AbsMarvelCharacterClickedListener<ProcessedMarvelCharacter> {  
@@ -585,7 +593,16 @@ In CharactersListPageController
             effectLiveData.postValue(new ClickEffect(item));  
         }  
     }
-Now, that my listener is in place. I added the listener in the View.
+  
+In activity_main.xml, I pass the listener to recycler view via state
+
+     ...
+     <androidx.recyclerview.widget.RecyclerView  
+    	  ...
+    	  app:marvelCharacterClickHandler="@{state.marvelCharacterClickedListener}"
+     ...
+
+Now, that my listener is being passed to the recycler view. I added the listener in the row items.
 In marvel_character_rv_item.xml
 
     ...
@@ -598,11 +615,11 @@ In marvel_character_rv_item.xml
       ...
       <androidx.cardview.widget.CardView
     	  ...
+    	  app:item="@{marvelItem}"
     	  app:onClick="@{clickHandler}">
       ....
 
-I declared the tag app:onClick as BindingAdapter in BindingUtils
-INDIVAR -> where is marvelCharacterClickHandler defined and used
+I declared the tags app:onClick and marvelCharacterClickHandler as BindingAdapters in BindingUtils. I used combination of tags and flagged the parametes requireAll as true.
 
 	    @BindingAdapter(value = {"datasource", "marvelCharacterClickHandler"}, requireAll = true)  
 	    public static void loadDataSource(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList, AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {   
@@ -620,8 +637,8 @@ INDIVAR -> where is marvelCharacterClickHandler defined and used
 	            }  
 	        });  
 	    }
-INDIVAR -> how is theclick passed to main activity from here
-In MarvelCharacterListAdapter, 
+
+In MarvelCharacterListAdapter,  I set the ClickListener to the binding of the ViewHolder.
 
        public class MarvelCharacterListAdapter ...
         	AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener;
@@ -635,7 +652,7 @@ In MarvelCharacterListAdapter,
         		binding.executePendingBindings();
         	}
         }
-In CharactersListActivity
+In CharactersListActivity, I observe the LiveData of type Effect and when its data changes, I start a new activity of the character details.
 
     	public class CharactersListActivity ...
     		protected void onCreate(Bundle savedInstanceState) {
