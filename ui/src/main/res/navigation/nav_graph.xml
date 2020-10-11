@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/CharacterDetailFragment"
-        android:name="com.example.rxjavaretrofittest.Second2Fragment"
+        android:name="com.example.rxjavaretrofittest.CharacterDetailFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_character_details">
 

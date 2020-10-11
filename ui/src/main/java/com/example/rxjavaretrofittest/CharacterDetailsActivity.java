@@ -22,46 +22,16 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class CharacterDetailsActivity extends AppCompatActivity {
 
-    @Inject
-    CharacterDetailPageController controller;
 
-    int characterId;
-    TextView name;
-    ActivityCharacterDetailBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        characterId = intent.getIntExtra("MARVEL_CHARACTER_ID", 0);
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_character_detail);
+        setContentView(R.layout.activity_character_detail);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        name = findViewById(R.id.name);
-        controller.getCharacterDetailLiveData().observe(this,
-                (state -> {
-                    setState(state);
-                }
-                ));
-        loadCharacter();
     }
 
-    void loadCharacter() {
-       // characterId = "1011334";
-        controller.loadCharacterDetails(characterId);
-    }
 
-    void setState(CharacterDetailPageController.State state) {
-        //Log.d("VartikaHilt", "marvelCharacter.name->" + state.character.name);
-        binding.setState(state);
-    }
 }
