@@ -10,19 +10,30 @@
         android:name="com.example.rxjavaretrofittest.CharactersListFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_characters_list">
-
         <action
-            android:id="@+id/action_First2Fragment_to_Second2Fragment"
+            android:id="@+id/action_list_to_detail"
             app:destination="@id/CharacterDetailFragment" />
+        <!--<argument
+            android:name="item"
+            app:argType="com.example.controllers.retrofit.ProcessedMarvelCharacter" />
+        <argument
+            android:name="id"
+            app:argType="integer" />-->
+        <!--  app:argType="integer"/>-->
     </fragment>
+
     <fragment
         android:id="@+id/CharacterDetailFragment"
         android:name="com.example.rxjavaretrofittest.CharacterDetailFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_character_details">
-
         <action
-            android:id="@+id/action_Second2Fragment_to_First2Fragment"
+            android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/CharactersListFragment" />
+
+        <argument
+            android:name="item"
+            app:argType="com.example.controllers.retrofit.ProcessedMarvelCharacter" />
     </fragment>
+
 </navigation>

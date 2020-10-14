@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -103,9 +105,20 @@ public class CharactersListFragment extends Fragment {
         if (effect instanceof AbsCharactersListPageController.ClickEffect) {
 
             ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) ((AbsCharactersListPageController.ClickEffect) effect).item;
-            Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
+
+            CharactersListFragmentDirections.ActionListToDetail directions = CharactersListFragmentDirections.actionListToDetail(marvelCharacter);
+            NavHostFragment.findNavController(CharactersListFragment.this).navigate(directions);
+
+
+           /* NavHostFragment.findNavController(CharactersListFragment.this)
+                    .navigate(R.id.action_FirstFragment_to_SecondFragment);*/
+
+
+
+           /* Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
             intent.putExtra("MARVEL_CHARACTER_ID", marvelCharacter.id);
-            startActivity(intent);
+            startActivity(intent);*/
+
         }
     }
 }

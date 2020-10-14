@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.example.controllers.retrofit.CharacterDetailPageController;
+import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterDetailsBinding;
 
@@ -34,9 +35,11 @@ public class CharacterDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_character_details, container, false);
 
-        Intent intent = getActivity().getIntent();
-        characterId = intent.getIntExtra("MARVEL_CHARACTER_ID", 0);
+        /*Intent intent = getActivity().getIntent();
+        characterId = intent.getIntExtra("MARVEL_CHARACTER_ID", 0);*/
 
+        ProcessedMarvelCharacter item = CharacterDetailFragmentArgs.fromBundle(getArguments()).getItem();
+        characterId = item.id;
         name = binding.getRoot().findViewById(R.id.name);
         controller.getCharacterDetailLiveData().observe(getViewLifecycleOwner(),
                 (state -> {
