@@ -19,6 +19,7 @@ import com.example.controllers.retrofit.CharacterDetailPageController;
 import com.example.controllers.retrofit.ICallbackListerner;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
+import com.example.mviframework.Runner;
 
 import java.util.List;
 
@@ -67,5 +68,14 @@ public class BindingUtils {
         });
     }
 
+    @BindingAdapter(value = {"clickRunner"})
+    public static void clickRunner(View view, Runner runner) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                runner.run();
+            }
+        });
+    }
 
 }

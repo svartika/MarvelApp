@@ -1,3 +1,7 @@
+include ':common-core-ui'
+include ':samplui'
+include ':samplesController'
+include ':mviframework'
 include ':ui'
 include ':networkController'
 include ':entitiy'

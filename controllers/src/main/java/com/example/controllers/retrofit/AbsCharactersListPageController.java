@@ -4,6 +4,8 @@ import android.view.View;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.mviframework.ControlledLiveData;
+
 import java.util.List;
 
 public interface AbsCharactersListPageController {

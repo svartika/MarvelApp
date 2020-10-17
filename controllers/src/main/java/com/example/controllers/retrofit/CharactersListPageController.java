@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.entitiy.models.logs.Logger;
+import com.example.mviframework.ControlledLiveData;
 
 import java.util.ArrayList;
 import java.util.List;
