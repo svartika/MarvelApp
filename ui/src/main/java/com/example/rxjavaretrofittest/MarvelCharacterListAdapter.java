@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.AsyncListDiffer;
@@ -93,6 +94,7 @@ public class MarvelCharacterListAdapter extends RecyclerView.Adapter<MarvelChara
         }
 
         public void bind(ProcessedMarvelCharacter obj) {
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.mCharacterImage), String.valueOf(obj.id));
             binding.setVariable(BR.marvelItem, obj);
             binding.setVariable(BR.clickHandler, marvelCharacterClickedListener);
             binding.executePendingBindings();

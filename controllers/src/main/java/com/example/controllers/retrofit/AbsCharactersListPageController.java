@@ -1,5 +1,7 @@
 package com.example.controllers.retrofit;
 
+import android.view.View;
+
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
@@ -29,14 +31,16 @@ public interface AbsCharactersListPageController {
     }
 
     abstract class AbsMarvelCharacterClickedListener<T> {
-        public abstract void invoke(T item);
+        public abstract void invoke(View view, T item);
     }
 
     public class ClickEffect<T> extends Effect {
         public T item;
+        public View view;
 
-        public ClickEffect(T item) {
+        public ClickEffect(View view, T item) {
             this.item = item;
+            this.view = view;
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.controllers.retrofit;
 
 
+import android.view.View;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -75,7 +77,12 @@ public class CharactersListPageController implements AbsCharactersListPageContro
 
     public void searchCharacter(String nameStartsWith) {
         logger.d("Vartika", "nameStartsWith: " + nameStartsWith);
-        charactersLiveData.postValue(new State(true, false, charactersLiveData.getValue().marvelCharactersList, marvelCharacterClickedListener));
+        List<ProcessedMarvelCharacter> oldList = null;
+        State previousState = charactersLiveData.getValue();
+        if(previousState!=null) {
+            oldList = previousState.marvelCharactersList;
+        }
+        charactersLiveData.postValue(new State(true, false, oldList , marvelCharacterClickedListener));
         keywordSubject.onNext(nameStartsWith);
 
     }
@@ -127,9 +134,9 @@ public class CharactersListPageController implements AbsCharactersListPageContro
     public class MarvelCharacterClickedListener extends AbsMarvelCharacterClickedListener<ProcessedMarvelCharacter> {
 
         @Override
-        public void invoke(ProcessedMarvelCharacter item) {
+        public void invoke(View view, ProcessedMarvelCharacter item) {
             logger.d("Vartika", "OnMarvelCharacterClicked: " + item);
-            effectLiveData.onNext(new ClickEffect(item));
+            effectLiveData.onNext(new ClickEffect(view, item));
         }
     }
 
