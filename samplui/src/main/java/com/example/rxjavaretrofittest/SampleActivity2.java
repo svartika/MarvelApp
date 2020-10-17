@@ -1,4 +1,4 @@
-package com.example.rxjavaretrofittest.sample;
+package com.example.rxjavaretrofittest;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -10,13 +10,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 
+import com.example.rxjavaretrofittest.samplui.R;
+import com.example.rxjavaretrofittest.samplui.databinding.ActivitySampleBinding;
 import com.example.sample.mvi.viewmodel.Effect;
 import com.example.sample.mvi.viewmodel.SampleViewModel;
 import com.example.sample.mvi.viewmodel.SampleViewModelImpl;
 import com.example.sample.mvi.viewmodel.State;
 import com.example.sample.mvi.viewmodel.SampleViewModelFactory;
-import com.example.ui.R;
-import com.example.ui.databinding.ActivitySampleBinding;
 
 public class SampleActivity2 extends AppCompatActivity {
     SampleViewModel viewModel;

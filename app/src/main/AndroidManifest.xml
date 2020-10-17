@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sample.SampleActivity2"
+        <activity android:name=".SampleActivity2"
             android:theme="@style/PerpyThemeMaterial">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

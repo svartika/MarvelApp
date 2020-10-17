@@ -1,4 +1,4 @@
-package com.example.rxjavaretrofittest.sample
+package com.example.rxjavaretrofittest
 
 import android.os.Bundle
 import android.widget.TextView
@@ -7,10 +7,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.example.rxjavaretrofittest.samplui.R
 import com.example.sample.mvi.viewmodel.SampleViewModel
 import com.example.sample.mvi.viewmodel.State
 import com.example.sample.mvi.viewmodel.SampleViewModelFactory
-import com.example.ui.R
 
 
 class SampleActivity : AppCompatActivity() {

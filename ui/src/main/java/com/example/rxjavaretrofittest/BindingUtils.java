@@ -68,14 +68,5 @@ public class BindingUtils {
         });
     }
 
-    @BindingAdapter(value = {"clickRunner"})
-    public static void clickRunner(View view, Runner runner) {
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                runner.run();
-            }
-        });
-    }
 
 }
