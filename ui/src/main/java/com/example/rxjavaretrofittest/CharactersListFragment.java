@@ -1,11 +1,8 @@
 package com.example.rxjavaretrofittest;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -18,13 +15,10 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.OneShotPreDrawListener;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -96,56 +90,6 @@ public class CharactersListFragment extends Fragment {
 
     }
 
-    public CharactersListFragment() {
-
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     void setUpSearchView() {
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -175,7 +119,7 @@ public class CharactersListFragment extends Fragment {
     }
 
     private void setState(CharactersListPageController.State state) {
-        Log.d("Vartika", "setState: " + "error: " + state.error + "size: " + state.marvelCharactersList.size());
+        Log.d("Vartika", "setState: " + "error: " + state.error + "size: " + (state.marvelCharactersList==null? ":null": state.marvelCharactersList.size()));
         binding.setState(state);
 
         /*if(state.error!=false) {
@@ -201,16 +145,6 @@ public class CharactersListFragment extends Fragment {
                     .build();
             CharactersListFragmentDirections.ActionListToDetail directions = CharactersListFragmentDirections.actionListToDetail(marvelCharacter);
             Navigation.findNavController(getView()).navigate(directions, extras);
-
-
-           /* NavHostFragment.findNavController(CharactersListFragment.this)
-                    .navigate(R.id.action_FirstFragment_to_SecondFragment);*/
-
-
-
-           /* Intent intent = new Intent(getActivity(), CharacterDetailsActivity.class);
-            intent.putExtra("MARVEL_CHARACTER_ID", marvelCharacter.id);
-            startActivity(intent);*/
 
         }
     }

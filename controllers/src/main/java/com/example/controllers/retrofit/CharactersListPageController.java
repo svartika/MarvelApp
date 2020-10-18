@@ -16,7 +16,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.UnicastSubject;
@@ -46,33 +45,14 @@ public class CharactersListPageController implements AbsCharactersListPageContro
 
                 .subscribe(marvelCharactersList -> {
                             logger.d("Vartika", "marvelCharactersList: " + marvelCharactersList);
-                            charactersLiveData.postValue(new State(false, false, marvelCharactersList, marvelCharacterClickedListener));
+                            String searchStr = charactersLiveData.getValue()!=null? charactersLiveData.getValue().searchStr : "";
+                            charactersLiveData.postValue(new State(false, false, marvelCharactersList, marvelCharacterClickedListener, searchStr));
                         },
                         err -> {
                             logger.d("Vartika", err.getMessage());
-                            charactersLiveData.postValue(new State(false, true, null, marvelCharacterClickedListener));
+                            String searchStr = charactersLiveData.getValue()!=null? charactersLiveData.getValue().searchStr : "";
+                            charactersLiveData.postValue(new State(false, true, null, marvelCharacterClickedListener, searchStr));
                         });
-
-    }
-
-    public void loadCharacters() {
-        charactersLiveData.postValue(new State(true, false, charactersLiveData.getValue().marvelCharactersList, marvelCharacterClickedListener));
-        logger.d("VartikaHilt", "retrofitController object hash -> " + charactersListNetworkInterface.hashCode());
-        Observable<List<ProcessedMarvelCharacter>> marvelCharacters = charactersListNetworkInterface.loadMarvelCharacters();
-        //ToDo:   dispose off
-        Disposable disposable = marvelCharacters
-                .subscribeOn(Schedulers.io()) //create a background worker thread on which observable will carry out its task
-                .observeOn(AndroidSchedulers.mainThread()) //get hold of the main thread so that results can be sent back to the UI
-                .subscribe(marvelCharactersList -> {
-                            logger.d("VartikaHilt", "Marvel Characters: " + marvelCharactersList.size());
-                            charactersLiveData.postValue(new State(false, false, marvelCharactersList, marvelCharacterClickedListener));
-                            //displayMarvelCharacters(marvelCharactersList);
-                        },
-                        err -> {
-                            logger.d("VartikaHilt", err.getLocalizedMessage());
-                            charactersLiveData.postValue(new State(false, true, null, marvelCharacterClickedListener));
-                        });
-
 
     }
 
@@ -83,7 +63,7 @@ public class CharactersListPageController implements AbsCharactersListPageContro
         if(previousState!=null) {
             oldList = previousState.marvelCharactersList;
         }
-        charactersLiveData.postValue(new State(true, false, oldList , marvelCharacterClickedListener));
+        charactersLiveData.postValue(new State(true, false, oldList , marvelCharacterClickedListener, nameStartsWith));
         keywordSubject.onNext(nameStartsWith);
 
     }
@@ -111,17 +91,6 @@ public class CharactersListPageController implements AbsCharactersListPageContro
         return charactersListNetworkInterface.searchCharacter(nameStartsWith).onErrorReturn(throwable -> {
             return new ArrayList<ProcessedMarvelCharacter>();
         });
-        /*Disposable disposable = marvelCharacters
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(marvelCharactersList -> {
-                            logger.d("Vartika", "Marvel Characters with name: " + nameStartsWith + " are: " + marvelCharactersList.size());
-                            charactersLiveData.postValue(new State(false, false, marvelCharactersList));
-                        },
-                        err -> {
-                            logger.d("Vartika", err.getMessage());
-                            charactersLiveData.postValue(new State(false, true, null));
-                        });*/
     }
 
     public LiveData<State> stateLiveData() {

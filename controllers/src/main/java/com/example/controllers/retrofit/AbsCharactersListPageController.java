@@ -13,8 +13,6 @@ public interface AbsCharactersListPageController {
 
     ControlledLiveData<Effect> effectLiveData();
 
-    void loadCharacters();
-
     void searchCharacter(String nameStartsWith);
 
     class State {
@@ -22,12 +20,14 @@ public interface AbsCharactersListPageController {
         public boolean error;
         public List<ProcessedMarvelCharacter> marvelCharactersList;
         public AbsMarvelCharacterClickedListener marvelCharacterClickedListener;
+        public String searchStr;
 
-        public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList, AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {
+        public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList, AbsMarvelCharacterClickedListener marvelCharacterClickedListener, String searchStr) {
             this.loading = loading;
             this.error = error;
             this.marvelCharactersList = marvelCharactersList;
             this.marvelCharacterClickedListener = marvelCharacterClickedListener;
+            this.searchStr = searchStr;
         }
 
     }
