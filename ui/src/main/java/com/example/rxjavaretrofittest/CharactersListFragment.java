@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -144,7 +145,8 @@ public class CharactersListFragment extends Fragment {
                     .addSharedElement(imageView, "marvelTransition")
                     .build();
             CharactersListFragmentDirections.ActionListToDetail directions = CharactersListFragmentDirections.actionListToDetail(marvelCharacter);
-            Navigation.findNavController(getView()).navigate(directions, extras);
+            if(NavHostFragment.findNavController(CharactersListFragment.this).getCurrentDestination().getId()==R.id.CharactersListFragment)
+                NavHostFragment.findNavController(CharactersListFragment.this).navigate(directions, extras);
 
         }
     }
