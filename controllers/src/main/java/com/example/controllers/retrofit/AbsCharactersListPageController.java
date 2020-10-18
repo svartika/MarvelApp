@@ -30,6 +30,10 @@ public interface AbsCharactersListPageController {
             this.searchStr = searchStr;
         }
 
+        public State clone() {
+            return new State(loading, error, marvelCharactersList, marvelCharacterClickedListener, searchStr);
+        }
+
     }
 
     abstract class AbsMarvelCharacterClickedListener<T> {

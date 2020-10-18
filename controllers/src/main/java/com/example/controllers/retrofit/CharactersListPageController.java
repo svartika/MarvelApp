@@ -21,7 +21,8 @@ import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.UnicastSubject;
 
 public class CharactersListPageController implements AbsCharactersListPageController {
-    MutableLiveData<State> charactersLiveData = new MutableLiveData<State>();
+    MutableLiveData<State> stateLiveData = new MutableLiveData<State>();
+
     UnicastSubject<Effect> effectLiveData = UnicastSubject.create();
     ControlledLiveData<Effect> effectLiveDataControlled = new ControlledLiveData<>(effectLiveData);
 
@@ -31,6 +32,8 @@ public class CharactersListPageController implements AbsCharactersListPageContro
 
     BehaviorSubject<String> keywordSubject = BehaviorSubject.createDefault("");
     MarvelCharacterClickedListener marvelCharacterClickedListener = new MarvelCharacterClickedListener();
+    State innerState = new State(false, false, null, marvelCharacterClickedListener, "");
+
 
     @Inject
     CharactersListPageController(CharactersListNetworkInterface charactersListNetworkInterface) {
@@ -39,31 +42,45 @@ public class CharactersListPageController implements AbsCharactersListPageContro
         keywordSubject
                 .distinctUntilChanged()
                 .switchMap(keyword -> {
+                    logger.d("Vartika", "search keyword: " + keyword);
                     return makeNetworkCallObservable(keyword);
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
 
                 .subscribe(marvelCharactersList -> {
                             logger.d("Vartika", "marvelCharactersList: " + marvelCharactersList);
-                            String searchStr = charactersLiveData.getValue()!=null? charactersLiveData.getValue().searchStr : "";
-                            charactersLiveData.postValue(new State(false, false, marvelCharactersList, marvelCharacterClickedListener, searchStr));
+                            State clone = innerState.clone();
+                            clone.loading = false;
+                            clone.error = false;
+                            clone.marvelCharactersList = marvelCharactersList;
+                            innerState = clone;
+                            stateLiveData.postValue(clone);
                         },
                         err -> {
                             logger.d("Vartika", err.getMessage());
-                            String searchStr = charactersLiveData.getValue()!=null? charactersLiveData.getValue().searchStr : "";
-                            charactersLiveData.postValue(new State(false, true, null, marvelCharacterClickedListener, searchStr));
+                            State clone = innerState.clone();
+                            clone.loading = false;
+                            clone.error = true;
+                            clone.marvelCharactersList = null;
+                            innerState = clone;
+                            stateLiveData.postValue(clone);
                         });
 
     }
 
     public void searchCharacter(String nameStartsWith) {
         logger.d("Vartika", "nameStartsWith: " + nameStartsWith);
-        List<ProcessedMarvelCharacter> oldList = null;
+       /* List<ProcessedMarvelCharacter> oldList = null;
         State previousState = charactersLiveData.getValue();
-        if(previousState!=null) {
+        if (previousState != null) {
             oldList = previousState.marvelCharactersList;
-        }
-        charactersLiveData.postValue(new State(true, false, oldList , marvelCharacterClickedListener, nameStartsWith));
+        }*/
+        State clone = innerState.clone();
+        clone.loading = true;
+        clone.error = false;
+        clone.searchStr = nameStartsWith;
+        innerState = clone;
+        stateLiveData.postValue(clone);
         keywordSubject.onNext(nameStartsWith);
 
     }
@@ -94,7 +111,7 @@ public class CharactersListPageController implements AbsCharactersListPageContro
     }
 
     public LiveData<State> stateLiveData() {
-        return charactersLiveData;
+        return stateLiveData;
     }
 
     public ControlledLiveData<Effect> effectLiveData() {

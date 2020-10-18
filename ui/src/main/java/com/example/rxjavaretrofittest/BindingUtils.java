@@ -52,8 +52,16 @@ public class BindingUtils {
         //rvMarvelCharacters.setLayoutManager(new GridLayoutManager(this, span));
         new Logger().d("VartikaHilt", "BindingUtils.loadDataSource");
         //changesAdapter = new ChangesAdapter();
-        MarvelCharacterListAdapter marvelCharacterListAdapter = new MarvelCharacterListAdapter(marvelCharacterClickedListener);
-        rvMarvelCharacters.setAdapter(marvelCharacterListAdapter);
+        RecyclerView.Adapter adapter = rvMarvelCharacters.getAdapter();
+        MarvelCharacterListAdapter marvelCharacterListAdapter = null;
+        if(adapter instanceof MarvelCharacterListAdapter) {
+            marvelCharacterListAdapter = (MarvelCharacterListAdapter) adapter;
+            marvelCharacterListAdapter.marvelCharacterClickedListener = marvelCharacterClickedListener;
+        } else {
+            marvelCharacterListAdapter = new MarvelCharacterListAdapter(marvelCharacterClickedListener);
+            rvMarvelCharacters.setAdapter(marvelCharacterListAdapter);
+        }
+
        /* marvelCharacterListAdapter.setMarvelCharacters(marvelCharactersList);
         marvelCharacterListAdapter.notifyDataSetChanged();*/
        marvelCharacterListAdapter.submitList(marvelCharactersList);
