@@ -831,9 +831,6 @@ In my activity (MarvelActivity), I set up the tool bar
     }
 
 How can I apply some cool transitions between list and detail screen
-![Fragment Transition](https://github.com/svartika/MarvelApp/blob/master/documents/fragmentTransitions.gif)
 
-![Fragment Transition](https://github.com/winnie1312/grab/blob/master/grab-landingpage-winnie.gif)
-<img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" width="40" height="40" />
-<img src="https://github.com/winnie1312/grab/blob/master/grab-landingpage-winnie.gif" width="40" height="40" />
-![grab-landing-page](https://github.com/winnie1312/grab/blob/master/grab-landingpage-winnie.gif)
+<img alt="Fragment Transition" src="https://github.com/svartika/MarvelApp/blob/master/documents/fragmentTransitions.gif" width="300" height="300" />
+
