@@ -832,5 +832,5 @@ In my activity (MarvelActivity), I set up the tool bar
 
 How can I apply some cool transitions between list and detail screen
 
-<img alt="Fragment Transition" src="https://github.com/svartika/MarvelApp/blob/master/documents/fragmentTransitions.gif" width="300" height="300" />
+<img alt="Fragment Transition" src="https://github.com/svartika/MarvelApp/blob/master/documents/fragmentTransitions.gif" width="300" />
 
