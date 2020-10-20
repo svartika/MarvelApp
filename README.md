@@ -554,12 +554,12 @@ I created AbsCharactersListPageController
     		);
     	}
 
-## How to bind a generic ClickEventListener to my RecyclerView and trigger actions from it
-I created an Effect class in controller. I did this instead of using enum with actions defined in it so that effect can be more generic.
+## How to bind a generic ClickEventListener to my RecyclerView and trigger actions from it using data binding
+I created an Effect class in controller. I created a class instead of using enum with actions defined in it so that effect can be more generic.
 
     public abstract class Effect {  }
 
-In AbsCharactersListPageController, I declared ClickListener, ClickEffect and passed the ClickListener to the State.
+In AbsCharactersListPageController, I declared ClickListener and ClickEffect. Then I passed the ClickListener to the State.
 	
 	...
 	    class State {  
@@ -580,19 +580,6 @@ In AbsCharactersListPageController, I declared ClickListener, ClickEffect and pa
     	        this.item = item;  
     	    }  
     	}
-
-In CharactersListPageController, I created LiveData of type Effect. I implemented the invoke function of ClickListener and I posted a ClickEffect instance to the LiveData of type Effect.
-
-	    MutableLiveData<Effect> effectLiveData = new MutableLiveData<>();
-    	public LiveData<Effect> effectLiveData() { return effectLiveData; }  
-    public class MarvelCharacterClickedListener extends AbsMarvelCharacterClickedListener<ProcessedMarvelCharacter> {  
-      
-        @Override  
-      public void invoke(ProcessedMarvelCharacter item) {  
-            logger.d("Vartika", "OnMarvelCharacterClicked: "+item);  
-            effectLiveData.postValue(new ClickEffect(item));  
-        }  
-    }
   
 In activity_main.xml, I pass the listener to recycler view via state
 
@@ -602,7 +589,7 @@ In activity_main.xml, I pass the listener to recycler view via state
     	  app:marvelCharacterClickHandler="@{state.marvelCharacterClickedListener}"
      ...
 
-Now, that my listener is being passed to the recycler view. I added the listener in the row items.
+Now, I added the listener in the row items.
 In marvel_character_rv_item.xml
 
     ...
@@ -619,7 +606,7 @@ In marvel_character_rv_item.xml
     	  app:onClick="@{clickHandler}">
       ....
 
-I declared the tags app:onClick and marvelCharacterClickHandler as BindingAdapters in BindingUtils. I used combination of tags and flagged the parametes requireAll as true.
+I declared the tags app:marvelCharacterClickHandler and app:onClick as BindingAdapters in BindingUtils. I used combination of tags and flagged the parameters requireAll as true.
 
 	    @BindingAdapter(value = {"datasource", "marvelCharacterClickHandler"}, requireAll = true)  
 	    public static void loadDataSource(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList, AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {   
@@ -652,6 +639,20 @@ In MarvelCharacterListAdapter,  I set the ClickListener to the binding of the Vi
         		binding.executePendingBindings();
         	}
         }
+
+In CharactersListPageController, I created a LiveData of type Effect. I implemented the invoke function of ClickListener. In the invoke function, I created a ClickEffect instance and posted it to the LiveData of type Effect. 
+
+	    MutableLiveData<Effect> effectLiveData = new MutableLiveData<>();
+    	public LiveData<Effect> effectLiveData() { return effectLiveData; }  
+    public class MarvelCharacterClickedListener extends AbsMarvelCharacterClickedListener<ProcessedMarvelCharacter> {  
+      
+        @Override  
+      public void invoke(ProcessedMarvelCharacter item) {  
+            logger.d("Vartika", "OnMarvelCharacterClicked: "+item);  
+            effectLiveData.postValue(new ClickEffect(item));  
+        }  
+    }
+    
 In CharactersListActivity, I observe the LiveData of type Effect and when its data changes, I start a new activity of the character details.
 
     	public class CharactersListActivity ...
@@ -683,3 +684,156 @@ In CharacterDetailsActivity
     ...
     }
 
+## How could I make my application behave consistently and predictably while moving across activities?
+
+Android jetpack's navigation component eliminates the task of managing navigation and back stack and makes it the framework's job to adhere to principles of navigation. I decided to move to it.
+
+I moved the views from activities to fragment and  created nav_graph with the destination fragments and the actions for the navigation. 
+
+In acitivity_main.xml, I just added a fragment container and marked it as NavHostFragment.
+
+    <androidx.fragment.app.FragmentContainerView  
+      ...  
+      android:id="@+id/nav_host_fragment"  
+      android:name="androidx.navigation.fragment.NavHostFragment"  
+      app:defaultNavHost="true"  
+      app:navGraph="@navigation/nav_graph"  
+      ... />
+      
+nav_graph.xml is as follows
+
+    <navigation 
+	  ... 
+      android:id="@+id/nav_graph"  
+      app:startDestination="@id/CharactersListFragment">  
+      
+        <fragment  
+		     android:id="@+id/CharactersListFragment"
+		     android:name="com.example.rxjavaretrofittest.CharactersListFragment"  
+		     android:label="@string/first_fragment_label"
+		     tools:layout="@layout/fragment_characters_list">  
+		     <action
+			     android:id="@+id/action_FirstFragment_to_SecondFragment"
+			     app:destination="@id/CharacterDetailFragment" />  
+        </fragment>
+          
+        <fragment
+	        android:id="@+id/CharacterDetailFragment"
+			android:name="com.example.rxjavaretrofittest.CharacterDetailFragment"  
+			android:label="@string/second_fragment_label"
+			tools:layout="@layout/fragment_character_details">  
+            <action
+	            android:id="@+id/action_Second2Fragment_to_First2Fragment"  
+	            app:destination="@id/CharactersListFragment" />  
+        </fragment>  
+    </navigation>
+
+CharactersListFragment contains all the code from the list activity and CharacterDetailFragment contains all the logic from detail activity. 
+
+## How to pass arguments between fragments using androidx navigation?
+
+To pass arguments from list fragment to detail fragment. I used safeargs instead of Bundle as it is the type safe way of parameter passing. 
+In the app-level build.gradle, I added dependency for classpath
+
+    classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0"
+
+In ui module's build.gradle, I applied the plugin
+
+    apply plugin: "androidx.navigation.safeargs"
+In nav_graph, I added argument in CharacterDetailFragment to indicate that it would receive ProcessedMarvelCharacter from previous fragment
+
+    <fragment  
+      android:id="@+id/CharacterDetailFragment"  
+	  ... 
+      <argument  
+	      android:name="item"  
+	      app:argType="com.example.controllers.retrofit.ProcessedMarvelCharacter" />  
+    </fragment>
+
+In CharacterListFragment when click event is triggered, CharactersListFragment is launched by passing the item in the generated Directions file.
+
+    CharactersListFragmentDirections.ActionListToDetail directions = CharactersListFragmentDirections.actionListToDetail(marvelCharacter);  
+    NavHostFragment.findNavController(CharactersListFragment.this).navigate(directions);
+I retrieved it in CharacterDetailFragment via the generated Args file.
+
+    ProcessedMarvelCharacter item = CharacterDetailFragmentArgs.fromBundle(getArguments()).getItem();  
+    characterId = item.id;
+
+In order to pass ProcessMarvelCharacter, I had to make it implement Parcelable
+
+    class ProcessedMarvelCharacter implements Parcelable {
+	    ...
+	    protected ProcessedMarvelCharacter(Parcel in) {  
+	        id = in.readInt();  
+	        name = in.readString();  
+	        imageurl = in.readString();  
+	        description = in.readString();  
+	        modified = in.readString();  
+	    }  
+      
+	    public static final Creator<ProcessedMarvelCharacter> CREATOR = new Creator<ProcessedMarvelCharacter>() {  
+	        @Override  
+		    public ProcessedMarvelCharacter createFromParcel(Parcel in) {  
+	            return new ProcessedMarvelCharacter(in);  
+		     }  
+      
+	        @Override  
+		    public ProcessedMarvelCharacter[] newArray(int size) {  
+	            return new ProcessedMarvelCharacter[size];  
+	        }  
+    	};  
+	  
+		@Override  
+		public int describeContents() {  
+		    return 0;  
+		}  
+	  
+		@Override  
+		public void writeToParcel(Parcel parcel, int i) {  
+		    parcel.writeInt(id);  
+		    parcel.writeString(name);  
+		    parcel.writeString(imageurl);  
+		    parcel.writeString(description);  
+		    parcel.writeString(modified);  
+		}
+	}	
+
+## How to enable up arrow in a single page activity
+In the styles.xml, I customized app theme 
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">  
+	    <item name="windowActionBar">false</item>  
+        <item name="windowNoTitle">true</item>  
+        ...  
+    </style>
+ In activity_main.xml, I added an AppBarLayout 
+
+    ...
+    <com.google.android.material.appbar.AppBarLayout  
+      ... 
+      android:theme="@style/AppTheme.AppBarOverlay">  
+         <androidx.appcompat.widget.Toolbar  
+		      android:id="@+id/toolbar"  
+		      android:layout_width="match_parent"  
+		      android:layout_height="?attr/actionBarSize"  
+		      android:background="?attr/colorPrimary"  
+		      app:popupTheme="@style/AppTheme.PopupOverlay" />  
+        </com.google.android.material.appbar.AppBarLayout>
+     ...
+In my activity (MarvelActivity), I set up the tool bar
+
+    private void setUpToolBar() {  
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);  
+        NavController navController = navHostFragment.getNavController();   
+        AppBarConfiguration appBarConfiguration =  new AppBarConfiguration.Builder(navController.getGraph()).build();  
+        Toolbar toolbar = findViewById(R.id.toolbar);  
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);  
+    }
+
+How can I apply some cool transitions between list and detail screen
+![Fragment Transition](https://github.com/svartika/MarvelApp/blob/master/documents/fragmentTransitions.gif)
+
+![Fragment Transition](https://github.com/winnie1312/grab/blob/master/grab-landingpage-winnie.gif)
+<img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" width="40" height="40" />
+<img src="https://github.com/winnie1312/grab/blob/master/grab-landingpage-winnie.gif" width="40" height="40" />
+![grab-landing-page](https://github.com/winnie1312/grab/blob/master/grab-landingpage-winnie.gif)
