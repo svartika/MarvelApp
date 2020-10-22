@@ -830,7 +830,181 @@ In my activity (MarvelActivity), I set up the tool bar
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);  
     }
 
-How can I apply some cool transitions between list and detail screen
+## How can I apply some cool transitions between list and detail screen
 
 <img alt="Fragment Transition" src="https://github.com/svartika/MarvelApp/blob/master/documents/fragmentTransitions.gif" width="300" />
 
+I start out by passing the imageview from the adapter to the list fragment by passing the image view in the click listener.
+
+    @BindingAdapter(value = {"onClick", "item"}, requireAll = true)  
+    public static void onCharacterClicked(View view, AbsCharactersListPageController.AbsMarvelCharacterClickedListener clickedListener, Object item) {  
+        view.setOnClickListener(new View.OnClickListener() {  
+            @Override  
+      public void onClick(View view) {  
+                clickedListener.invoke(view, item);  
+            }  
+        });  
+    }
+    
+In AbsCharactersListPageController, I add code to support the above parameter passing. I also pass this image view in the click effect.
+
+    ...
+    abstract class AbsMarvelCharacterClickedListener<T> {  
+        public abstract void invoke(View view, T item);  
+	}  
+      
+    public class ClickEffect<T> extends Effect {  
+        public T item;  
+        public View view;  
+      
+        public ClickEffect(View view, T item) {  
+            this.item = item;  
+            this.view = view;  
+        }  
+    }
+
+In CharactersListPageController, I am passing along the image view from listener to the ClickEffect class. This is posted to the list fragment.
+
+    public class MarvelCharacterClickedListener extends AbsMarvelCharacterClickedListener<ProcessedMarvelCharacter> {   
+        @Override  
+	    public void invoke(View view, ProcessedMarvelCharacter item) {  
+            effectLiveData.onNext(new ClickEffect(view, item));  
+        }  
+    }
+
+Now that I am able to get a hold of the list item's image view in the list fragment, I can start transition when an item on a list is clicked. The imageview is marked as the shared element during transition. This view in the listitem has the transition id set to it. This is passed as an extras argument in navigation.
+
+    private void setEffect(Effect effect) {  
+        if (effect instanceof AbsCharactersListPageController.ClickEffect) {  
+            AbsCharactersListPageController.ClickEffect clickEffect = ((AbsCharactersListPageController.ClickEffect) effect);  
+            ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) clickEffect.item;  
+            ImageView imageView = clickEffect.view.findViewById(R.id.mCharacterImage);  
+            FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()  
+                    .addSharedElement(imageView, "marvelTransition")  
+                    .build();  
+            CharactersListFragmentDirections.ActionListToDetail directions = CharactersListFragmentDirections.actionListToDetail(marvelCharacter);  
+            Navigation.findNavController(getView()).navigate(directions, extras);
+            }
+
+When the detail fragment opens,  it inflates the shared transition type(move transition in this case) and it postpones transition until image is loaded from Glide. 
+
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {  
+        ...
+	    setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));  
+        postponeEnterTransition();
+        ...
+        imageView = binding.getRoot().findViewById(R.id.image);  
+        ...
+        controller.effectLiveData().observe(getViewLifecycleOwner(), (effect -> {  
+                    consumeEffect(effect);  
+                }));  
+        ...
+    }
+    @Override  
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {  
+        super.onViewCreated(view, savedInstanceState);  
+        imageView.setTransitionName("marvelTransition");  
+    }
+
+Glide informs the fragment via a callback. 
+In fragment_character_details.xml
+
+    <ImageView  
+      ...  
+      app:callbackListener="@{state.callbackListener}"  
+      ... />
+In BindingUtils
+
+    @BindingAdapter(value = {"url", "callbackListener"}, requireAll = false)  
+    public static void loadImage(ImageView imageView, String url, ICallbackListerner callbackListener) {  
+        Glide.with(imageView.getContext())  
+                .load(url)  
+                .addListener(new RequestListener<Drawable>() {  
+                    @Override  
+      public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {  
+                        if(callbackListener!=null) callbackListener.callback();  
+                        return false;  
+                    }  
+      
+                    @Override  
+      public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {  
+                        if(callbackListener!=null) callbackListener.callback();  
+                        return false;  
+                    }  
+                })  
+                .into(imageView);  
+    }
+
+This imageLoaded callback is passed to the detail fragment using state variable and it is set on the image view using data binding. This callback passes its effect class ImageLoaded on to the detail fragment from controller. 
+In CharacterDetailPageController
+
+    public class CharacterDetailPageController {  
+        ... 
+        UnicastSubject<Effect> effectLiveData = UnicastSubject.create();  
+        ControlledLiveData<Effect> effectLiveDataControlled = new ControlledLiveData<>(effectLiveData);  
+        ICallbackListerner imageLoadCallback = new ICallbackListerner() {  
+          @Override  
+	      public void callback() {  
+                effectLiveData.onNext(new ImageLoaded());  
+          }  
+        };
+        ...
+        public static class State {  
+	        ...  
+	        public ICallbackListerner callbackListener;
+	    }
+        ...
+        public ControlledLiveData<Effect> effectLiveData() {  
+	        return effectLiveDataControlled;  
+	    }  
+      
+	    public class ImageLoaded extends Effect {  
+	        public View view;  
+	        public ImageLoaded( ) {  }  
+    }
+
+It triggers an effect in the detail fragment to start the postponed transition.
+
+    void consumeEffect(Effect effect) {  
+        if(effect instanceof CharacterDetailPageController.ImageLoaded) {  
+            startPostponedEnterTransition();  
+        }  
+    }
+
+When we close the fragment using back stack. The animation is triggered again. The list view fragment inflates the transition (of type move again). It also postpones transition until the list is created.
+In CharactersListFragment
+
+    @Override  
+    public View onCreateView(  
+            LayoutInflater inflater, ViewGroup container,  
+            Bundle savedInstanceState ) {  
+        ...
+	    setSharedElementReturnTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));  
+        ... 
+    }  
+      
+    @Override  
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {  
+        ...
+        postponeEnterTransition();  
+        parentView = (ViewGroup) view.getParent();  
+        parentView.getViewTreeObserver()  
+                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {  
+                    @Override  
+				    public boolean onPreDraw() {  
+                        parentView.getViewTreeObserver().removeOnPreDrawListener(this);  
+                        startPostponedEnterTransition();  
+                        return true;  
+                    }  
+         });  
+    }
+
+## When i double click on a card in List view, it crashes! Navigation issues?
+
+This is a known issue. In case of quick double clicks, the second click should check for the id of the originating destination to stop navigation if already it is done.
+
+    if(NavHostFragment.findNavController(CharactersListFragment.this).getCurrentDestination().getId()==R.id.CharactersListFragment)  
+        NavHostFragment.findNavController(CharactersListFragment.this).navigate(directions, extras);
+
+
+ 
