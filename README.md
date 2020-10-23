@@ -834,7 +834,14 @@ In my activity (MarvelActivity), I set up the tool bar
 
 <img alt="Fragment Transition" src="https://github.com/svartika/MarvelApp/blob/master/documents/fragmentTransitions.gif" width="300" />
 
-I start out by passing the imageview from the adapter to the list fragment by passing the image view in the click listener.
+ 1. My aim is to 
+ - get hold of the imageview that was clicked in the list.  
+  - set a unique transition id to it. 
+  - set this as shared transition element and pass it to the detail fragment.
+  - postpone transition in the detail fragment until glide is able to load the image 	view. 
+  - add similar transition when coming back to list view.
+
+I start out by passing the imageview from the adapter to the list fragment in  BindingUtils. 
 
     @BindingAdapter(value = {"onClick", "item"}, requireAll = true)  
     public static void onCharacterClicked(View view, AbsCharactersListPageController.AbsMarvelCharacterClickedListener clickedListener, Object item) {  
@@ -846,7 +853,7 @@ I start out by passing the imageview from the adapter to the list fragment by pa
         });  
     }
     
-In AbsCharactersListPageController, I add code to support the above parameter passing. I also pass this image view in the click effect.
+In AbsCharactersListPageController, I add code to support the above parameter passing in the click listener and click effect.
 
     ...
     abstract class AbsMarvelCharacterClickedListener<T> {  
@@ -872,7 +879,7 @@ In CharactersListPageController, I am passing along the image view from listener
         }  
     }
 
-Now that I am able to get a hold of the list item's image view in the list fragment, I can start transition when an item on a list is clicked. The imageview is marked as the shared element during transition. This view in the listitem has the transition id set to it. This is passed as an extras argument in navigation.
+Now that I am able to get a hold of the list item's image view in the list fragment, I can start transition when an item on a list is clicked. This imageview is marked as the shared element during transition. This view in the listitem has the transition id set to it. This is passed as an extras argument in navigation.
 
     private void setEffect(Effect effect) {  
         if (effect instanceof AbsCharactersListPageController.ClickEffect) {  
@@ -886,7 +893,7 @@ Now that I am able to get a hold of the list item's image view in the list fragm
             Navigation.findNavController(getView()).navigate(directions, extras);
             }
 
-When the detail fragment opens,  it inflates the shared transition type(move transition in this case) and it postpones transition until image is loaded from Glide. 
+When the detail fragment opens,  it inflates the shared transition type (move transition in this case) and it postpones transition until image is loaded from Glide. 
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {  
         ...
@@ -906,7 +913,7 @@ When the detail fragment opens,  it inflates the shared transition type(move tra
         imageView.setTransitionName("marvelTransition");  
     }
 
-Glide informs the fragment via a callback. 
+Glide informs the detail fragment via a callback. 
 In fragment_character_details.xml
 
     <ImageView  
@@ -999,7 +1006,7 @@ In CharactersListFragment
          });  
     }
 
-## When i double click on a card in List view, it crashes! Navigation issues?
+## When I double click on a card in List view, it crashes! Navigation issues?
 
 This is a known issue. In case of quick double clicks, the second click should check for the id of the originating destination to stop navigation if already it is done.
 
