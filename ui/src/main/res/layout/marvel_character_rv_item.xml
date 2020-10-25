@@ -16,7 +16,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
         android:layout_width="@dimen/character_image_width"
-        android:layout_height="220dp"
+        android:layout_height="@dimen/character_image_height"
         app:cardCornerRadius="2dp"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"

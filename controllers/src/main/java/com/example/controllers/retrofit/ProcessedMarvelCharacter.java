@@ -19,7 +19,8 @@ public class ProcessedMarvelCharacter implements Parcelable {
         id = character.id;
         name = character.name;
         //ToDo: Fix https http issue by using manifest usinghttp option
-        imageurl = character.thumbnail.path.replace("http", "https").concat("/portrait_xlarge.").concat(character.thumbnail.extension);
+      //  imageurl = character.thumbnail.path.replace("http", "https").concat("/portrait_xlarge.").concat(character.thumbnail.extension);
+        imageurl = character.thumbnail.path.concat("/portrait_xlarge.").concat(character.thumbnail.extension);
         description = character.description;
         comics = character.comics;
         series = character.series;

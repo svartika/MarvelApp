@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -70,10 +69,10 @@ public class CharactersListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         controller.stateLiveData().observe(getViewLifecycleOwner(), state -> {
-            setState(state);
+            renderState(state);
         });
         controller.effectLiveData().observe(getViewLifecycleOwner(), effect -> {
-            setEffect(effect);
+            consumeEffect(effect);
         });
 
         postponeEnterTransition();
@@ -119,7 +118,7 @@ public class CharactersListFragment extends Fragment {
         rvMarvelCharacters.setLayoutManager(new GridLayoutManager(getContext(), span));
     }
 
-    private void setState(CharactersListPageController.State state) {
+    private void renderState(CharactersListPageController.State state) {
         Log.d("Vartika", "setState: " + "error: " + state.error + "size: " + (state.marvelCharactersList==null? ":null": state.marvelCharactersList.size()));
         binding.setState(state);
 
@@ -136,7 +135,7 @@ public class CharactersListFragment extends Fragment {
         }*/
     }
 
-    private void setEffect(Effect effect) {
+    private void consumeEffect(Effect effect) {
         if (effect instanceof AbsCharactersListPageController.ClickEffect) {
             AbsCharactersListPageController.ClickEffect clickEffect = ((AbsCharactersListPageController.ClickEffect) effect);
             ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) clickEffect.item;
