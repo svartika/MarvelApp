@@ -10,7 +10,7 @@
             type="com.example.controllers.retrofit.ProcessedMarvelCharacter" />
         <variable
             name="clickHandler"
-            type="com.example.controllers.retrofit.AbsCharactersListPageController.AbsMarvelCharacterClickedListener" />
+            type="com.example.controllers.characterslist.MarvelCharacterClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView

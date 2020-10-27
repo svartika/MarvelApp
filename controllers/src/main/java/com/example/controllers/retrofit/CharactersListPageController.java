@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.controllers.characterslist.MarvelCharacterClickListener;
 import com.example.entitiy.models.logs.Logger;
 import com.example.mviframework.ControlledLiveData;
 
@@ -31,7 +32,7 @@ public class CharactersListPageController implements AbsCharactersListPageContro
     Logger logger;
 
     BehaviorSubject<String> keywordSubject = BehaviorSubject.createDefault("");
-    MarvelCharacterClickedListener marvelCharacterClickedListener = new MarvelCharacterClickedListener();
+    MarvelCharacterClickListener marvelCharacterClickedListener = new MarvelCharacterClickedListenerImpl();
     State innerState = new State(false, false, null, marvelCharacterClickedListener, "");
 
 
@@ -118,7 +119,7 @@ public class CharactersListPageController implements AbsCharactersListPageContro
         return effectLiveDataControlled;
     }
 
-    public class MarvelCharacterClickedListener extends AbsMarvelCharacterClickedListener<ProcessedMarvelCharacter> {
+    public class MarvelCharacterClickedListenerImpl implements MarvelCharacterClickListener<ProcessedMarvelCharacter> {
 
         @Override
         public void invoke(View view, ProcessedMarvelCharacter item) {

@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,12 +13,11 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.controllers.characterslist.MarvelCharacterClickListener;
 import com.example.controllers.retrofit.AbsCharactersListPageController;
-import com.example.controllers.retrofit.CharacterDetailPageController;
 import com.example.controllers.retrofit.ICallbackListerner;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
-import com.example.mviframework.Runner;
 
 import java.util.List;
 
@@ -47,7 +45,7 @@ public class BindingUtils {
     }
 
     @BindingAdapter(value = {"datasource", "marvelCharacterClickHandler"}, requireAll = true)
-    public static void loadDataSource(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList, AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {
+    public static void loadDataSourceOLD(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList, MarvelCharacterClickListener marvelCharacterClickedListener) {
 
         //rvMarvelCharacters.setLayoutManager(new GridLayoutManager(this, span));
         new Logger().d("VartikaHilt", "BindingUtils.loadDataSource");
@@ -67,7 +65,7 @@ public class BindingUtils {
        marvelCharacterListAdapter.submitList(marvelCharactersList);
     }
     @BindingAdapter(value = {"onClick", "item"}, requireAll = true)
-    public static void onCharacterClicked(View view, AbsCharactersListPageController.AbsMarvelCharacterClickedListener clickedListener, Object item) {
+    public static void onCharacterClicked(View view, MarvelCharacterClickListener clickedListener, Object item) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,5 +74,18 @@ public class BindingUtils {
         });
     }
 
+    @BindingAdapter(value = { "datasource","characterClickHandler"}, requireAll = true)
+    public static void loadDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, MarvelCharacterClickListener clickListener) {
+        RecyclerView.Adapter adapter = rvCharacters.getAdapter();
+        MarvelCharacterListAdapter marvelCharacterListAdapter = null;
+        if(adapter instanceof MarvelCharacterListAdapter) {
+            marvelCharacterListAdapter = (MarvelCharacterListAdapter)adapter;
+            marvelCharacterListAdapter.marvelCharacterClickedListener = clickListener;
+        } else {
+            marvelCharacterListAdapter = new MarvelCharacterListAdapter(clickListener);
+            rvCharacters.setAdapter(marvelCharacterListAdapter);
+        }
+        marvelCharacterListAdapter.submitList(charactersList);
+    }
 
 }

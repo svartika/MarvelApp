@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.controllers.characterslist.MarvelCharacterClickListener;
 import com.example.controllers.retrofit.AbsCharactersListPageController;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.ui.BR;
@@ -27,7 +28,7 @@ import javax.inject.Inject;
 
 public class MarvelCharacterListAdapter extends RecyclerView.Adapter<MarvelCharacterListAdapter.MarvelCharacterViewHolder> {
 
-    AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener;
+    MarvelCharacterClickListener marvelCharacterClickedListener;
     private final AsyncListDiffer<ProcessedMarvelCharacter> differ = new AsyncListDiffer<ProcessedMarvelCharacter>(this, diffCallBack);
     public static final DiffUtil.ItemCallback<ProcessedMarvelCharacter> diffCallBack = new DiffUtil.ItemCallback<ProcessedMarvelCharacter>() {
         @Override
@@ -41,7 +42,7 @@ public class MarvelCharacterListAdapter extends RecyclerView.Adapter<MarvelChara
         }
     };
 
-    public MarvelCharacterListAdapter(AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {
+    public MarvelCharacterListAdapter(MarvelCharacterClickListener marvelCharacterClickedListener) {
         this.marvelCharacterClickedListener = marvelCharacterClickedListener;
     }
 

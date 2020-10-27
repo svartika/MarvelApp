@@ -66,14 +66,14 @@ public abstract class BaseMviDelegate<State, InnerState, Effect> implements MviD
         return new Change(change.state, newEffects);
     }
 
-    protected Runner dispatch(DispatchChange<InnerState, Effect> dispatchChange) {
+    protected Runner dispatch(Reducer<InnerState, Effect> dispatchChange) {
         return new Runner() {
             @Override
             public void run() {
                 innerchanges.onNext(Observable.just(new Reducer<InnerState, Effect>() {
                     @Override
                     public Change<InnerState, Effect> reduce(InnerState innerState) {
-                        Change<InnerState, Effect> change = dispatchChange.change(innerState);
+                        Change<InnerState, Effect> change = dispatchChange.reduce(innerState);
                         if(change!=null) {
                             return change;
                         } else {
@@ -85,8 +85,6 @@ public abstract class BaseMviDelegate<State, InnerState, Effect> implements MviD
         };
     }
 
-    public interface DispatchChange<InnerState, Effect> {
-        Change<InnerState, Effect> change(InnerState innerState);
-    }
+
 
 }

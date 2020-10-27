@@ -4,6 +4,7 @@ import android.view.View;
 
 import androidx.lifecycle.LiveData;
 
+import com.example.controllers.characterslist.MarvelCharacterClickListener;
 import com.example.mviframework.ControlledLiveData;
 
 import java.util.List;
@@ -19,10 +20,10 @@ public interface AbsCharactersListPageController {
         public boolean loading;
         public boolean error;
         public List<ProcessedMarvelCharacter> marvelCharactersList;
-        public AbsMarvelCharacterClickedListener marvelCharacterClickedListener;
+        public MarvelCharacterClickListener marvelCharacterClickedListener;
         public String searchStr;
 
-        public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList, AbsMarvelCharacterClickedListener marvelCharacterClickedListener, String searchStr) {
+        public State(boolean loading, boolean error, List<ProcessedMarvelCharacter> marvelCharactersList, MarvelCharacterClickListener marvelCharacterClickedListener, String searchStr) {
             this.loading = loading;
             this.error = error;
             this.marvelCharactersList = marvelCharactersList;
@@ -36,9 +37,7 @@ public interface AbsCharactersListPageController {
 
     }
 
-    abstract class AbsMarvelCharacterClickedListener<T> {
-        public abstract void invoke(View view, T item);
-    }
+
 
     public class ClickEffect<T> extends Effect {
         public T item;

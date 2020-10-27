@@ -143,7 +143,7 @@ public class CharactersListFragment extends Fragment {
             FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                     .addSharedElement(imageView, "marvelTransition")
                     .build();
-            CharactersListFragmentDirections.ActionListToDetail directions = CharactersListFragmentDirections.actionListToDetail(marvelCharacter);
+            CharacterListFragmentDirections.ActionListToDetail directions = CharacterListFragmentDirections.actionListToDetail(marvelCharacter);
             if(NavHostFragment.findNavController(CharactersListFragment.this).getCurrentDestination().getId()==R.id.CharactersListFragment)
                 NavHostFragment.findNavController(CharactersListFragment.this).navigate(directions, extras);
 

@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/CharactersListFragment"
-        android:name="com.example.rxjavaretrofittest.CharactersListFragment"
+        android:name="com.example.rxjavaretrofittest.CharacterListFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_characters_list">
+        tools:layout="@layout/fragment_character_list">
         <action
             android:id="@+id/action_list_to_detail"
             app:destination="@id/CharacterDetailFragment" />
