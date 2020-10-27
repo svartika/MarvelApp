@@ -2,14 +2,15 @@ package com.example.sample.mvi.viewmodel;
 
 import com.example.mviframework.BaseMviDelegate;
 import com.example.mviframework.Change;
+import com.example.mviframework.Reducer;
 import com.example.mviframework.Runner;
 
 public class SampleViewModelDelegate extends BaseMviDelegate<State, SampleViewModelDelegate.InnerState, Effect> {
     int dependency;
 
-    Runner clickToIncrement = dispatch(new DispatchChange<InnerState, Effect>() {
+    Runner clickToIncrement = dispatch(new Reducer<InnerState, Effect>() {
         @Override
-        public Change<InnerState, Effect> change(InnerState innerState) {
+        public Change<InnerState, Effect> reduce(InnerState innerState) {
             InnerState innerState1 =  innerState.copy();
             innerState1.identifier = innerState1.identifier+1;
             return withEffects(innerState1, new Effect.ToastMe());
