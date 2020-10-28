@@ -34,6 +34,7 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
 
     CharactersListModelDelegate(CharactersListNetworkInterface charactersListNetworkInterface) {
         this.charactersListNetworkInterface = charactersListNetworkInterface;
+        loadCharacters();
     }
 
     @Override
@@ -62,15 +63,28 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
 
     static InnerState clear = new InnerState(new ArrayList<>(), "");
 
-    private Observable<List<ProcessedMarvelCharacter>> loadCharacters() {
+    private void/*Observable<List<ProcessedMarvelCharacter>>*/ loadCharacters() {
         if (charactersListNetworkInterface == null) {
-            return Observable.just(new ArrayList<>());
+            return;// Observable.just(new ArrayList<>());
         }
-        return (charactersListNetworkInterface.loadMarvelCharacters()
+        Observable<Reducer<InnerState, Effect>> reducerObservable = (charactersListNetworkInterface.loadMarvelCharacters()
                 .onErrorReturn(throwable -> {
                     return new ArrayList<>();
                 })).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(processedMarvelCharacters -> {
+                    return new Reducer<InnerState, Effect>() {
+
+                        @Override
+                        public Change<InnerState, Effect> reduce(InnerState innerState) {
+                            InnerState newInnerState = innerState.copy();
+                            newInnerState.charactersList = processedMarvelCharacters;
+                            return asChange(newInnerState);
+                        }
+                    };
+                });
+        enqueue(reducerObservable);
+
 
     }
 }
