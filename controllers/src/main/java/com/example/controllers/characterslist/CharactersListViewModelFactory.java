@@ -9,9 +9,7 @@ import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 import androidx.savedstate.SavedStateRegistryOwner;
 
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
-
-import java.util.List;
+import com.example.controllers.retrofit.CharactersListNetworkInterface;
 
 public class CharactersListViewModelFactory extends AbstractSavedStateViewModelFactory {
 
@@ -28,9 +26,20 @@ public class CharactersListViewModelFactory extends AbstractSavedStateViewModelF
         super(owner, defaultArgs);
     }
 
+
+    CharactersListNetworkInterface charactersListNetworkInterface;
+
     @NonNull
     @Override
     protected <T extends ViewModel> T create(@NonNull String key, @NonNull Class<T> modelClass, @NonNull SavedStateHandle handle) {
-        return (T) new CharactersListViewModelImpl(new CharactersListModelDelegate());
+        return (T) new CharactersListViewModelImpl(new CharactersListModelDelegate(charactersListNetworkInterface));
+    }
+
+    public void setCharactersListNetworkInterface(CharactersListNetworkInterface charactersListNetworkInterface) {
+        this.charactersListNetworkInterface = charactersListNetworkInterface;
+    }
+
+    public CharactersListNetworkInterface getCharactersListNetworkInterface() {
+        return charactersListNetworkInterface;
     }
 }

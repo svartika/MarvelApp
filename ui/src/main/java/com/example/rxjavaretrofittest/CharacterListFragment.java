@@ -21,9 +21,16 @@ import com.example.controllers.characterslist.State;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterListBinding;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class CharacterListFragment extends Fragment {
     CharactersListViewModel viewModel;
     FragmentCharacterListBinding binding;
+    @Inject
+    CharactersListViewModelFactory factory;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,7 +63,8 @@ public class CharacterListFragment extends Fragment {
     }
 
     CharactersListViewModel init() {
-        CharactersListViewModelFactory viewModelFactory = new CharactersListViewModelFactory(this, this.getArguments());
+        //CharactersListViewModelFactory viewModelFactory = new CharactersListViewModelFactory(this, this.getArguments());
+        CharactersListViewModelFactory viewModelFactory = factory;
         ViewModelStore viewModelStore = new ViewModelStore();
         ViewModelProvider viewModelProvider = new ViewModelProvider(viewModelStore, viewModelFactory);
         return viewModelProvider.get(CharactersListViewModelImpl.class);
