@@ -3,6 +3,7 @@ package com.example.rxjavaretrofittest;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,6 +82,7 @@ public class CharacterListFragment extends Fragment {
                 consume(effect);
             }
         });
+        setSharedElementReturnTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
         return binding.getRoot();
     }
     void setUpRecyclerView() {
