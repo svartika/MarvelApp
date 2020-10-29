@@ -12,14 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controllers.characterslist.CharactersListViewModel;
-import com.example.controllers.characterslist.CharactersListViewModelFactory;
-import com.example.controllers.characterslist.CharactersListViewModelImpl;
 import com.example.controllers.characterslist.Effect;
 import com.example.controllers.characterslist.State;
 import com.example.ui.R;
@@ -31,16 +27,14 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class CharacterListFragment extends Fragment {
+    @Inject
     CharactersListViewModel viewModel;
     FragmentCharacterListBinding binding;
     RecyclerView rvMarvelCharacters;
-    @Inject
-    CharactersListViewModelFactory factory;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        viewModel = init();
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_character_list, container, false);
         rvMarvelCharacters = binding.getRoot().findViewById(R.id.rvMarvelCharacters);
@@ -77,11 +71,4 @@ public class CharacterListFragment extends Fragment {
         binding.executePendingBindings();
     }
 
-    CharactersListViewModel init() {
-        //CharactersListViewModelFactory viewModelFactory = new CharactersListViewModelFactory(this, this.getArguments());
-        CharactersListViewModelFactory viewModelFactory = factory;
-        ViewModelStore viewModelStore = new ViewModelStore();
-        ViewModelProvider viewModelProvider = new ViewModelProvider(viewModelStore, viewModelFactory);
-        return viewModelProvider.get(CharactersListViewModelImpl.class);
-    }
 }

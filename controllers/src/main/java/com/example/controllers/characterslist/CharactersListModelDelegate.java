@@ -32,7 +32,7 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
         }
     };
 
-    CharactersListModelDelegate(CharactersListNetworkInterface charactersListNetworkInterface) {
+    public CharactersListModelDelegate(CharactersListNetworkInterface charactersListNetworkInterface) {
         this.charactersListNetworkInterface = charactersListNetworkInterface;
         loadCharacters();
     }
