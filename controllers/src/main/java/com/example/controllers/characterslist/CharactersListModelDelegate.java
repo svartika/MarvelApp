@@ -14,10 +14,12 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 public class CharactersListModelDelegate extends BaseMviDelegate<State, CharactersListModelDelegate.InnerState, Effect> {
 
     CharactersListNetworkInterface charactersListNetworkInterface;
+    PublishSubject<String> searchKeywords = PublishSubject.create();
 
     MarvelCharacterClickListener clickListener = new MarvelCharacterClickListener<ProcessedMarvelCharacter>() {
 
@@ -27,6 +29,21 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
                 @Override
                 public Change<InnerState, Effect> reduce(InnerState innerState) {
                     return withEffects(innerState, new Effect.ClickCharacterEffect<ProcessedMarvelCharacter>(view, character));
+                }
+            });
+        }
+    };
+
+    SearchTextChangedCallbackListener searchCallback = new SearchTextChangedCallbackListener() {
+        @Override
+        public void invoke(String searchKeyword) {
+            searchKeywords.onNext(searchKeyword);
+            enqueue(new Reducer<InnerState, Effect>() {
+                @Override
+                public Change<InnerState, Effect> reduce(InnerState innerState) {
+                    InnerState newInnerState = innerState.copy();
+                    newInnerState.searchStr = searchKeyword;
+                    return  asChange(newInnerState);
                 }
             });
         }
@@ -44,7 +61,7 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
 
     @Override
     public State mapState(InnerState innerState) {
-        return new State(innerState.charactersList, innerState.searchStr, clickListener);
+        return new State(innerState.charactersList, innerState.searchStr, clickListener, searchCallback);
     }
 
     static class InnerState {
@@ -67,10 +84,18 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
         if (charactersListNetworkInterface == null) {
             return;// Observable.just(new ArrayList<>());
         }
-        Observable<Reducer<InnerState, Effect>> reducerObservable = (charactersListNetworkInterface.loadMarvelCharacters()
-                .onErrorReturn(throwable -> {
-                    return new ArrayList<>();
-                })).subscribeOn(Schedulers.io())
+        Observable<List<ProcessedMarvelCharacter>> observable = searchKeywords
+                .startWith("")
+                .distinctUntilChanged()
+                .switchMap(keyword -> {
+                    return charactersListNetworkInterface
+                            .searchCharacter(keyword)
+                            .onErrorReturn(throwable -> {
+                                return new ArrayList<>();
+                            });
+                });
+
+        Observable<Reducer<InnerState, Effect>> reducerObservable = observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(processedMarvelCharacters -> {
                     return new Reducer<InnerState, Effect>() {

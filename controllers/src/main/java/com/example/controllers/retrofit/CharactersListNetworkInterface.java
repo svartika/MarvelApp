@@ -13,22 +13,28 @@ public abstract class CharactersListNetworkInterface {
 
     public Observable<List<ProcessedMarvelCharacter>> loadMarvelCharacters() {
         return loadMarvelCharactersRaw().map(marvelCharactersList -> {
-                return processRawResponse(marvelCharactersList);
+            return processRawResponse(marvelCharactersList);
         });
     }
 
     public abstract Observable<List<MarvelCharacter>> searchCharacterRaw(String nameStartsWith);
 
     public Observable<List<ProcessedMarvelCharacter>> searchCharacter(String nameStartsWith) {
-        return searchCharacterRaw(nameStartsWith)
+        if (nameStartsWith.isEmpty()) {
+            return loadMarvelCharactersRaw().map(marvelCharactersList -> {
+                return processRawResponse(marvelCharactersList);
+            });
+        } else {
+            return searchCharacterRaw(nameStartsWith)
                     .map(marvelCharactersList -> {
                         return processRawResponse(marvelCharactersList);
                     });
+        }
     }
 
     List<ProcessedMarvelCharacter> processRawResponse(List<MarvelCharacter> marvelCharactersList) {
-        List <ProcessedMarvelCharacter> processedMarvelCharacters = new ArrayList<>();
-        for ( MarvelCharacter marvelCharacter : marvelCharactersList) {
+        List<ProcessedMarvelCharacter> processedMarvelCharacters = new ArrayList<>();
+        for (MarvelCharacter marvelCharacter : marvelCharactersList) {
             processedMarvelCharacters.add(new ProcessedMarvelCharacter(marvelCharacter));
         }
         return processedMarvelCharacters;
