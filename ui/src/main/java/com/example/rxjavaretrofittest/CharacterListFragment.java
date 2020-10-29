@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -41,6 +42,23 @@ public class CharacterListFragment extends Fragment {
     RecyclerView rvMarvelCharacters;
     EditText searchView;
     SearchTextChangedCallbackListener searchCallback;
+    ViewGroup parentView;
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        postponeEnterTransition();
+        parentView = (ViewGroup) view.getParent();
+        parentView.getViewTreeObserver()
+                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        parentView.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startPostponedEnterTransition();
+                        return true;
+                    }
+                });
+    }
 
     @Nullable
     @Override
