@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.navigation.fragment.FragmentNavigator;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +25,7 @@ import com.example.controllers.characterslist.CharactersListViewModel;
 import com.example.controllers.characterslist.Effect;
 import com.example.controllers.characterslist.SearchTextChangedCallbackListener;
 import com.example.controllers.characterslist.State;
+import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterListBinding;
 
@@ -90,7 +94,18 @@ public class CharacterListFragment extends Fragment {
     }
 
     void consume(Effect effect) {
+        if (effect instanceof Effect.ClickCharacterEffect) {
+            Effect.ClickCharacterEffect clickEffect = ((Effect.ClickCharacterEffect) effect);
+            ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) clickEffect.item;
+            ImageView imageView = clickEffect.view.findViewById(R.id.mCharacterImage);
+            FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
+                    .addSharedElement(imageView, "marvelTransition")
+                    .build();
+            CharacterListFragmentDirections.ActionListToDetail directions = CharacterListFragmentDirections.actionListToDetail(marvelCharacter);
+            if(NavHostFragment.findNavController(CharacterListFragment.this).getCurrentDestination().getId()==R.id.CharactersListFragment)
+                NavHostFragment.findNavController(CharacterListFragment.this).navigate(directions, extras);
 
+        }
     }
 
     void render(State state) {
