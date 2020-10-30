@@ -12,9 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
+import com.example.controllers.characterdetail.CharacterDetailViewModel;
+import com.example.controllers.characterdetail.Effect;
+import com.example.controllers.characterdetail.State;
 import com.example.controllers.retrofit.CharacterDetailPageController;
-import com.example.controllers.retrofit.Effect;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterDetailsBinding;
@@ -26,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class CharacterDetailFragment extends Fragment {
     @Inject
-    CharacterDetailPageController controller;
+    CharacterDetailViewModel viewModel;
 
     int characterId;
     TextView name;
@@ -37,32 +40,27 @@ public class CharacterDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_character_details, container, false);
-        /*Intent intent = getActivity().getIntent();
-        characterId = intent.getIntExtra("MARVEL_CHARACTER_ID", 0);*/
-
         ProcessedMarvelCharacter item = CharacterDetailFragmentArgs.fromBundle(getArguments()).getItem();
-
-
         characterId = item.id;
 
-        //ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.image), "marvelTransition");
         setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-        postponeEnterTransition();//400, TimeUnit.MILLISECONDS);
+        postponeEnterTransition();
 
         name = binding.getRoot().findViewById(R.id.name);
         imageView = binding.getRoot().findViewById(R.id.image);
 
-        controller.getStateLiveData().observe(getViewLifecycleOwner(),
-                (state -> {
-                    renderState(state);
-                }
-                ));
-
-        controller.effectLiveData().observe(getViewLifecycleOwner(),
-                (effect -> {
-                    consumeEffect(effect);
-                }));
-        loadCharacter();
+        viewModel.getState().observe(getViewLifecycleOwner(), new Observer<State>() {
+            @Override
+            public void onChanged(State state) {
+                render(state);
+            }
+        });
+        viewModel.getEffect().observe(getViewLifecycleOwner(), new Observer<Effect>() {
+            @Override
+            public void onChanged(Effect effect) {
+                consume(effect);
+            }
+        });
 
         return binding.getRoot();
     }
@@ -73,20 +71,20 @@ public class CharacterDetailFragment extends Fragment {
         imageView.setTransitionName("marvelTransition");
     }
 
-    void loadCharacter() {
+    /*void loadCharacter() {
        // characterId = 1011334;
         controller.loadCharacterDetails(characterId);
-    }
+    }*/
 
-    void renderState(CharacterDetailPageController.State state) {
+    void render(State state) {
         //Log.d("VartikaHilt", "marvelCharacter.name->" + state.character.name);
         binding.setState(state);
         binding.executePendingBindings();
      //   startPostponedEnterTransition();
     }
 
-    void consumeEffect(Effect effect) {
-        if(effect instanceof CharacterDetailPageController.ImageLoaded) {
+    void consume(Effect effect) {
+        if(effect instanceof Effect.ImageLoaded) {
             startPostponedEnterTransition();
         }
     }

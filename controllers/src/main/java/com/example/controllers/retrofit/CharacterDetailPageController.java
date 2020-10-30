@@ -60,17 +60,17 @@ public class CharacterDetailPageController {
     }
 
     public static class State {
-        public boolean loading;
-        public boolean error;
-        public ProcessedMarvelCharacter character;
-        public ICallbackListerner callbackListener;
+            public boolean loading;
+            public boolean error;
+            public ProcessedMarvelCharacter character;
+            public ICallbackListerner callbackListener;
 
-        public State(boolean loading, boolean error, ProcessedMarvelCharacter character, ICallbackListerner callbackListener) {
-            this.loading = loading;
-            this.error = error;
-            this.character = character;
-            this.callbackListener = callbackListener;
-        }
+            public State(boolean loading, boolean error, ProcessedMarvelCharacter character, ICallbackListerner callbackListener) {
+                this.loading = loading;
+                this.error = error;
+                this.character = character;
+                this.callbackListener = callbackListener;
+            }
     }
 
     public ControlledLiveData<Effect> effectLiveData() {

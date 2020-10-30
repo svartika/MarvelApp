@@ -18,25 +18,27 @@ import com.example.controllers.retrofit.AbsCharactersListPageController;
 import com.example.controllers.retrofit.ICallbackListerner;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
+import com.example.mviframework.Runner;
 
 import java.util.List;
 
 public class BindingUtils {
     @BindingAdapter(value = {"url", "callbackListener"}, requireAll = false)
-    public static void loadImage(ImageView imageView, String url, ICallbackListerner callbackListener) {
+    public static void loadImage(ImageView imageView, String url, Runner callbackListener) {
         new Logger().d("VartikaHilt", "load image: " + url);
+        if(url==null) return;
         Glide.with(imageView.getContext())
                 .load(url)
                 .addListener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        if(callbackListener!=null) callbackListener.callback();
+                        if(callbackListener!=null) callbackListener.run();
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        if(callbackListener!=null) callbackListener.callback();
+                        if(callbackListener!=null) callbackListener.run();
                         return false;
                     }
                 })

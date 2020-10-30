@@ -3,6 +3,7 @@ package com.example.controllers.characterslist;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 
 import java.util.List;
+import java.util.Objects;
 
 public class State {
     public List<ProcessedMarvelCharacter> charactersList;
@@ -31,5 +32,21 @@ public class State {
 
     public SearchTextChangedCallbackListener getSearchCallback() {
         return searchCallback;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof State)) return false;
+        State state = (State) o;
+        return getCharactersList().equals(state.getCharactersList()) &&
+                getSearchStr().equals(state.getSearchStr()) &&
+                getClickListener().equals(state.getClickListener()) &&
+                getSearchCallback().equals(state.getSearchCallback());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCharactersList(), getSearchStr(), getClickListener(), getSearchCallback());
     }
 }
