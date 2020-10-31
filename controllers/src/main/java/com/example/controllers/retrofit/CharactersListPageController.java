@@ -121,10 +121,10 @@ public class CharactersListPageController implements AbsCharactersListPageContro
 
     public class MarvelCharacterClickedListenerImpl implements MarvelCharacterClickListener<ProcessedMarvelCharacter> {
 
+
         @Override
-        public void invoke(View view, ProcessedMarvelCharacter item) {
-            logger.d("Vartika", "OnMarvelCharacterClicked: " + item);
-            effectLiveData.onNext(new ClickEffect(view, item));
+        public void invoke(View view, ProcessedMarvelCharacter character) {
+
         }
     }
 

@@ -17,7 +17,6 @@ import androidx.lifecycle.Observer;
 import com.example.controllers.characterdetail.CharacterDetailViewModel;
 import com.example.controllers.characterdetail.Effect;
 import com.example.controllers.characterdetail.State;
-import com.example.controllers.retrofit.CharacterDetailPageController;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterDetailsBinding;
@@ -69,18 +68,12 @@ public class CharacterDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         imageView.setTransitionName("marvelTransition");
+        name.setTransitionName("marvelTransitionName");
     }
 
-    /*void loadCharacter() {
-       // characterId = 1011334;
-        controller.loadCharacterDetails(characterId);
-    }*/
-
     void render(State state) {
-        //Log.d("VartikaHilt", "marvelCharacter.name->" + state.character.name);
         binding.setState(state);
         binding.executePendingBindings();
-     //   startPostponedEnterTransition();
     }
 
     void consume(Effect effect) {

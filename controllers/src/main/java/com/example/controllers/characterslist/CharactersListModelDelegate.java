@@ -28,7 +28,7 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
             enqueue(new Reducer<InnerState, Effect>() {
                 @Override
                 public Change<InnerState, Effect> reduce(InnerState innerState) {
-                    return withEffects(innerState, new Effect.ClickCharacterEffect<ProcessedMarvelCharacter>(view, character));
+                    return withEffects(innerState, new Effect.ClickCharacterEffect<ProcessedMarvelCharacter>(view,character));
                 }
             });
         }

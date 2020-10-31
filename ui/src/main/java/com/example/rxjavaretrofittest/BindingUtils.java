@@ -14,8 +14,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.controllers.characterslist.MarvelCharacterClickListener;
-import com.example.controllers.retrofit.AbsCharactersListPageController;
-import com.example.controllers.retrofit.ICallbackListerner;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
 import com.example.mviframework.Runner;
@@ -46,32 +44,12 @@ public class BindingUtils {
                 .into(imageView);
     }
 
-    @BindingAdapter(value = {"datasource", "marvelCharacterClickHandler"}, requireAll = true)
-    public static void loadDataSourceOLD(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList, MarvelCharacterClickListener marvelCharacterClickedListener) {
-
-        //rvMarvelCharacters.setLayoutManager(new GridLayoutManager(this, span));
-        new Logger().d("VartikaHilt", "BindingUtils.loadDataSource");
-        //changesAdapter = new ChangesAdapter();
-        RecyclerView.Adapter adapter = rvMarvelCharacters.getAdapter();
-        MarvelCharacterListAdapter marvelCharacterListAdapter = null;
-        if(adapter instanceof MarvelCharacterListAdapter) {
-            marvelCharacterListAdapter = (MarvelCharacterListAdapter) adapter;
-            marvelCharacterListAdapter.marvelCharacterClickedListener = marvelCharacterClickedListener;
-        } else {
-            marvelCharacterListAdapter = new MarvelCharacterListAdapter(marvelCharacterClickedListener);
-            rvMarvelCharacters.setAdapter(marvelCharacterListAdapter);
-        }
-
-       /* marvelCharacterListAdapter.setMarvelCharacters(marvelCharactersList);
-        marvelCharacterListAdapter.notifyDataSetChanged();*/
-       marvelCharacterListAdapter.submitList(marvelCharactersList);
-    }
     @BindingAdapter(value = {"onClick", "item"}, requireAll = true)
     public static void onCharacterClicked(View view, MarvelCharacterClickListener clickedListener, Object item) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickedListener.invoke(view, item);
+                clickedListener.invoke(view,item);
             }
         });
     }

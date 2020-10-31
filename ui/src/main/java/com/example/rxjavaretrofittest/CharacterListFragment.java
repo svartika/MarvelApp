@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,9 @@ import com.example.controllers.characterslist.State;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterListBinding;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -118,8 +122,13 @@ public class CharacterListFragment extends Fragment {
             Effect.ClickCharacterEffect clickEffect = ((Effect.ClickCharacterEffect) effect);
             ProcessedMarvelCharacter marvelCharacter = (ProcessedMarvelCharacter) clickEffect.item;
             ImageView imageView = clickEffect.view.findViewById(R.id.mCharacterImage);
+            TextView textView = clickEffect.view.findViewById(R.id.mCharacter);
+            Map<View,String> map = new HashMap<>();
+            map.put(imageView, "marvelTransition");
+            map.put(textView, "marvelTransitionName");
             FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
-                    .addSharedElement(imageView, "marvelTransition")
+                    .addSharedElements(map)
+                    /*.addSharedElement(clickEffect.view.findViewById(R.id.mCharacter), "marvelTransitionName")*/
                     .build();
             CharacterListFragmentDirections.ActionListToDetail directions = CharacterListFragmentDirections.actionListToDetail(marvelCharacter);
             if(NavHostFragment.findNavController(CharacterListFragment.this).getCurrentDestination().getId()==R.id.CharactersListFragment)
