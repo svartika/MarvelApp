@@ -5,14 +5,14 @@ apply plugin: 'dagger.hilt.android.plugin'
 
 android {
 
-    signingConfigs {
+/*    signingConfigs {
         rel {
-            storeFile file('D:\\SigningKey\\marvel.jks')
+            storeFile file('V:\\workbay\\git4study\\RxJavaRetrofitTest\\marvel.keystore')
             storePassword 'Bajrang@420'
             keyAlias 'marvel'
             keyPassword 'Bajrang@420'
         }
-    }
+    }*/
     compileSdkVersion 29
 
     defaultConfig {
@@ -37,7 +37,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.rel
+           // signingConfig signingConfigs.rel
         }
     }
 
