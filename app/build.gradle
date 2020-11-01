@@ -4,9 +4,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
+
     signingConfigs {
         rel {
-            storeFile file('V:\\workbay\\git4study\\RxJavaRetrofitTest\\marvel.keystore')
+            storeFile file('D:\\SigningKey\\marvel.jks')
             storePassword 'Bajrang@420'
             keyAlias 'marvel'
             keyPassword 'Bajrang@420'
@@ -29,6 +30,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -36,6 +41,14 @@ android {
         }
     }
 
+    sourceSets {
+        debug {
+            java {
+                srcDir 'java'
+               //exclude '**/InjectionModule2.java'
+            }
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
