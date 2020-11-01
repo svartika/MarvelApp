@@ -12,8 +12,6 @@ public class CharacterDetailNetworkInterfaceImpl extends CharacterDetailNetworkI
     Logger logger;
     @Inject
     MarvelRetrofitEndpointApi marvelRetrofitEndpointApi;
-    @Inject
-    RetrofitEndpointApi retrofitEndpointApi;
 
     @Inject
     CharacterDetailNetworkInterfaceImpl(Logger logger) {

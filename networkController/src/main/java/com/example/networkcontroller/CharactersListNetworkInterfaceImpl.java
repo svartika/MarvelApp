@@ -1,9 +1,8 @@
 package com.example.networkcontroller;
 
 import com.example.controllers.retrofit.CharactersListNetworkInterface;
-import com.example.entitiy.models.logs.Logger;
-import com.example.entitiy.models.Change;
 import com.example.entitiy.models.MarvelCharacter;
+import com.example.entitiy.models.logs.Logger;
 
 import java.util.List;
 
@@ -16,8 +15,6 @@ public class CharactersListNetworkInterfaceImpl extends CharactersListNetworkInt
 
     @Inject
     MarvelRetrofitEndpointApi marvelRetrofitEndpointApi;
-    @Inject
-    RetrofitEndpointApi retrofitEndpointApi;
 
     @Inject
     public CharactersListNetworkInterfaceImpl(Logger logger) {
