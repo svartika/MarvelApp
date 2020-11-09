@@ -47,7 +47,7 @@ dependencies {
     implementation project(path: ':entitiy')
     implementation 'com.google.android.material:material:1.2.1'
 
-    implementation project(path: ':mviframework')
+    implementation files('libs/mviframework-release.aar')
     implementation project(path: ':samplesController')
     implementation project(path: ':common-core-ui')
     testImplementation 'junit:junit:4.12'

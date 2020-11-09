@@ -52,7 +52,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
-    implementation project(path: ':mviframework')
+    implementation files('libs/mviframework-release.aar')
     implementation project(path: ':samplesController')
     implementation project(path: ':common-core-ui')
     testImplementation 'junit:junit:4.12'
