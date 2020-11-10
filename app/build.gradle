@@ -68,8 +68,6 @@ dependencies {
     implementation project(path: ':entitiy')
     implementation project(path: ':networkController')
     implementation project(path: ':ui')
-    implementation project(path: ':samplesController')
-    implementation project(path: ':samplui')
     implementation project(':mviframework-release')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
