@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controllers.characterdetail.CharacterDetailViewModel;
 import com.example.controllers.characterdetail.Effect;
@@ -33,6 +35,8 @@ public class CharacterDetailFragment extends Fragment {
     int characterId;
     TextView name;
     ImageView imageView;
+    RecyclerView rvComics;
+
     FragmentCharacterDetailsBinding binding;
 
     @Nullable
@@ -47,6 +51,8 @@ public class CharacterDetailFragment extends Fragment {
 
         name = binding.getRoot().findViewById(R.id.name);
         imageView = binding.getRoot().findViewById(R.id.image);
+        rvComics = binding.getRoot().findViewById(R.id.rvComics);
+        setUpRecyclerView();
 
         viewModel.getState().observe(getViewLifecycleOwner(), new Observer<State>() {
             @Override
@@ -69,6 +75,13 @@ public class CharacterDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         imageView.setTransitionName("marvelTransition");
         name.setTransitionName("marvelTransitionName");
+    }
+
+    void setUpRecyclerView() {
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        rvComics.setLayoutManager(layoutManager);
+
     }
 
     void render(State state) {

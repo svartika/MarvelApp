@@ -14,6 +14,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.controllers.characterslist.MarvelCharacterClickListener;
+import com.example.controllers.retrofit.ProcessedCollection;
 import com.example.controllers.retrofit.ProcessedMarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
 import com.example.mviframework.Runner;
@@ -67,5 +68,15 @@ public class BindingUtils {
         }
         marvelCharacterListAdapter.submitList(charactersList);
     }
-
+    @BindingAdapter("comicsDatasource")
+    public static  void loadComicsDataSource(RecyclerView rvComics, List<ProcessedCollection.ProcessedItem> comicsList) {
+        RecyclerView.Adapter adapter = rvComics.getAdapter();
+        if(adapter==null) {
+            ComicsListAdapter comicsListAdapter = new ComicsListAdapter();
+            rvComics.setAdapter(comicsListAdapter);
+            comicsListAdapter.submitList(comicsList);
+        } else {
+            ((ComicsListAdapter)adapter).submitList(comicsList);
+        }
+    }
 }

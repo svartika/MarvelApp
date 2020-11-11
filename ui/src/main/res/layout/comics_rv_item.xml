@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="comicItem"
+            type="com.example.controllers.retrofit.ProcessedCollection.ProcessedItem"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="2dp"
+        android:elevation="3dp"
+        android:layout_margin="4dp">
+
+        <TextView
+            android:id="@+id/comicName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textColor="#FF000000"
+            android:textAlignment="center"
+            android:text="@{comicItem.name}"/>
+    </androidx.cardview.widget.CardView>
+</layout>

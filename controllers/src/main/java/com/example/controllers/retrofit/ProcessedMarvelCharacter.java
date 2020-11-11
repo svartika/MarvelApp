@@ -13,7 +13,7 @@ public class ProcessedMarvelCharacter implements Parcelable {
     public String name, imageurl, description, modified;
     List<MarvelCharacter.URL> urls;
 
-    MarvelCharacter.Collection comics, series, stories, events;
+    public ProcessedCollection comics, series, stories, events;
 
     public ProcessedMarvelCharacter(MarvelCharacter character) {
         id = character.id;
@@ -22,10 +22,14 @@ public class ProcessedMarvelCharacter implements Parcelable {
       //  imageurl = character.thumbnail.path.replace("http", "https").concat("/portrait_xlarge.").concat(character.thumbnail.extension);
         imageurl = character.thumbnail.path.concat("/portrait_xlarge.").concat(character.thumbnail.extension);
         description = character.description;
-        comics = character.comics;
-        series = character.series;
-        stories = character.stories;
-        events = character.events;
+        comics = new ProcessedCollection();
+        series = new ProcessedCollection();
+        stories = new ProcessedCollection();
+        events = new ProcessedCollection();
+        comics.set(character.comics);
+        series.set(character.series);
+        stories.set(character.stories);
+        events.set(character.events);
         urls = character.urls;
         modified = character.modified;
     }
