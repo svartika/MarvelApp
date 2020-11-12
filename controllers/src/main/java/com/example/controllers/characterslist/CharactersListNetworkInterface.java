@@ -1,6 +1,7 @@
-package com.example.controllers.retrofit;
+package com.example.controllers.characterslist;
 
 
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.entitiy.models.MarvelCharacter;
 
 import java.util.ArrayList;

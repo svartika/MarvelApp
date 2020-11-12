@@ -33,7 +33,7 @@
 
         <argument
             android:name="item"
-            app:argType="com.example.controllers.retrofit.ProcessedMarvelCharacter" />
+            app:argType="com.example.controllers.commons.ProcessedMarvelCharacter" />
     </fragment>
 
 </navigation>

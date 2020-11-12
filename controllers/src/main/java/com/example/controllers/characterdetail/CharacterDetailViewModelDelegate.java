@@ -1,7 +1,6 @@
 package com.example.controllers.characterdetail;
 
-import com.example.controllers.retrofit.CharacterDetailNetworkInterface;
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.mviframework.BaseMviDelegate;
 import com.example.mviframework.Change;
 import com.example.mviframework.Reducer;

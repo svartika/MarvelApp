@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="comicItem"
-            type="com.example.controllers.retrofit.ProcessedCollection.ProcessedItem"/>
+            type="com.example.controllers.commons.ProcessedCollection.ProcessedItem"/>
     </data>
 
     <androidx.cardview.widget.CardView

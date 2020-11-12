@@ -28,7 +28,7 @@ import com.example.controllers.characterslist.CharactersListViewModel;
 import com.example.controllers.characterslist.Effect;
 import com.example.controllers.characterslist.SearchTextChangedCallbackListener;
 import com.example.controllers.characterslist.State;
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterListBinding;
 

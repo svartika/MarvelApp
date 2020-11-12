@@ -1,6 +1,6 @@
 package com.example.controllers.characterdetail;
 
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.mviframework.Runner;
 
 import java.util.Objects;

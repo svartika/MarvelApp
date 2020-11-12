@@ -1,4 +1,4 @@
-package com.example.controllers.retrofit;
+package com.example.controllers.commons;
 
 import com.example.entitiy.models.MarvelCharacter;
 

@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.controllers.characterdetail.CharacterDetailViewModel;
 import com.example.controllers.characterdetail.Effect;
 import com.example.controllers.characterdetail.State;
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterDetailsBinding;
 

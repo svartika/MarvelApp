@@ -3,8 +3,8 @@ package com.example.rxjavaretrofittest;
 
 
 
-import com.example.controllers.retrofit.CharacterDetailNetworkInterface;
-import com.example.controllers.retrofit.CharactersListNetworkInterface;
+import com.example.controllers.characterdetail.CharacterDetailNetworkInterface;
+import com.example.controllers.characterslist.CharactersListNetworkInterface;
 import com.example.networkcontroller.CharacterDetailNetworkInterfaceImpl;
 import com.example.networkcontroller.CharactersListNetworkInterfaceImpl;
 

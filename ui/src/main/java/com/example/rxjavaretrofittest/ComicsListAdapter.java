@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.controllers.retrofit.ProcessedCollection;
+import com.example.controllers.commons.ProcessedCollection;
 import com.example.ui.BR;
 import com.example.ui.R;
 import com.example.ui.databinding.ComicsRvItemBinding;

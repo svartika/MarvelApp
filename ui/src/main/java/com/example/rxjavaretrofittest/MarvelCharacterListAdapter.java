@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controllers.characterslist.MarvelCharacterClickListener;
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.ui.BR;
 import com.example.ui.R;
 import com.example.ui.databinding.MarvelCharacterRvItemBinding;

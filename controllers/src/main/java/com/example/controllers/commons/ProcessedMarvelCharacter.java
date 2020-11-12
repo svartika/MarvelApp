@@ -1,4 +1,4 @@
-package com.example.controllers.retrofit;
+package com.example.controllers.commons;
 
 import android.os.Parcel;
 import android.os.Parcelable;

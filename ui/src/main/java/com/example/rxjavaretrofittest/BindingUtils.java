@@ -14,8 +14,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.controllers.characterslist.MarvelCharacterClickListener;
-import com.example.controllers.retrofit.ProcessedCollection;
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedCollection;
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
 import com.example.mviframework.Runner;
 

@@ -1,5 +1,6 @@
-package com.example.controllers.retrofit;
+package com.example.controllers.characterdetail;
 
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.entitiy.models.MarvelCharacter;
 
 import io.reactivex.Observable;

@@ -12,9 +12,9 @@ import com.example.controllers.characterslist.CharactersListModelDelegate;
 import com.example.controllers.characterslist.CharactersListViewModel;
 import com.example.controllers.characterslist.CharactersListViewModelFactory;
 import com.example.controllers.characterslist.CharactersListViewModelImpl;
-import com.example.controllers.retrofit.CharacterDetailNetworkInterface;
-import com.example.controllers.retrofit.CharactersListNetworkInterface;
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
+import com.example.controllers.characterdetail.CharacterDetailNetworkInterface;
+import com.example.controllers.characterslist.CharactersListNetworkInterface;
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 
 import dagger.Module;
 import dagger.Provides;

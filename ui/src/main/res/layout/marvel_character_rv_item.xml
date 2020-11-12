@@ -7,7 +7,7 @@
     <data>
         <variable
             name="marvelItem"
-            type="com.example.controllers.retrofit.ProcessedMarvelCharacter" />
+            type="com.example.controllers.commons.ProcessedMarvelCharacter" />
         <variable
             name="clickHandler"
             type="com.example.controllers.characterslist.MarvelCharacterClickListener" />

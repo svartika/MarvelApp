@@ -1,6 +1,6 @@
 package com.example.controllers.characterslist;
 
-import com.example.controllers.retrofit.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelCharacter;
 
 import java.util.List;
 import java.util.Objects;
