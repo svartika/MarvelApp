@@ -1,8 +1,8 @@
 package com.example.controllers.characterslist;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 public class CharactersListViewModelFactory implements ViewModelProvider.Factory {
     CharactersListModelDelegate delegate;

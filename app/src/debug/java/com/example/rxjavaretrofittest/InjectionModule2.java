@@ -1,7 +1,6 @@
 package com.example.rxjavaretrofittest;
 
 import android.content.Context;
-import com.facebook.soloader.SoLoader;
 
 import com.example.networkcontroller.MarvelRetrofitEndpointApi;
 import com.example.networkcontroller.QueryInterceptor;
@@ -12,6 +11,7 @@ import com.facebook.flipper.plugins.inspector.DescriptorMapping;
 import com.facebook.flipper.plugins.inspector.InspectorFlipperPlugin;
 import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor;
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin;
+import com.facebook.soloader.SoLoader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
