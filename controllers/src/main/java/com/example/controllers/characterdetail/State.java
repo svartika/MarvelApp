@@ -2,9 +2,10 @@ package com.example.controllers.characterdetail;
 
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
+import com.example.mviframework.Runner;
+
 import java.util.List;
 import java.util.Objects;
-import com.example.mviframework.Runner;
 
 public class State {
     boolean loading;

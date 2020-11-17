@@ -44,23 +44,12 @@
             android:id="@+id/rvComics"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            app:comicsDatasource="@{state.character.comics.items}"
+            app:comicsDatasource="@{state.comics}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image"
-            android:visibility="gone"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvComicsDetailed"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-
-            app:comicsDetailedDatasource="@{state.comics}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image" />
+            />
 
         <ProgressBar
             android:layout_width="40dp"

@@ -3,6 +3,9 @@ package com.example.controllers.characterslist;
 import android.view.View;
 
 import com.example.controllers.commons.ProcessedMarvelCharacter;
+import com.example.mviframework.BaseMviDelegate;
+import com.example.mviframework.Change;
+import com.example.mviframework.Reducer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +14,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
-import com.example.mviframework.BaseMviDelegate;
-import com.example.mviframework.Change;
-import com.example.mviframework.Reducer;
 
 public class CharactersListModelDelegate extends BaseMviDelegate<State, CharactersListModelDelegate.InnerState, Effect> {
 

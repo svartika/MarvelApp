@@ -1,15 +1,18 @@
 package com.example.controllers.characterdetail;
 
 import android.util.Log;
+
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
-import java.util.ArrayList;
-import java.util.List;
-import io.reactivex.Observable;
 import com.example.mviframework.BaseMviDelegate;
 import com.example.mviframework.Change;
 import com.example.mviframework.Reducer;
 import com.example.mviframework.Runner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
 
 public class CharacterDetailViewModelDelegate extends BaseMviDelegate<State, CharacterDetailViewModelDelegate.InnerState, Effect> {
     CharacterDetailNetworkInterface networkInterface;

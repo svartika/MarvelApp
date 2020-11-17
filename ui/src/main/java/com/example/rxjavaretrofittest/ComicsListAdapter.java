@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.controllers.commons.ProcessedCollection;
+import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.ui.BR;
 import com.example.ui.R;
 import com.example.ui.databinding.ComicsRvItemBinding;
@@ -19,16 +19,16 @@ import java.util.List;
 
 public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.ComicsViewHolder> {
 
-    private final AsyncListDiffer<ProcessedCollection.ProcessedItem> differ = new AsyncListDiffer<ProcessedCollection.ProcessedItem>(this, diffCallback);
-    public static final DiffUtil.ItemCallback<ProcessedCollection.ProcessedItem>diffCallback = new DiffUtil.ItemCallback<ProcessedCollection.ProcessedItem>() {
+    private final AsyncListDiffer<ProcessedMarvelComic> differ = new AsyncListDiffer<ProcessedMarvelComic>(this, diffCallback);
+    public static final DiffUtil.ItemCallback<ProcessedMarvelComic>diffCallback = new DiffUtil.ItemCallback<ProcessedMarvelComic>() {
         @Override
-        public boolean areItemsTheSame(@NonNull ProcessedCollection.ProcessedItem oldItem, @NonNull ProcessedCollection.ProcessedItem newItem) {
-            return oldItem.name.compareToIgnoreCase(newItem.name)==0;
+        public boolean areItemsTheSame(@NonNull ProcessedMarvelComic oldItem, @NonNull ProcessedMarvelComic newItem) {
+            return oldItem.id == newItem.id;
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull ProcessedCollection.ProcessedItem oldItem, @NonNull ProcessedCollection.ProcessedItem newItem) {
-            return oldItem.name.compareToIgnoreCase(newItem.name)==0;
+        public boolean areContentsTheSame(@NonNull ProcessedMarvelComic oldItem, @NonNull ProcessedMarvelComic newItem) {
+            return oldItem.title.compareToIgnoreCase(newItem.title)==0;
         }
     };
 
@@ -42,7 +42,7 @@ public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.Co
 
     @Override
     public void onBindViewHolder(@NonNull ComicsViewHolder holder, int position) {
-        ProcessedCollection.ProcessedItem comic = differ.getCurrentList().get(position);
+        ProcessedMarvelComic comic = differ.getCurrentList().get(position);
         holder.bind(comic);
     }
 
@@ -51,7 +51,7 @@ public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.Co
         return differ.getCurrentList().size();
     }
 
-    public void submitList(List<ProcessedCollection.ProcessedItem> list) {
+    public void submitList(List<ProcessedMarvelComic> list) {
         differ.submitList(list);
     }
 
@@ -61,7 +61,7 @@ public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.Co
             super(binding.getRoot());
             this.binding = binding;
         }
-        public void bind(ProcessedCollection.ProcessedItem comicItem) {
+        public void bind(ProcessedMarvelComic comicItem) {
             binding.setVariable(BR.comicItem, comicItem);
             binding.executePendingBindings();
         }
