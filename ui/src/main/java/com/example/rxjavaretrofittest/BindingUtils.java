@@ -1,13 +1,12 @@
 package com.example.rxjavaretrofittest;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -16,10 +15,10 @@ import com.bumptech.glide.request.target.Target;
 import com.example.controllers.characterslist.MarvelCharacterClickListener;
 import com.example.controllers.commons.ProcessedCollection;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.entitiy.models.logs.Logger;
-import com.example.mviframework.Runner;
-
 import java.util.List;
+import com.example.mviframework.Runner;
 
 public class BindingUtils {
     @BindingAdapter(value = {"url", "callbackListener"}, requireAll = false)
@@ -77,6 +76,19 @@ public class BindingUtils {
             comicsListAdapter.submitList(comicsList);
         } else {
             ((ComicsListAdapter)adapter).submitList(comicsList);
+        }
+    }
+    @BindingAdapter("comicsDetailedDatasource")
+    public static void loadComicsDetailedDataSource(RecyclerView rvComics, List<ProcessedMarvelComic> comicsList) {
+        Log.d("Vartika3", "loadComicsDetailedDataSource: "+comicsList);
+        rvComics.setVisibility(View.VISIBLE);
+        RecyclerView.Adapter adapter = rvComics.getAdapter();
+        if(adapter==null) {
+            ComicsDetailedListAdapter comicsListAdapter = new ComicsDetailedListAdapter();
+            rvComics.setAdapter(comicsListAdapter);
+            comicsListAdapter.submitList(comicsList);
+        } else {
+            ((ComicsDetailedListAdapter)adapter).submitList(comicsList);
         }
     }
 }

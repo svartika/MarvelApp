@@ -1,8 +1,10 @@
 package com.example.networkcontroller;
 
 import com.example.controllers.characterdetail.CharacterDetailNetworkInterface;
-import com.example.entitiy.models.MarvelCharacter;
+import com.example.entitiy.models.MarvelComic;
 import com.example.entitiy.models.logs.Logger;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -18,11 +20,11 @@ public class CharacterDetailNetworkInterfaceImpl extends CharacterDetailNetworkI
         this.logger = logger;
     }
     @Override
-    public Observable<MarvelCharacter> loadMarvelCharacter(int characterId){
+    public Observable<List<MarvelComic>> loadMarvelCharacterComicsRaw(int characterId){
         logger.d("VartikaHilt", "loading marvel character");
-        Observable<MarvelCharacter> call = marvelRetrofitEndpointApi.loadCharacter(characterId).map(
-                marvelCharacterResponse -> {
-                    return marvelCharacterResponse.data.characters.get(0);
+        Observable<List<MarvelComic>> call = marvelRetrofitEndpointApi.loadComics(characterId).map(
+                marvelComicsResponse -> {
+                    return marvelComicsResponse.data.comics;
                 }
         );
         return call;

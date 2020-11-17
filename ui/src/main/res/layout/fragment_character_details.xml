@@ -16,49 +16,61 @@
 
         <TextView
             android:id="@+id/name"
-            android:text="@{state.character.name}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FF000000"
+            android:text="@{state.character.name}"
             android:textAlignment="center"
+            android:textColor="#FF000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image"/>
+            app:layout_constraintTop_toBottomOf="@id/image" />
+
         <ImageView
             android:id="@+id/image"
             android:layout_width="@dimen/character_image_width"
             android:layout_height="@dimen/character_image_height"
-            android:scaleType="fitCenter"
             android:layout_margin="15dp"
+            android:scaleType="fitCenter"
             android:src="@color/cardview_dark_background"
-            app:url="@{state.character.imageurl}"
             app:callbackListener="@{state.callbackRunner}"
             app:layout_constraintBottom_toTopOf="@+id/name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:url="@{state.character.imageurl}" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComics"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:id="@+id/rvComics"
             app:comicsDatasource="@{state.character.comics.items}"
-            app:layout_constraintTop_toBottomOf="@id/image"
-            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/image"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComicsDetailed"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+
+            app:comicsDetailedDatasource="@{state.comics}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image" />
 
         <ProgressBar
             android:layout_width="40dp"
-            android:progressTint="@color/cardview_dark_background"
             android:layout_height="40dp"
+            android:progressTint="@color/cardview_dark_background"
             android:visibility="@{state.loading?View.VISIBLE:View.GONE}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

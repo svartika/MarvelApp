@@ -2,6 +2,7 @@ package com.example.rxjavaretrofittest;
 
 import android.os.Bundle;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class CharacterDetailFragment extends Fragment {
     int characterId;
     TextView name;
     ImageView imageView;
-    RecyclerView rvComics;
+    RecyclerView rvComics, rvComicsDetailed;
 
     FragmentCharacterDetailsBinding binding;
 
@@ -52,7 +53,9 @@ public class CharacterDetailFragment extends Fragment {
         name = binding.getRoot().findViewById(R.id.name);
         imageView = binding.getRoot().findViewById(R.id.image);
         rvComics = binding.getRoot().findViewById(R.id.rvComics);
+        rvComicsDetailed = binding.getRoot().findViewById(R.id.rvComicsDetailed);
         setUpRecyclerView();
+        setUpRecyclerViewDetailed();
 
         viewModel.getState().observe(getViewLifecycleOwner(), new Observer<State>() {
             @Override
@@ -83,8 +86,15 @@ public class CharacterDetailFragment extends Fragment {
         rvComics.setLayoutManager(layoutManager);
 
     }
+    void setUpRecyclerViewDetailed() {
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        rvComicsDetailed.setLayoutManager(layoutManager);
+
+    }
 
     void render(State state) {
+        Log.d("Vartika3", "render: "+state.getComics());
         binding.setState(state);
         binding.executePendingBindings();
     }

@@ -1,6 +1,6 @@
 package com.example.controllers.commons;
 
-import com.example.entitiy.models.MarvelCharacter;
+import com.example.entitiy.models.Collection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +10,12 @@ public class ProcessedCollection {
     public String collectionURI;
     public List<ProcessedItem> items;
 
-    public void set(MarvelCharacter.Collection collection) {
+    public void set(Collection collection) {
         this.available = collection.available;
         this.collectionURI = collection.collectionURI;
         if(items==null) items = new ArrayList<>();
         if(collection!=null) {
-            for (MarvelCharacter.Item item : collection.items) {
+            for (Collection.Item item : collection.items) {
                 this.items.add(new ProcessedItem(item));
             }
         }
@@ -23,7 +23,7 @@ public class ProcessedCollection {
 
     public static class ProcessedItem {
         public String name;
-        public ProcessedItem(MarvelCharacter.Item item) {
+        public ProcessedItem(Collection.Item item) {
             this.name = item.name;
         }
     }

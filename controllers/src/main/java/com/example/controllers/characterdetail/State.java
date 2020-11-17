@@ -1,22 +1,36 @@
 package com.example.controllers.characterdetail;
 
 import com.example.controllers.commons.ProcessedMarvelCharacter;
-import com.example.mviframework.Runner;
-
+import com.example.controllers.commons.ProcessedMarvelComic;
+import java.util.List;
 import java.util.Objects;
+import com.example.mviframework.Runner;
 
 public class State {
     boolean loading;
     boolean error;
     ProcessedMarvelCharacter character;
+    List<ProcessedMarvelComic> comics;
     Runner callbackRunner;
 
-    State(ProcessedMarvelCharacter character, boolean loading, boolean error, Runner callbackRunner) {
+    State(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, boolean loading, boolean error, Runner callbackRunner) {
         this.character = character;
+        this.comics = comics;
         this.loading = loading;
         this.error = error;
 
         this.callbackRunner = callbackRunner;
+    }
+
+    @Override
+    public String toString() {
+        return "State("+hashCode()+"){" +
+                "loading=" + loading +
+                ", error=" + error +
+                ", character=" + character +
+                ", comics=" + comics +
+                ", callbackRunner=" + callbackRunner +
+                '}';
     }
 
     public ProcessedMarvelCharacter getCharacter() {
@@ -35,6 +49,9 @@ public class State {
         return callbackRunner;
     }
 
+    public List<ProcessedMarvelComic> getComics() {
+        return comics;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -43,9 +60,26 @@ public class State {
         return isLoading() == state.isLoading() &&
                 isError() == state.isError() &&
                 getCharacter().equals(state.getCharacter()) &&
-                getCallbackRunner().equals(state.getCallbackRunner());
+                getCallbackRunner().equals(state.getCallbackRunner()) &&
+                compareLists(comics,state.comics);
     }
 
+    boolean compareLists(List<ProcessedMarvelComic> first, List<ProcessedMarvelComic> second) {
+        if(first==null && second==null) return true;
+        else if(first==null || second==null) return false;
+        else if(first.size()!=second.size()) return false;
+        else {
+            boolean ret = true;
+            for(ProcessedMarvelComic elem1: first) {
+                for(ProcessedMarvelComic elem2: second) {
+                    if(elem1.id!=elem2.id) {
+                        ret = false;
+                    }
+                }
+            }
+            return ret;
+         }
+    }
     @Override
     public int hashCode() {
         return Objects.hash(isLoading(), isError(), getCharacter(), getCallbackRunner());

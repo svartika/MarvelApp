@@ -23,19 +23,7 @@ public class MarvelCharacter {
     }
     @SerializedName("comics")
     public Collection comics;
-    public static class Collection {
-        @SerializedName("available")
-        public int available;
-        @SerializedName("collectionURI")
-        public String collectionURI;
-        @SerializedName("items")
-        public List<Item> items;
-    }
 
-    public static class Item {
-        @SerializedName("name")
-        public String name;
-    }
     @SerializedName("series")
     public Collection series;
 

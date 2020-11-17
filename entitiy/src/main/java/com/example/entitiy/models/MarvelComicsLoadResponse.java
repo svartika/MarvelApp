@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class MarvelCharacterResponse {
+public class MarvelComicsLoadResponse {
     @SerializedName("code")
     int code;
     @SerializedName("status")
@@ -28,7 +28,7 @@ public class MarvelCharacterResponse {
         @SerializedName("count")
         int count;
         @SerializedName("results")
-        public List<MarvelCharacter> characters;
+        public List<MarvelComic> comics;
 
     }
 }
