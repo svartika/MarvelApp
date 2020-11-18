@@ -1,5 +1,7 @@
 <resources>
 
     <dimen name="character_image_width">180dp</dimen>
-    <dimen name="character_image_height">220dp</dimen>
+    <dimen name="character_image_height">200dp</dimen>
+    <dimen name="character_card_width">180dp</dimen>
+    <dimen name="character_card_height">280dp</dimen>
 </resources>

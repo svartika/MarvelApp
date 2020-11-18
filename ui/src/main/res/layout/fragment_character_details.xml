@@ -21,10 +21,10 @@
             android:text="@{state.character.name}"
             android:textAlignment="center"
             android:textColor="#FF000000"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/image"
@@ -34,10 +34,10 @@
             android:scaleType="fitCenter"
             android:src="@color/cardview_dark_background"
             app:callbackListener="@{state.callbackRunner}"
-            app:layout_constraintBottom_toTopOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rvComics"
             app:url="@{state.character.imageurl}" />
 
         <androidx.recyclerview.widget.RecyclerView
