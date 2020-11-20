@@ -95,13 +95,13 @@ public class State {
         else if(first.size()!=second.size()) return false;
         else {
             boolean ret = true;
-            for(ProcessedMarvelItemBase elem1: first) {
-                for(ProcessedMarvelItemBase elem2: second) {
-                    if(elem1.id!=elem2.id) {
-                        ret = false;
-                    }
+            for(int i = 0; i < first.size(); i++) {
+                if(first.get(i).id!=second.get(i).id) {
+                    ret = false;
+                    break;
                 }
             }
+
             return ret;
          }
     }
