@@ -4,13 +4,13 @@ import com.example.entitiy.models.MarvelComic;
 
 import java.util.List;
 
-public class ProcessedMarvelComic {
-    public int id, issueNumber;
-    public String title, variantDescription, description, imageurl, modified;
-    public List<MarvelComic.URL> urls;
+public class ProcessedMarvelComic extends ProcessedMarvelItemBase {
+    public int issueNumber;
+    public String variantDescription;
     public List<MarvelComic.Price> prices;
     public List<MarvelComic.Thumbnail> images;
     public ProcessedCollection creators, characters, stories;
+    public List<MarvelComic.URL> urls;
 
     public ProcessedMarvelComic(MarvelComic marvelComic) {
         id = marvelComic.id;
@@ -18,7 +18,8 @@ public class ProcessedMarvelComic {
         title = marvelComic.title;
         variantDescription = marvelComic.variantDescription;
         description = marvelComic.description;
-        imageurl = marvelComic.thumbnail.path.concat(".").concat(marvelComic.thumbnail.extension);
+        if(marvelComic.thumbnail!=null) imageurl = marvelComic.thumbnail.path.concat(".").concat(marvelComic.thumbnail.extension);
+        else imageurl = "";
         modified = marvelComic.modified;
         urls = marvelComic.urls;
         prices = marvelComic.prices;
@@ -30,5 +31,7 @@ public class ProcessedMarvelComic {
         stories = new ProcessedCollection();
         stories.set(marvelComic.stories);
     }
+
+
 }
 

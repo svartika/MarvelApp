@@ -2,6 +2,10 @@ package com.example.controllers.characterdetail;
 
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
+import com.example.controllers.commons.ProcessedMarvelEvent;
+import com.example.controllers.commons.ProcessedMarvelItemBase;
+import com.example.controllers.commons.ProcessedMarvelSeries;
+import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.mviframework.Runner;
 
 import java.util.List;
@@ -12,14 +16,19 @@ public class State {
     boolean error;
     ProcessedMarvelCharacter character;
     List<ProcessedMarvelComic> comics;
+    List<ProcessedMarvelSeries> series;
+    List<ProcessedMarvelStory> stories;
+    List<ProcessedMarvelEvent> events;
     Runner callbackRunner;
 
-    State(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, boolean loading, boolean error, Runner callbackRunner) {
+    State(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error, Runner callbackRunner) {
         this.character = character;
         this.comics = comics;
         this.loading = loading;
         this.error = error;
-
+        this.series = series;
+        this.stories = stories;
+        this.events = events;
         this.callbackRunner = callbackRunner;
     }
 
@@ -30,6 +39,9 @@ public class State {
                 ", error=" + error +
                 ", character=" + character +
                 ", comics=" + comics +
+                ", series=" + series +
+                ", stories=" + stories +
+                ", events=" + events +
                 ", callbackRunner=" + callbackRunner +
                 '}';
     }
@@ -53,6 +65,15 @@ public class State {
     public List<ProcessedMarvelComic> getComics() {
         return comics;
     }
+    public List<ProcessedMarvelSeries> getSeries() {
+        return series;
+    }
+    public List<ProcessedMarvelStory> getStories() {
+        return stories;
+    }
+    public List<ProcessedMarvelEvent> getEvents() {
+        return events;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,17 +83,20 @@ public class State {
                 isError() == state.isError() &&
                 getCharacter().equals(state.getCharacter()) &&
                 getCallbackRunner().equals(state.getCallbackRunner()) &&
-                compareLists(comics,state.comics);
+                compareLists(comics,state.comics) &&
+                compareLists(series, state.series) &&
+                compareLists(stories, state.stories) &&
+                compareLists(events, state.events);
     }
 
-    boolean compareLists(List<ProcessedMarvelComic> first, List<ProcessedMarvelComic> second) {
+    boolean compareLists(List<? extends ProcessedMarvelItemBase> first, List<? extends  ProcessedMarvelItemBase> second) {
         if(first==null && second==null) return true;
         else if(first==null || second==null) return false;
         else if(first.size()!=second.size()) return false;
         else {
             boolean ret = true;
-            for(ProcessedMarvelComic elem1: first) {
-                for(ProcessedMarvelComic elem2: second) {
+            for(ProcessedMarvelItemBase elem1: first) {
+                for(ProcessedMarvelItemBase elem2: second) {
                     if(elem1.id!=elem2.id) {
                         ret = false;
                     }

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="comicItem"
-            type="com.example.controllers.commons.ProcessedMarvelComic" />
+            name="eventItem"
+            type="com.example.controllers.commons.ProcessedMarvelEvent" />
     </data>
 
 
@@ -22,37 +22,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-         <!--   <TextView
-                android:id="@+id/comicName"
+           <!-- <TextView
+                android:id="@+id/eventName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:text="@{comicItem.title}"
+                android:text="@{eventItem.title}"
                 android:textAlignment="center"
                 android:textColor="#FF000000"
-                app:layout_constraintBottom_toTopOf="@id/comicImage"
+                app:layout_constraintBottom_toTopOf="@id/eventImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />-->
 
             <ImageView
-                android:id="@+id/comicImage"
+                android:id="@+id/eventImage"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/character_image_height"
                 android:adjustViewBounds="true"
-
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:url="@{comicItem.imageurl}" />
+                app:url="@{eventItem.imageurl}" />
 
             <TextView
-                android:id="@+id/comicName"
+                android:id="@+id/eventName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:visibility="@{comicItem.displayName()}"
-                android:text="@{comicItem.title}"
+                app:visibility="@{eventItem.displayName()}"
+                android:text="@{eventItem.title}"
                 android:textColor="@color/cardview_light_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

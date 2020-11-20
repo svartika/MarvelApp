@@ -36,7 +36,7 @@ public class CharacterDetailFragment extends Fragment {
     int characterId;
     TextView name;
     ImageView imageView;
-    RecyclerView rvComics;
+    RecyclerView rvComics, rvSeries, rvStories, rvEvents;
 
     FragmentCharacterDetailsBinding binding;
 
@@ -53,6 +53,9 @@ public class CharacterDetailFragment extends Fragment {
         name = binding.getRoot().findViewById(R.id.name);
         imageView = binding.getRoot().findViewById(R.id.image);
         rvComics = binding.getRoot().findViewById(R.id.rvComics);
+        rvSeries = binding.getRoot().findViewById(R.id.rvSeries);
+        rvStories = binding.getRoot().findViewById(R.id.rvStories);
+        rvEvents = binding.getRoot().findViewById(R.id.rvEvents);
         setUpRecyclerView();
 
         viewModel.getState().observe(getViewLifecycleOwner(), new Observer<State>() {
@@ -83,10 +86,21 @@ public class CharacterDetailFragment extends Fragment {
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         rvComics.setLayoutManager(layoutManager);
 
+        GridLayoutManager layoutManager2 = new GridLayoutManager(getContext(),1);
+        layoutManager2.setOrientation(RecyclerView.HORIZONTAL);
+        rvSeries.setLayoutManager(layoutManager2);
+
+        GridLayoutManager layoutManager3 = new GridLayoutManager(getContext(),1);
+        layoutManager3.setOrientation(RecyclerView.HORIZONTAL);
+        rvStories.setLayoutManager(layoutManager3);
+
+        GridLayoutManager layoutManager4 = new GridLayoutManager(getContext(),1);
+        layoutManager4.setOrientation(RecyclerView.HORIZONTAL);
+        rvEvents.setLayoutManager(layoutManager4);
     }
 
     void render(State state) {
-        Log.d("Vartika3", "render: "+state.getComics());
+        //Log.d("Vartika3", "render: "+state.getComics());
         binding.setState(state);
         binding.executePendingBindings();
     }

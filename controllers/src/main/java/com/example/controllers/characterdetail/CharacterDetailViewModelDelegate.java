@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
+import com.example.controllers.commons.ProcessedMarvelEvent;
+import com.example.controllers.commons.ProcessedMarvelSeries;
+import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.mviframework.BaseMviDelegate;
 import com.example.mviframework.Change;
 import com.example.mviframework.Reducer;
@@ -21,6 +24,10 @@ public class CharacterDetailViewModelDelegate extends BaseMviDelegate<State, Cha
         this.networkInterface = networkInterface;
         this.character = character;
         loadComics(character.id);
+        loadSeries(character.id);
+        loadStories(character.id);
+        loadEvents(character.id);
+
         /*enqueue(new Reducer<InnerState, Effect>() {
             @Override
             public Change<InnerState, Effect> reduce(InnerState innerState) {
@@ -64,13 +71,13 @@ public class CharacterDetailViewModelDelegate extends BaseMviDelegate<State, Cha
 
     @Override
     public Change<InnerState, Effect> getInitialChange() {
-        return asChange(new InnerState(character, null,true, false));
+        return asChange(new InnerState(character, null, null, null, null, true, false));
     }
 
     @Override
     public State mapState(InnerState innerState) {
-        Log.d("Vartika3", "comics in mapstate"+innerState.comics);
-        return new State(innerState.character, innerState.comics, innerState.loading, innerState.error, callbackRunner);
+        //Log.d("Vartika3", "comics in mapstate"+innerState.comics);
+        return new State(innerState.character, innerState.comics, innerState.series, innerState.stories, innerState.events,  innerState.loading, innerState.error, callbackRunner);
     }
 
     static class InnerState {
@@ -78,14 +85,20 @@ public class CharacterDetailViewModelDelegate extends BaseMviDelegate<State, Cha
         boolean error;
         ProcessedMarvelCharacter character;
         List<ProcessedMarvelComic> comics;
-        InnerState(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, boolean loading, boolean error) {
+        List<ProcessedMarvelSeries> series;
+        List<ProcessedMarvelStory> stories;
+        List<ProcessedMarvelEvent> events;
+        InnerState(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error) {
             this.character = character;
             this.loading = loading;
             this.error = error;
             this.comics = comics;
+            this.series = series;
+            this.stories = stories;
+            this.events = events;
         }
         InnerState copy() {
-            return new InnerState(character, comics, loading, error);
+            return new InnerState(character, comics, series, stories, events, loading, error);
         }
     }
 
@@ -118,4 +131,90 @@ public class CharacterDetailViewModelDelegate extends BaseMviDelegate<State, Cha
         enqueue(reducerObservable);
     }
 
+    private void loadSeries(int characterId) {
+        if (networkInterface == null) {
+            return;
+        }
+        Observable<List<ProcessedMarvelSeries>> observable = networkInterface
+                .loadCharacterSeries(characterId)
+                .onErrorReturn(throwable -> {
+                    return new ArrayList<>();
+                });
+
+
+
+        Observable<Reducer<InnerState, Effect>> reducerObservable = observable
+                .map(series -> {
+                    Log.d("Vartika3", "Reducer1: series "+series);
+                    return new Reducer<InnerState, Effect>() {
+
+                        @Override
+                        public Change<InnerState, Effect> reduce(InnerState innerState) {
+                            Log.d("Vartika3", "Reducer2: series "+series);
+                            InnerState newInnerState = innerState.copy();
+                            newInnerState.series = series;
+                            return asChange(newInnerState);
+                        }
+                    };
+                });
+        enqueue(reducerObservable);
+    }
+
+    private void loadStories(int characterId) {
+        if (networkInterface == null) {
+            return;
+        }
+        Observable<List<ProcessedMarvelStory>> observable = networkInterface
+                .loadCharacterStories(characterId)
+                .onErrorReturn(throwable -> {
+                    return new ArrayList<>();
+                });
+
+
+
+        Observable<Reducer<InnerState, Effect>> reducerObservable = observable
+                .map(stories -> {
+                    Log.d("Vartika3", "Reducer1: stories -> "+stories);
+                    return new Reducer<InnerState, Effect>() {
+
+                        @Override
+                        public Change<InnerState, Effect> reduce(InnerState innerState) {
+                            Log.d("Vartika3", "Reducer2: stories -> "+stories);
+                            InnerState newInnerState = innerState.copy();
+                            newInnerState.stories = stories;
+                            return asChange(newInnerState);
+                        }
+                    };
+                });
+        enqueue(reducerObservable);
+    }
+
+    private void loadEvents(int characterId) {
+        if (networkInterface == null) {
+            return;
+        }
+        Observable<List<ProcessedMarvelEvent>> observable = networkInterface
+                .loadCharacterEvents(characterId)
+                .onErrorReturn(throwable -> {
+                    return new ArrayList<>();
+                });
+
+
+
+        Observable<Reducer<InnerState, Effect>> reducerObservable = observable
+                .map(events -> {
+                    Log.d("Vartika3", "Reducer1: events -> "+events);
+                    return new Reducer<InnerState, Effect>() {
+
+                        @Override
+                        public Change<InnerState, Effect> reduce(InnerState innerState) {
+                            Log.d("Vartika3", "Reducer2: events -> "+events);
+                            InnerState newInnerState = innerState.copy();
+                            newInnerState.events = events;
+                            return asChange(newInnerState);
+                        }
+                    };
+                });
+        enqueue(reducerObservable);
+    }
 }

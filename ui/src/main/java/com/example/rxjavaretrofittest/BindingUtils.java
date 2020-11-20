@@ -17,6 +17,9 @@ import com.bumptech.glide.request.target.Target;
 import com.example.controllers.characterslist.MarvelCharacterClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
+import com.example.controllers.commons.ProcessedMarvelEvent;
+import com.example.controllers.commons.ProcessedMarvelSeries;
+import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.entitiy.models.logs.Logger;
 import com.example.mviframework.Runner;
 
@@ -26,7 +29,7 @@ public class BindingUtils {
     @BindingAdapter(value = {"url", "callbackListener"}, requireAll = false)
     public static void loadImage(ImageView imageView, String url, Runner callbackListener) {
         new Logger().d("VartikaHilt", "load image: " + url);
-        if(url==null) return;
+        if(url==null || url== "") return;
         Glide.with(imageView.getContext())
                 .load(url)
                 .addListener(new RequestListener<Drawable>() {
@@ -71,7 +74,7 @@ public class BindingUtils {
     }
     @BindingAdapter("comicsDatasource")
     public static  void loadComicsDataSource(RecyclerView rvComics, List<ProcessedMarvelComic> comicsList) {
-        Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
+       // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
         RecyclerView.Adapter adapter = rvComics.getAdapter();
         if(adapter==null) {
             ComicsListAdapter comicsListAdapter = new ComicsListAdapter();
@@ -80,5 +83,47 @@ public class BindingUtils {
         } else {
             ((ComicsListAdapter)adapter).submitList(comicsList);
         }
+    }
+
+    @BindingAdapter("seriesDatasource")
+    public static  void loadSeriesDataSource(RecyclerView rvSeries, List<ProcessedMarvelSeries> seriesList) {
+        RecyclerView.Adapter adapter = rvSeries.getAdapter();
+        if(adapter==null) {
+            SeriesListAdapter seriesListAdapter = new SeriesListAdapter();
+            rvSeries.setAdapter(seriesListAdapter);
+            seriesListAdapter.submitList(seriesList);
+        } else {
+            ((SeriesListAdapter)adapter).submitList(seriesList);
+        }
+    }
+
+    @BindingAdapter("storiesDatasource")
+    public static  void loadStoriesDataSource(RecyclerView rvStories, List<ProcessedMarvelStory> storiesList) {
+        RecyclerView.Adapter adapter = rvStories.getAdapter();
+        if(adapter==null) {
+            StoriesListAdapter storiesListAdapter = new StoriesListAdapter();
+            rvStories.setAdapter(storiesListAdapter);
+            storiesListAdapter.submitList(storiesList);
+        } else {
+            ((StoriesListAdapter)adapter).submitList(storiesList);
+        }
+    }
+
+    @BindingAdapter("eventsDatasource")
+    public static  void loadEventsDataSource(RecyclerView rvEvents, List<ProcessedMarvelEvent> eventsList) {
+        RecyclerView.Adapter adapter = rvEvents.getAdapter();
+        if(adapter==null) {
+            EventsListAdapter eventsListAdapter = new EventsListAdapter();
+            rvEvents.setAdapter(eventsListAdapter);
+            eventsListAdapter.submitList(eventsList);
+        } else {
+            ((EventsListAdapter)adapter).submitList(eventsList);
+        }
+    }
+
+    @BindingAdapter("visibility")
+    public static void setVisibility(View view, boolean b) {
+        if (b) view.setVisibility(View.VISIBLE);
+        else view.setVisibility(View.GONE);
     }
 }
