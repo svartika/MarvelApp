@@ -1,7 +1,6 @@
 package com.example.rxjavaretrofittest;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,6 @@ import com.example.ui.R;
 import com.example.ui.databinding.EventRvItemBinding;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventViewHolder> {
     private final AsyncListDiffer<ProcessedMarvelEvent> differ = new AsyncListDiffer<ProcessedMarvelEvent>(this, differCallback);

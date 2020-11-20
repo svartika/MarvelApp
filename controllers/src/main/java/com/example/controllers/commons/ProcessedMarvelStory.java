@@ -2,8 +2,6 @@ package com.example.controllers.commons;
 
 import com.example.entitiy.models.MarvelStory;
 
-import java.util.List;
-
 public class ProcessedMarvelStory extends ProcessedMarvelItemBase {
     public String resourceURI, type, modified;
     public ProcessedCollection creators, characters, series, comics, events;

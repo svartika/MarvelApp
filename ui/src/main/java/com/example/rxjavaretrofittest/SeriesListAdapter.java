@@ -1,7 +1,6 @@
 package com.example.rxjavaretrofittest;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -10,7 +9,6 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewbinding.ViewBinding;
 
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.ui.BR;

@@ -1,7 +1,6 @@
 package com.example.rxjavaretrofittest;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;

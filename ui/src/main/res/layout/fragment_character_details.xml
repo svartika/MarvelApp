@@ -56,7 +56,8 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@id/rvComics"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image" />
+                app:layout_constraintTop_toBottomOf="@id/image"
+                app:hideLabelList="@{state.comics}"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvComics"
@@ -66,7 +67,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/seriesLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/comicsLabel" />
+                app:layout_constraintTop_toBottomOf="@id/comicsLabel"
+                app:hideLabelList="@{state.comics}"/>
 
             <TextView
                 android:id="@+id/seriesLabel"
@@ -78,7 +80,8 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/rvSeries"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvComics" />
+                app:layout_constraintTop_toBottomOf="@id/rvComics"
+                app:hideLabelList="@{state.series}"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSeries"
@@ -88,7 +91,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/seriesLabel"
-                app:seriesDatasource="@{state.series}" />
+                app:seriesDatasource="@{state.series}"
+                app:hideLabelList="@{state.series}"/>
 
             <TextView
                 android:id="@+id/storiesLabel"
@@ -100,7 +104,8 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/rvStories"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvSeries" />
+                app:layout_constraintTop_toBottomOf="@id/rvSeries"
+                app:hideLabelList="@{state.stories}"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvStories"
@@ -110,7 +115,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/storiesLabel"
-                app:storiesDatasource="@{state.stories}" />
+                app:storiesDatasource="@{state.stories}"
+                app:hideLabelList="@{state.stories}"/>
 
             <TextView
                 android:id="@+id/eventsLabel"
@@ -122,7 +128,8 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/rvEvents"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvStories" />
+                app:layout_constraintTop_toBottomOf="@id/rvStories"
+                app:hideLabelList="@{state.events}"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvEvents"
@@ -132,7 +139,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/eventsLabel" />
+                app:layout_constraintTop_toBottomOf="@id/eventsLabel"
+                app:hideLabelList="@{state.events}"/>
 
             <ProgressBar
                 android:layout_width="40dp"

@@ -2,8 +2,6 @@ package com.example.entitiy.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class MarvelStory {
     @SerializedName("id")
     public int id;

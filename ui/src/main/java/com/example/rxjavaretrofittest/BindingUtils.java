@@ -1,7 +1,6 @@
 package com.example.rxjavaretrofittest;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +17,7 @@ import com.example.controllers.characterslist.MarvelCharacterClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
+import com.example.controllers.commons.ProcessedMarvelItemBase;
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.entitiy.models.logs.Logger;
@@ -125,5 +125,12 @@ public class BindingUtils {
     public static void setVisibility(View view, boolean b) {
         if (b) view.setVisibility(View.VISIBLE);
         else view.setVisibility(View.GONE);
+    }
+
+    @BindingAdapter("hideLabelList")
+    public static void setLabelListVisibility(View view, List<? extends ProcessedMarvelItemBase> items) {
+        if(items==null) view.setVisibility(View.GONE);
+        else if(items!=null && items.size()==0) view.setVisibility(View.GONE);
+        else view.setVisibility(View.VISIBLE);
     }
 }
