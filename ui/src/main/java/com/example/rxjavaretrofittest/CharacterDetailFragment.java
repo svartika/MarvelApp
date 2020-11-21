@@ -2,6 +2,7 @@ package com.example.rxjavaretrofittest;
 
 import android.os.Bundle;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.example.controllers.characterdetail.CharacterDetailViewModel;
 import com.example.controllers.characterdetail.Effect;
 import com.example.controllers.characterdetail.State;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelItemBase;
+import com.example.entitiy.models.logs.Logger;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterDetailsBinding;
 
@@ -38,6 +41,7 @@ public class CharacterDetailFragment extends Fragment {
     RecyclerView rvComics, rvSeries, rvStories, rvEvents;
 
     FragmentCharacterDetailsBinding binding;
+    Logger logger;
 
     @Nullable
     @Override
@@ -107,6 +111,9 @@ public class CharacterDetailFragment extends Fragment {
     void consume(Effect effect) {
         if(effect instanceof Effect.ImageLoaded) {
             startPostponedEnterTransition();
+        } else if(effect instanceof Effect.ClickCardEffect) {
+
+            Log.d("Vartika" , "clickCardEffect: " + ((ProcessedMarvelItemBase)((Effect.ClickCardEffect) effect).item).id );
         }
     }
 }

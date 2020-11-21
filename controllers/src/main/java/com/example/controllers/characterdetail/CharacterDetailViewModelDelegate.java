@@ -1,10 +1,13 @@
 package com.example.controllers.characterdetail;
 
 import android.util.Log;
+import android.view.View;
 
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
+import com.example.controllers.commons.ProcessedMarvelItemBase;
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.mviframework.BaseMviDelegate;
@@ -20,6 +23,20 @@ import io.reactivex.Observable;
 public class CharacterDetailViewModelDelegate extends BaseMviDelegate<State, CharacterDetailViewModelDelegate.InnerState, Effect> {
     CharacterDetailNetworkInterface networkInterface;
     ProcessedMarvelCharacter character;
+
+    CardClickListener cardClickListener = new CardClickListener<ProcessedMarvelItemBase>() {
+
+        @Override
+        public void invoke(View view, ProcessedMarvelItemBase item) {
+            enqueue(new Reducer<InnerState, Effect>() {
+                @Override
+                public Change<InnerState, Effect> reduce(InnerState innerState) {
+                    return withEffects(innerState, new Effect.ClickCardEffect<ProcessedMarvelItemBase>(view, item));
+                }
+            });
+        }
+    };
+
     public CharacterDetailViewModelDelegate(CharacterDetailNetworkInterface networkInterface, ProcessedMarvelCharacter character) {
         this.networkInterface = networkInterface;
         this.character = character;
@@ -76,8 +93,9 @@ public class CharacterDetailViewModelDelegate extends BaseMviDelegate<State, Cha
 
     @Override
     public State mapState(InnerState innerState) {
-        //Log.d("Vartika3", "comics in mapstate"+innerState.comics);
-        return new State(innerState.character, innerState.comics, innerState.series, innerState.stories, innerState.events,  innerState.loading, innerState.error, callbackRunner);
+        State state = new State(innerState.character, innerState.comics, innerState.series, innerState.stories, innerState.events,  innerState.loading, innerState.error, callbackRunner, cardClickListener);
+        Log.d("Vartika", "Character Detail mapState: "+state.toString());
+        return state;
     }
 
     static class InnerState {

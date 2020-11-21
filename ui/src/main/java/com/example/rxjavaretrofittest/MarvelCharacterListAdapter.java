@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.controllers.characterslist.MarvelCharacterClickListener;
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.ui.BR;
 import com.example.ui.R;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class MarvelCharacterListAdapter extends RecyclerView.Adapter<MarvelCharacterListAdapter.MarvelCharacterViewHolder> {
 
-    MarvelCharacterClickListener marvelCharacterClickedListener;
+    CardClickListener marvelCharacterClickedListener;
     private final AsyncListDiffer<ProcessedMarvelCharacter> differ = new AsyncListDiffer<ProcessedMarvelCharacter>(this, diffCallBack);
     public static final DiffUtil.ItemCallback<ProcessedMarvelCharacter> diffCallBack = new DiffUtil.ItemCallback<ProcessedMarvelCharacter>() {
         @Override
@@ -35,7 +35,7 @@ public class MarvelCharacterListAdapter extends RecyclerView.Adapter<MarvelChara
         }
     };
 
-    public MarvelCharacterListAdapter(MarvelCharacterClickListener marvelCharacterClickedListener) {
+    public MarvelCharacterListAdapter(CardClickListener marvelCharacterClickedListener) {
         this.marvelCharacterClickedListener = marvelCharacterClickedListener;
     }
 

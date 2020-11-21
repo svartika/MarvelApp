@@ -2,6 +2,7 @@ package com.example.controllers.characterslist;
 
 import android.view.View;
 
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.mviframework.BaseMviDelegate;
 import com.example.mviframework.Change;
@@ -20,7 +21,7 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
     CharactersListNetworkInterface charactersListNetworkInterface;
     PublishSubject<String> searchKeywords = PublishSubject.create();
 
-    MarvelCharacterClickListener clickListener = new MarvelCharacterClickListener<ProcessedMarvelCharacter>() {
+    CardClickListener clickListener = new CardClickListener<ProcessedMarvelCharacter>() {
 
         @Override
         public void invoke(View view, ProcessedMarvelCharacter character) {

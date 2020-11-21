@@ -10,7 +10,7 @@
             type="com.example.controllers.commons.ProcessedMarvelCharacter" />
         <variable
             name="clickHandler"
-            type="com.example.controllers.characterslist.MarvelCharacterClickListener" />
+            type="com.example.controllers.commons.CardClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -13,7 +13,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.controllers.characterslist.MarvelCharacterClickListener;
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
@@ -50,7 +50,7 @@ public class BindingUtils {
     }
 
     @BindingAdapter(value = {"onClick", "item"}, requireAll = true)
-    public static void onCharacterClicked(View view, MarvelCharacterClickListener clickedListener, Object item) {
+    public static void onCharacterClicked(View view, CardClickListener clickedListener, Object item) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +60,7 @@ public class BindingUtils {
     }
 
     @BindingAdapter(value = { "datasource","characterClickHandler"}, requireAll = true)
-    public static void loadDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, MarvelCharacterClickListener clickListener) {
+    public static void loadDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvCharacters.getAdapter();
         MarvelCharacterListAdapter marvelCharacterListAdapter = null;
         if(adapter instanceof MarvelCharacterListAdapter) {
@@ -72,15 +72,16 @@ public class BindingUtils {
         }
         marvelCharacterListAdapter.submitList(charactersList);
     }
-    @BindingAdapter("comicsDatasource")
-    public static  void loadComicsDataSource(RecyclerView rvComics, List<ProcessedMarvelComic> comicsList) {
+    @BindingAdapter(value = {"comicsDatasource", "cardClickHandler"}, requireAll = true)
+    public static  void loadComicsDataSource(RecyclerView rvComics, List<ProcessedMarvelComic> comicsList, CardClickListener clickListener) {
        // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
         RecyclerView.Adapter adapter = rvComics.getAdapter();
         if(adapter==null) {
-            ComicsListAdapter comicsListAdapter = new ComicsListAdapter();
+            ComicsListAdapter comicsListAdapter = new ComicsListAdapter(clickListener);
             rvComics.setAdapter(comicsListAdapter);
             comicsListAdapter.submitList(comicsList);
         } else {
+            ((ComicsListAdapter)adapter).clickListener = clickListener;
             ((ComicsListAdapter)adapter).submitList(comicsList);
         }
     }

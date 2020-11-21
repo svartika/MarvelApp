@@ -64,6 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 app:comicsDatasource="@{state.comics}"
+                app:cardClickHandler="@{state.clickListener}"
                 app:layout_constraintBottom_toTopOf="@+id/seriesLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

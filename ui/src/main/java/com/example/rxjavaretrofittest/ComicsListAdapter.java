@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.ui.BR;
 import com.example.ui.R;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.ComicsViewHolder> {
 
+    CardClickListener clickListener;
     private final AsyncListDiffer<ProcessedMarvelComic> differ = new AsyncListDiffer<ProcessedMarvelComic>(this, diffCallback);
     public static final DiffUtil.ItemCallback<ProcessedMarvelComic>diffCallback = new DiffUtil.ItemCallback<ProcessedMarvelComic>() {
         @Override
@@ -31,6 +33,9 @@ public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.Co
             return oldItem.title.compareToIgnoreCase(newItem.title)==0;
         }
     };
+    public void submitList(List<ProcessedMarvelComic> list) {
+        differ.submitList(list);
+    }
 
     @NonNull
     @Override
@@ -51,8 +56,8 @@ public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.Co
         return differ.getCurrentList().size();
     }
 
-    public void submitList(List<ProcessedMarvelComic> list) {
-        differ.submitList(list);
+    ComicsListAdapter(CardClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
     public class ComicsViewHolder extends RecyclerView.ViewHolder {
@@ -63,6 +68,7 @@ public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.Co
         }
         public void bind(ProcessedMarvelComic comicItem) {
             binding.setVariable(BR.comicItem, comicItem);
+            binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();
         }
     }

@@ -1,5 +1,6 @@
 package com.example.controllers.characterslist;
 
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 
 import java.util.List;
@@ -8,10 +9,10 @@ import java.util.Objects;
 public class State {
     public List<ProcessedMarvelCharacter> charactersList;
     public String searchStr;
-    public MarvelCharacterClickListener clickListener;
+    public CardClickListener clickListener;
     public SearchTextChangedCallbackListener searchCallback;
 
-    public State(List<ProcessedMarvelCharacter> charactersList, String searchStr, MarvelCharacterClickListener clickListener, SearchTextChangedCallbackListener searchCallback) {
+    public State(List<ProcessedMarvelCharacter> charactersList, String searchStr, CardClickListener clickListener, SearchTextChangedCallbackListener searchCallback) {
         this.charactersList = charactersList;
         this.searchStr = searchStr;
         this.clickListener = clickListener;
@@ -26,7 +27,7 @@ public class State {
         return searchStr;
     }
 
-    public MarvelCharacterClickListener getClickListener() {
+    public CardClickListener getClickListener() {
         return clickListener;
     }
 

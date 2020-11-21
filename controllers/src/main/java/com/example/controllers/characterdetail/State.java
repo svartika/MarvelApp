@@ -1,5 +1,8 @@
 package com.example.controllers.characterdetail;
 
+import android.util.Log;
+
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
@@ -20,8 +23,9 @@ public class State {
     List<ProcessedMarvelStory> stories;
     List<ProcessedMarvelEvent> events;
     Runner callbackRunner;
+    public CardClickListener clickListener;
 
-    State(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error, Runner callbackRunner) {
+    State(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
         this.character = character;
         this.comics = comics;
         this.loading = loading;
@@ -30,6 +34,7 @@ public class State {
         this.stories = stories;
         this.events = events;
         this.callbackRunner = callbackRunner;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -43,6 +48,7 @@ public class State {
                 ", stories=" + stories +
                 ", events=" + events +
                 ", callbackRunner=" + callbackRunner +
+                ", clickListener=" + clickListener +
                 '}';
     }
 
@@ -74,19 +80,27 @@ public class State {
     public List<ProcessedMarvelEvent> getEvents() {
         return events;
     }
+    public CardClickListener getClickListener() {
+        return clickListener;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof State)) return false;
         State state = (State) o;
-        return isLoading() == state.isLoading() &&
+        boolean ret = isLoading() == state.isLoading() &&
                 isError() == state.isError() &&
                 getCharacter().equals(state.getCharacter()) &&
-                getCallbackRunner().equals(state.getCallbackRunner()) &&
+                getCallbackRunner()==state.getCallbackRunner() &&
                 compareLists(comics,state.comics) &&
                 compareLists(series, state.series) &&
                 compareLists(stories, state.stories) &&
-                compareLists(events, state.events);
+                compareLists(events, state.events) &&
+                getClickListener()==state.getClickListener();
+        Log.d("Vartika", "Character Detail state comparison: " + ret);
+        //Log.d("Vartika", "Character Detail value 1: " + ((State) o).toString());
+        //Log.d("Vartika", "Character Detail value 2: " + this.toString());
+        return ret;
     }
 
     boolean compareLists(List<? extends ProcessedMarvelItemBase> first, List<? extends  ProcessedMarvelItemBase> second) {
@@ -107,6 +121,6 @@ public class State {
     }
     @Override
     public int hashCode() {
-        return Objects.hash(isLoading(), isError(), getCharacter(), getCallbackRunner());
+        return Objects.hash(isLoading(), isError(), getCharacter(), getCallbackRunner(), getClickListener());
     }
 }
