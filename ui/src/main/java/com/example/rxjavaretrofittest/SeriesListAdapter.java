@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.ui.BR;
 import com.example.ui.R;
@@ -18,7 +19,10 @@ import com.example.ui.databinding.SeriesRvItemBinding;
 import java.util.List;
 
 public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.SeriesViewHolder> {
-
+    CardClickListener clickListener;
+    public SeriesListAdapter(CardClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
     private final AsyncListDiffer<ProcessedMarvelSeries> differ = new AsyncListDiffer<ProcessedMarvelSeries>(this, differCallback);
     public static final DiffUtil.ItemCallback<ProcessedMarvelSeries> differCallback = new DiffUtil.ItemCallback<ProcessedMarvelSeries>() {
 
@@ -65,6 +69,7 @@ public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.Se
         }
         public void bind(ProcessedMarvelSeries seriesItem) {
             binding.setVariable(BR.seriesItem, seriesItem);
+            binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();
         }
     }

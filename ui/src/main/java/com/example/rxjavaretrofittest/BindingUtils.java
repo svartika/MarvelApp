@@ -86,38 +86,41 @@ public class BindingUtils {
         }
     }
 
-    @BindingAdapter("seriesDatasource")
-    public static  void loadSeriesDataSource(RecyclerView rvSeries, List<ProcessedMarvelSeries> seriesList) {
+    @BindingAdapter(value = {"seriesDatasource", "cardClickHandler"}, requireAll = true)
+    public static  void loadSeriesDataSource(RecyclerView rvSeries, List<ProcessedMarvelSeries> seriesList, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvSeries.getAdapter();
         if(adapter==null) {
-            SeriesListAdapter seriesListAdapter = new SeriesListAdapter();
+            SeriesListAdapter seriesListAdapter = new SeriesListAdapter(clickListener);
             rvSeries.setAdapter(seriesListAdapter);
             seriesListAdapter.submitList(seriesList);
         } else {
+            ((SeriesListAdapter)adapter).clickListener = clickListener;
             ((SeriesListAdapter)adapter).submitList(seriesList);
         }
     }
 
-    @BindingAdapter("storiesDatasource")
-    public static  void loadStoriesDataSource(RecyclerView rvStories, List<ProcessedMarvelStory> storiesList) {
+    @BindingAdapter(value = {"storiesDatasource", "cardClickHandler"}, requireAll = true)
+    public static  void loadStoriesDataSource(RecyclerView rvStories, List<ProcessedMarvelStory> storiesList, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvStories.getAdapter();
         if(adapter==null) {
-            StoriesListAdapter storiesListAdapter = new StoriesListAdapter();
+            StoriesListAdapter storiesListAdapter = new StoriesListAdapter(clickListener);
             rvStories.setAdapter(storiesListAdapter);
             storiesListAdapter.submitList(storiesList);
         } else {
+            ((StoriesListAdapter)adapter).clickListener = clickListener;
             ((StoriesListAdapter)adapter).submitList(storiesList);
         }
     }
 
-    @BindingAdapter("eventsDatasource")
-    public static  void loadEventsDataSource(RecyclerView rvEvents, List<ProcessedMarvelEvent> eventsList) {
+    @BindingAdapter(value =  {"eventsDatasource", "cardClickHandler"}, requireAll = true)
+    public static  void loadEventsDataSource(RecyclerView rvEvents, List<ProcessedMarvelEvent> eventsList, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvEvents.getAdapter();
         if(adapter==null) {
-            EventsListAdapter eventsListAdapter = new EventsListAdapter();
+            EventsListAdapter eventsListAdapter = new EventsListAdapter(clickListener);
             rvEvents.setAdapter(eventsListAdapter);
             eventsListAdapter.submitList(eventsList);
         } else {
+            ((EventsListAdapter)adapter).clickListener = clickListener;
             ((EventsListAdapter)adapter).submitList(eventsList);
         }
     }

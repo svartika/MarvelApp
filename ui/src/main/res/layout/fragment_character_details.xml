@@ -93,6 +93,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/seriesLabel"
                 app:seriesDatasource="@{state.series}"
+                app:cardClickHandler="@{state.clickListener}"
                 app:hideLabelList="@{state.series}"/>
 
             <TextView
@@ -117,6 +118,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/storiesLabel"
                 app:storiesDatasource="@{state.stories}"
+                app:cardClickHandler="@{state.clickListener}"
                 app:hideLabelList="@{state.stories}"/>
 
             <TextView
@@ -137,6 +139,7 @@
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 app:eventsDatasource="@{state.events}"
+                app:cardClickHandler="@{state.clickListener}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

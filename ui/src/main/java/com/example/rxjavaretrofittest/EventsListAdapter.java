@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelEvent;
 import com.example.ui.BR;
 import com.example.ui.R;
@@ -18,6 +19,11 @@ import com.example.ui.databinding.EventRvItemBinding;
 import java.util.List;
 
 public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventViewHolder> {
+    CardClickListener clickListener;
+    public EventsListAdapter(CardClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
     private final AsyncListDiffer<ProcessedMarvelEvent> differ = new AsyncListDiffer<ProcessedMarvelEvent>(this, differCallback);
     public static final DiffUtil.ItemCallback<ProcessedMarvelEvent> differCallback = new DiffUtil.ItemCallback<ProcessedMarvelEvent>() {
         @Override
@@ -62,6 +68,7 @@ public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.Ev
         }
         public void bind(ProcessedMarvelEvent event) {
             binding.setVariable(BR.eventItem, event);
+            binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();
         }
     }
