@@ -7,6 +7,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="colorOnPrimary">@color/gray_50</item>
+        <item name="colorOnBackground">@color/gray_50</item>
+        <item name="colorOnSurface">@color/gray_50</item>
+        <item name="colorOnPrimarySurface">@color/gray_50</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -19,6 +27,5 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 
 </resources>
