@@ -33,6 +33,15 @@
         <action
             android:id="@+id/action_CharacterDetailFragment_to_ComicDetailFragment"
             app:destination="@+id/ComicDetailFragment"/>
+        <action
+            android:id="@+id/action_CharacterDetailFragment_to_SeriesDetailFragment"
+            app:destination="@+id/SeriesDetailFragment"/>
+        <action
+            android:id="@+id/action_CharacterDetailFragment_to_StoryDetailFragment"
+            app:destination="@+id/StoryDetailFragment"/>
+        <action
+            android:id="@+id/action_CharacterDetailFragment_to_EventDetailFragment"
+            app:destination="@+id/EventDetailFragment"/>
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelCharacter" />
@@ -46,6 +55,45 @@
         <action
             android:id="@+id/action_ComicDetailFragment_to_CharacterDetailFragment"
             app:destination="@+id/CharacterDetailFragment"/>
+        <argument
+            android:name="item"
+            app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/SeriesDetailFragment"
+        android:name="com.example.rxjavaretrofittest.SeriesDetailFragment"
+        android:label="Series Details"
+        tools:layout="@layout/fragment_series_detail">
+        <action
+            android:id="@+id/action_SeriesDetailFragment_to_CharacterDetailFragment"
+            app:destination="@id/CharacterDetailFragment"/>
+        <argument
+            android:name="item"
+            app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/StoryDetailFragment"
+        android:name="com.example.rxjavaretrofittest.StoryDetailFragment"
+        android:label="Story Details"
+        tools:layout="@layout/fragment_story_detail">
+        <action
+            android:id="@+id/action_StoryDetailFragment_to_CharacterDetailFragment"
+            app:destination="@id/CharacterDetailFragment"/>
+        <argument
+            android:name="item"
+            app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/EventDetailFragment"
+        android:name="com.example.rxjavaretrofittest.EventDetailFragment"
+        android:label="Event Details"
+        tools:layout="@layout/fragment_event_detail">
+        <action
+            android:id="@+id/action_EventDetailFragment_to_CharacterDetailFragment"
+            app:destination="@id/CharacterDetailFragment"/>
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>

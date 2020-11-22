@@ -22,7 +22,11 @@ import com.example.controllers.characterdetail.CharacterDetailViewModel;
 import com.example.controllers.characterdetail.Effect;
 import com.example.controllers.characterdetail.State;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelComic;
+import com.example.controllers.commons.ProcessedMarvelEvent;
 import com.example.controllers.commons.ProcessedMarvelItemBase;
+import com.example.controllers.commons.ProcessedMarvelSeries;
+import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.entitiy.models.logs.Logger;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentCharacterDetailsBinding;
@@ -114,12 +118,22 @@ public class CharacterDetailFragment extends Fragment {
             startPostponedEnterTransition();
         } else if(effect instanceof Effect.ClickCardEffect) {
 
-            Log.d("Vartika" , "clickCardEffect: " + ((ProcessedMarvelItemBase)((Effect.ClickCardEffect) effect).item).id );
+            Log.d("Vartika", "clickCardEffect: " + ((ProcessedMarvelItemBase) ((Effect.ClickCardEffect) effect).item).id);
             Effect.ClickCardEffect clickCardEffect = (Effect.ClickCardEffect) effect;
             ProcessedMarvelItemBase item = (ProcessedMarvelItemBase) clickCardEffect.item;
-
-            if(NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId()==R.id.CharacterDetailFragment)
-                NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToComicDetailFragment((ProcessedMarvelItemBase) item));
+            if (item instanceof ProcessedMarvelComic) {
+                if (NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId() == R.id.CharacterDetailFragment)
+                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToComicDetailFragment((ProcessedMarvelItemBase) item));
+            } else if (item instanceof ProcessedMarvelSeries) {
+                if (NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId() == R.id.CharacterDetailFragment)
+                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToSeriesDetailFragment((ProcessedMarvelItemBase) item));
+            } else if (item instanceof ProcessedMarvelStory) {
+                if (NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId() == R.id.CharacterDetailFragment)
+                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToStoryDetailFragment((ProcessedMarvelItemBase) item));
+            } else if (item instanceof ProcessedMarvelEvent) {
+                if (NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId() == R.id.CharacterDetailFragment)
+                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToEventDetailFragment((ProcessedMarvelItemBase) item));
+            }
         }
     }
 }
