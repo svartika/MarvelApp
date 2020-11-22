@@ -16,7 +16,7 @@
         <item name="colorOnSurface">@color/gray_50</item>
         <item name="colorOnPrimarySurface">@color/gray_50</item>
         <!--to cleanup end-->
-
+        <item name="android:textColorHint">@color/hintTextColor</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

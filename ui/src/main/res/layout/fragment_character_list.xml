@@ -2,10 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="state"
-            type="com.example.controllers.characterslist.State"/>
+            type="com.example.controllers.characterslist.State" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,23 +20,31 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="10dp"
-            app:datasource="@{state.charactersList}"
             app:characterClickHandler="@{state.clickListener}"
+            app:datasource="@{state.charactersList}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+            app:layout_constraintTop_toBottomOf="@+id/searchViewlayout" />
 
-        <EditText
-            android:id="@+id/searchView"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchViewlayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:text="@{state.searchStr}"
+            app:layout_constraintBottom_toTopOf="@id/rvMarvelCharacters"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/rvMarvelCharacters"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <EditText
+                android:hint="@string/character_search_hint"
+                android:id="@+id/searchView"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{state.searchStr}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
