@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -114,6 +115,11 @@ public class CharacterDetailFragment extends Fragment {
         } else if(effect instanceof Effect.ClickCardEffect) {
 
             Log.d("Vartika" , "clickCardEffect: " + ((ProcessedMarvelItemBase)((Effect.ClickCardEffect) effect).item).id );
+            Effect.ClickCardEffect clickCardEffect = (Effect.ClickCardEffect) effect;
+            ProcessedMarvelItemBase item = (ProcessedMarvelItemBase) clickCardEffect.item;
+
+            if(NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId()==R.id.CharacterDetailFragment)
+                NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToComicDetailFragment((ProcessedMarvelItemBase) item));
         }
     }
 }

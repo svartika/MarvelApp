@@ -11,6 +11,7 @@ public class ProcessedMarvelEvent extends ProcessedMarvelItemBase {
     public MarvelEvent.nextPrev next, previous;
 
     public ProcessedMarvelEvent(MarvelEvent marvelEvent) {
+        super();
         id = marvelEvent.id;
         title = marvelEvent.title;
         description = marvelEvent.description;

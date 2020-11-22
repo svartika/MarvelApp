@@ -11,6 +11,7 @@ public class ProcessedMarvelSeries extends ProcessedMarvelItemBase {
     public List<MarvelSeries.URL> urls;
 
     public ProcessedMarvelSeries(MarvelSeries marvelSeries) {
+        super();
         id = marvelSeries.id;
         title = marvelSeries.title;
         description = marvelSeries.description;

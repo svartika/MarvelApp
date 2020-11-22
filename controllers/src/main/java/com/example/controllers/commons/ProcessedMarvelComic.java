@@ -13,6 +13,7 @@ public class ProcessedMarvelComic extends ProcessedMarvelItemBase {
     public List<MarvelComic.URL> urls;
 
     public ProcessedMarvelComic(MarvelComic marvelComic) {
+        super();
         id = marvelComic.id;
         issueNumber = marvelComic.issueNumber;
         title = marvelComic.title;

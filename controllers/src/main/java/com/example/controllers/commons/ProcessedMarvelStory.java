@@ -8,6 +8,7 @@ public class ProcessedMarvelStory extends ProcessedMarvelItemBase {
     public MarvelStory.OriginalIssue originalIssues;
 
     public ProcessedMarvelStory(MarvelStory marvelStory) {
+        super();
         id = marvelStory.id;
         title = marvelStory.title;
         description = marvelStory.description;

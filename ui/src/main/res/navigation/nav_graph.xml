@@ -30,10 +30,25 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/CharactersListFragment" />
-
+        <action
+            android:id="@+id/action_CharacterDetailFragment_to_ComicDetailFragment"
+            app:destination="@+id/ComicDetailFragment"/>
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelCharacter" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ComicDetailFragment"
+        android:name="com.example.rxjavaretrofittest.ComicDetailFragment"
+        android:label="Comic Details"
+        tools:layout="@layout/fragment_comic_detail">
+        <action
+            android:id="@+id/action_ComicDetailFragment_to_CharacterDetailFragment"
+            app:destination="@+id/CharacterDetailFragment"/>
+        <argument
+            android:name="item"
+            app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
     </fragment>
 
 </navigation>
