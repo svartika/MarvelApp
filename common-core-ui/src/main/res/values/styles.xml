@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="PerpyThemeBaseMaterial" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -12,5 +13,23 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="PerpyPopupOverlay" parent="Base.ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="Text">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="Text.White">
+        <item name="android:textColor">@color/gray_50</item>
+    </style>
+
+    <style name="Text.White.Itemheader">
+        <item name="elevation">15dp</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Text.White.Itemheader.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
