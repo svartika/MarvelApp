@@ -87,6 +87,19 @@ public class BindingUtils {
         marvelCharacterListAdapter.submitList(charactersList);
     }
 
+    @BindingAdapter(value = {"charactersDatasource", "cardClickHandler"}, requireAll = true)
+    public static void loadCharactersDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, CardClickListener clickListener) {
+        // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
+        RecyclerView.Adapter adapter = rvCharacters.getAdapter();
+        if (adapter == null) {
+            MarvelCharacterListAdapter charactersListAdapter = new MarvelCharacterListAdapter(clickListener);
+            rvCharacters.setAdapter(charactersListAdapter);
+            charactersListAdapter.submitList(charactersList);
+        } else {
+            ((MarvelCharacterListAdapter) adapter).marvelCharacterClickedListener = clickListener;
+            ((MarvelCharacterListAdapter) adapter).submitList(charactersList);
+        }
+    }
     @BindingAdapter(value = {"comicsDatasource", "cardClickHandler"}, requireAll = true)
     public static void loadComicsDataSource(RecyclerView rvComics, List<ProcessedMarvelComic> comicsList, CardClickListener clickListener) {
         // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);

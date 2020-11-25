@@ -44,7 +44,7 @@
             app:destination="@+id/EventDetailFragment"/>
         <argument
             android:name="item"
-            app:argType="com.example.controllers.commons.ProcessedMarvelCharacter" />
+            app:argType="com.example.controllers.commons.ProcessedMarvelItemBase" />
     </fragment>
 
     <fragment
@@ -55,6 +55,15 @@
         <action
             android:id="@+id/action_ComicDetailFragment_to_CharacterDetailFragment"
             app:destination="@+id/CharacterDetailFragment"/>
+        <action
+            android:id="@+id/action_ComicDetailFragment_to_StoryDetailFragment"
+            app:destination="@+id/StoryDetailFragment"/>
+        <action
+            android:id="@+id/action_ComicDetailFragment_to_SeriesDetailFragment"
+            app:destination="@+id/SeriesDetailFragment"/>
+        <action
+            android:id="@+id/action_ComicDetailFragment_to_EventDetailFragment"
+            app:destination="@+id/EventDetailFragment"/>
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>

@@ -5,8 +5,10 @@ package com.example.rxjavaretrofittest;
 
 import com.example.controllers.characterdetail.CharacterDetailNetworkInterface;
 import com.example.controllers.characterslist.CharactersListNetworkInterface;
+import com.example.controllers.comicdetail.ComicDetailNetworkInterface;
 import com.example.networkcontroller.CharacterDetailNetworkInterfaceImpl;
 import com.example.networkcontroller.CharactersListNetworkInterfaceImpl;
+import com.example.networkcontroller.ComicDetailNetworkInterfaceImpl;
 
 import dagger.Binds;
 import dagger.Module;
@@ -24,6 +26,11 @@ public abstract class InjectionModule {
     @Binds
     public abstract CharacterDetailNetworkInterface createDetailPageController (
             CharacterDetailNetworkInterfaceImpl detailPageControllerImpl
+    );
+
+    @Binds
+    public abstract ComicDetailNetworkInterface createComicDetailNetworkInterface (
+            ComicDetailNetworkInterfaceImpl comicDetailNetworkImpl
     );
 
 

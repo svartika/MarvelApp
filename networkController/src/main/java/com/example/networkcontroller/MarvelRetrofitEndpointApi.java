@@ -32,4 +32,15 @@ public interface MarvelRetrofitEndpointApi {
     @GET("/v1/public/characters/{characterId}/events")
     Observable<MarvelEventsLoadResponse> loadEvents(@Path("characterId") int characterId);
 
+    @GET("/v1/public/comics/{comicId}/characters")
+    Observable<MarvelCharactersLoadResponse> loadCharactersForComics(@Path("comicId") int comicId);
+
+    @GET("/v1/public/comics/{comicId}/series")
+    Observable<MarvelSeriesLoadResponse> loadSeriesForComics(@Path("comicId") int comicId);
+
+    @GET("/v1/public/comics/{comicId}/stories")
+    Observable<MarvelStoriesLoadResponse> loadStoriesForComics(@Path("comicId") int comicId);
+
+    @GET("/v1/public/comics/{comicId}/events")
+    Observable<MarvelEventsLoadResponse> loadEventsForComics(@Path("comicId") int comicId);
 }

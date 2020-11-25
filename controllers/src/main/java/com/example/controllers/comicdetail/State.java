@@ -1,4 +1,4 @@
-package com.example.controllers.characterdetail;
+package com.example.controllers.comicdetail;
 
 import android.util.Log;
 
@@ -17,17 +17,17 @@ import java.util.Objects;
 public class State {
     boolean loading;
     boolean error;
-    ProcessedMarvelCharacter character;
-    List<ProcessedMarvelComic> comics;
+    ProcessedMarvelComic comic;
+    List<ProcessedMarvelCharacter> characters;
     List<ProcessedMarvelSeries> series;
     List<ProcessedMarvelStory> stories;
     List<ProcessedMarvelEvent> events;
     Runner callbackRunner;
     public CardClickListener clickListener;
 
-    State(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
-        this.character = character;
-        this.comics = comics;
+    State(ProcessedMarvelComic comic, List<ProcessedMarvelCharacter> characters, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
+        this.comic = comic;
+        this.characters = characters;
         this.loading = loading;
         this.error = error;
         this.series = series;
@@ -42,8 +42,8 @@ public class State {
         return "State("+hashCode()+"){" +
                 "loading=" + loading +
                 ", error=" + error +
-                ", character=" + character +
-                ", comics=" + comics +
+                ", comic=" + comic +
+                ", characters=" + characters +
                 ", series=" + series +
                 ", stories=" + stories +
                 ", events=" + events +
@@ -52,8 +52,8 @@ public class State {
                 '}';
     }
 
-    public ProcessedMarvelCharacter getCharacter() {
-        return character;
+    public ProcessedMarvelComic getComic() {
+        return comic;
     }
 
     public boolean isLoading() {
@@ -68,8 +68,8 @@ public class State {
         return callbackRunner;
     }
 
-    public List<ProcessedMarvelComic> getComics() {
-        return comics;
+    public List<ProcessedMarvelCharacter> getCharacters() {
+        return characters;
     }
     public List<ProcessedMarvelSeries> getSeries() {
         return series;
@@ -90,37 +90,20 @@ public class State {
         State state = (State) o;
         boolean ret = isLoading() == state.isLoading() &&
                 isError() == state.isError() &&
-                getCharacter().equals(state.getCharacter()) &&
+                getComic().equals(state.getComic()) &&
                 getCallbackRunner()==state.getCallbackRunner() &&
-                Utils.compareLists(comics,state.comics) &&
+                Utils.compareLists(characters, state.characters) &&
                 Utils.compareLists(series, state.series) &&
                 Utils.compareLists(stories, state.stories) &&
                 Utils.compareLists(events, state.events) &&
                 getClickListener()==state.getClickListener();
-        Log.d("Vartika", "Character Detail state comparison: " + ret);
-        //Log.d("Vartika", "Character Detail value 1: " + ((State) o).toString());
-        //Log.d("Vartika", "Character Detail value 2: " + this.toString());
+        Log.d("Vartika", "Comic Detail state comparison: " + ret);
         return ret;
     }
 
-   /* boolean compareLists(List<? extends ProcessedMarvelItemBase> first, List<? extends  ProcessedMarvelItemBase> second) {
-        if(first==null && second==null) return true;
-        else if(first==null || second==null) return false;
-        else if(first.size()!=second.size()) return false;
-        else {
-            boolean ret = true;
-            for(int i = 0; i < first.size(); i++) {
-                if(first.get(i).id!=second.get(i).id) {
-                    ret = false;
-                    break;
-                }
-            }
 
-            return ret;
-         }
-    }*/
     @Override
     public int hashCode() {
-        return Objects.hash(isLoading(), isError(), getCharacter(), getComics(), getSeries(), getStories(), getEvents(), getCallbackRunner(), getClickListener());
+        return Objects.hash(isLoading(), isError(), getComic(), getCharacters(), getSeries(), getStories(), getEvents(), getCallbackRunner(), getClickListener());
     }
 }

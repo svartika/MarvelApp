@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.ui.R;
 

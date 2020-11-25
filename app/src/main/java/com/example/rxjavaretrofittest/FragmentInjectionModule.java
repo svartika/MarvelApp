@@ -14,7 +14,13 @@ import com.example.controllers.characterslist.CharactersListNetworkInterface;
 import com.example.controllers.characterslist.CharactersListViewModel;
 import com.example.controllers.characterslist.CharactersListViewModelFactory;
 import com.example.controllers.characterslist.CharactersListViewModelImpl;
+import com.example.controllers.comicdetail.ComicDetailNetworkInterface;
+import com.example.controllers.comicdetail.ComicDetailViewModel;
+import com.example.controllers.comicdetail.ComicDetailViewModelDelegate;
+import com.example.controllers.comicdetail.ComicDetailViewModelFactory;
+import com.example.controllers.comicdetail.ComicDetailViewModelImpl;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
+import com.example.controllers.commons.ProcessedMarvelComic;
 
 import dagger.Module;
 import dagger.Provides;
@@ -35,8 +41,16 @@ public class FragmentInjectionModule {
     @FragmentScoped
     @Provides
     CharacterDetailViewModel getCharacterDetailViewModel(Fragment fragment, CharacterDetailNetworkInterface networkInterface) {
-        ProcessedMarvelCharacter item = CharacterDetailFragmentArgs.fromBundle(fragment.getArguments()).getItem();
+        ProcessedMarvelCharacter item = (ProcessedMarvelCharacter) CharacterDetailFragmentArgs.fromBundle(fragment.getArguments()).getItem();
         ViewModelProvider.Factory factory = new CharacterDetailViewModelFactory(new CharacterDetailViewModelDelegate(networkInterface, item));
         return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(CharacterDetailViewModelImpl.class);
+    }
+
+    @FragmentScoped
+    @Provides
+    ComicDetailViewModel getComicDetailViewModel(Fragment fragment, ComicDetailNetworkInterface networkInterface) {
+        ProcessedMarvelComic item = (ProcessedMarvelComic)ComicDetailFragmentArgs.fromBundle(fragment.getArguments()).getItem();
+        ViewModelProvider.Factory factory = new ComicDetailViewModelFactory(new ComicDetailViewModelDelegate(networkInterface, item));
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(ComicDetailViewModelImpl.class);
     }
 }

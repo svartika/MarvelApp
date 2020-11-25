@@ -52,7 +52,7 @@ public class CharacterDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_character_details, container, false);
-        ProcessedMarvelCharacter item = CharacterDetailFragmentArgs.fromBundle(getArguments()).getItem();
+        ProcessedMarvelCharacter item = (ProcessedMarvelCharacter)CharacterDetailFragmentArgs.fromBundle(getArguments()).getItem();
         characterId = item.id;
 
         setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
