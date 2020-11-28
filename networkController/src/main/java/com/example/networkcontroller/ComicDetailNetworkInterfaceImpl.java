@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 public class ComicDetailNetworkInterfaceImpl extends ComicDetailNetworkInterface {
-
+    @Inject
     Logger logger;
     @Inject
     MarvelRetrofitEndpointApi marvelRetrofitEndpointApi;
@@ -26,7 +26,7 @@ public class ComicDetailNetworkInterfaceImpl extends ComicDetailNetworkInterface
 
     @Override
     public Observable<List<MarvelCharacter>> loadMarvelCharactersForComicRaw(int comicId) {
-        Observable<List<MarvelCharacter>> o = marvelRetrofitEndpointApi.loadCharactersForComics(comicId).map(
+        Observable<List<MarvelCharacter>> o = marvelRetrofitEndpointApi.loadCharactersForComic(comicId).map(
           marvelCharactersLoadResponse -> {
               return marvelCharactersLoadResponse.data.characters;
           }
@@ -36,7 +36,7 @@ public class ComicDetailNetworkInterfaceImpl extends ComicDetailNetworkInterface
 
     @Override
     public Observable<List<MarvelSeries>> loadMarvelSeriesForComicRaw(int comicId) {
-        Observable<List<MarvelSeries>> o = marvelRetrofitEndpointApi.loadSeriesForComics(comicId).map(
+        Observable<List<MarvelSeries>> o = marvelRetrofitEndpointApi.loadSeriesForComic(comicId).map(
           marvelSeriesLoadResponse -> {
               return marvelSeriesLoadResponse.data.series;
           }
@@ -46,7 +46,7 @@ public class ComicDetailNetworkInterfaceImpl extends ComicDetailNetworkInterface
 
     @Override
     public Observable<List<MarvelStory>> loadMarvelStoriesForComicRaw(int comicId) {
-        Observable<List<MarvelStory>> o = marvelRetrofitEndpointApi.loadStoriesForComics(comicId).map(
+        Observable<List<MarvelStory>> o = marvelRetrofitEndpointApi.loadStoriesForComic(comicId).map(
                 marvelStoriesLoadResponse -> {
                     return marvelStoriesLoadResponse.data.stories;
                 }
@@ -56,7 +56,7 @@ public class ComicDetailNetworkInterfaceImpl extends ComicDetailNetworkInterface
 
     @Override
     public Observable<List<MarvelEvent>> loadMarvelEventsForComicRaw(int comicId) {
-        Observable<List<MarvelEvent>> o = marvelRetrofitEndpointApi.loadEventsForComics(comicId).map(
+        Observable<List<MarvelEvent>> o = marvelRetrofitEndpointApi.loadEventsForComic(comicId).map(
                 marvelEventsLoadResponse -> {
                     return marvelEventsLoadResponse.data.events;
                 }

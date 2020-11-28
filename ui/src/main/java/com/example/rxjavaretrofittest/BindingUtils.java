@@ -32,7 +32,10 @@ public class BindingUtils {
     @BindingAdapter(value = {"url", "callbackListener", "blur"}, requireAll = false)
     public static void loadImage(ImageView imageView, String url, Runner callbackListener, boolean blur) {
         new Logger().d("VartikaHilt", "load image: " + url);
-        if (url == null || url == "") return;
+        if (url == null || url == "") {
+            if (callbackListener != null) callbackListener.run();
+            return;
+        }
         RequestBuilder rb = Glide.with(imageView.getContext()).asBitmap()
                 .load(url)
 

@@ -1,7 +1,158 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.rxjavaretrofittest.SeriesDetailFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</FrameLayout>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="state"
+            type="com.example.controllers.seriesdetail.State"/>
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{state.series.title}"
+                android:textAlignment="center"
+                android:textColor="#FF000000"
+                app:layout_constraintBottom_toTopOf="@id/image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="@dimen/character_image_width"
+                android:layout_height="@dimen/character_image_height"
+                android:layout_margin="15dp"
+                android:scaleType="fitCenter"
+                android:src="@color/cardview_dark_background"
+                app:callbackListener="@{state.callbackRunner}"
+                app:layout_constraintBottom_toTopOf="@id/charactersLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                app:url="@{state.series.imageurl}" />
+
+            <TextView
+                android:id="@+id/charactersLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Characters"
+                android:textAlignment="center"
+                android:textColor="#FF000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@id/rvCharacters"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                app:hideLabelList="@{state.characters}"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCharacters"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                app:charactersDatasource="@{state.characters}"
+                app:cardClickHandler="@{state.clickListener}"
+                app:layout_constraintBottom_toTopOf="@+id/comicsLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/charactersLabel"
+                app:hideLabelList="@{state.characters}"/>
+
+            <TextView
+                android:id="@+id/comicsLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Comics"
+                android:textAlignment="center"
+                android:textColor="#FF000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/rvComics"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvCharacters"
+                app:hideLabelList="@{state.comics}"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComics"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                app:layout_constraintBottom_toTopOf="@+id/storiesLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/comicsLabel"
+                app:comicsDatasource="@{state.comics}"
+                app:cardClickHandler="@{state.clickListener}"
+                app:hideLabelList="@{state.comics}"/>
+
+            <TextView
+                android:id="@+id/storiesLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Stories"
+                android:textAlignment="center"
+                android:textColor="#FF000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/rvStories"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvComics"
+                app:hideLabelList="@{state.stories}"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvStories"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                app:layout_constraintBottom_toTopOf="@+id/eventsLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/storiesLabel"
+                app:storiesDatasource="@{state.stories}"
+                app:cardClickHandler="@{state.clickListener}"
+                app:hideLabelList="@{state.stories}"/>
+
+            <TextView
+                android:id="@+id/eventsLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Events"
+                android:textAlignment="center"
+                android:textColor="#FF000000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/rvEvents"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvStories"
+                app:hideLabelList="@{state.events}"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEvents"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                app:eventsDatasource="@{state.events}"
+                app:cardClickHandler="@{state.clickListener}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/eventsLabel"
+                app:hideLabelList="@{state.events}"/>
+
+            <ProgressBar
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:progressTint="@color/cardview_dark_background"
+                android:visibility="@{state.loading?View.VISIBLE:View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

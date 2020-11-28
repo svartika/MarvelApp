@@ -33,14 +33,50 @@ public interface MarvelRetrofitEndpointApi {
     Observable<MarvelEventsLoadResponse> loadEvents(@Path("characterId") int characterId);
 
     @GET("/v1/public/comics/{comicId}/characters")
-    Observable<MarvelCharactersLoadResponse> loadCharactersForComics(@Path("comicId") int comicId);
+    Observable<MarvelCharactersLoadResponse> loadCharactersForComic(@Path("comicId") int comicId);
 
     @GET("/v1/public/comics/{comicId}/series")
-    Observable<MarvelSeriesLoadResponse> loadSeriesForComics(@Path("comicId") int comicId);
+    Observable<MarvelSeriesLoadResponse> loadSeriesForComic(@Path("comicId") int comicId);
 
     @GET("/v1/public/comics/{comicId}/stories")
-    Observable<MarvelStoriesLoadResponse> loadStoriesForComics(@Path("comicId") int comicId);
+    Observable<MarvelStoriesLoadResponse> loadStoriesForComic(@Path("comicId") int comicId);
 
     @GET("/v1/public/comics/{comicId}/events")
-    Observable<MarvelEventsLoadResponse> loadEventsForComics(@Path("comicId") int comicId);
+    Observable<MarvelEventsLoadResponse> loadEventsForComic(@Path("comicId") int comicId);
+
+    @GET("/v1/public/series/{seriesId}/characters")
+    Observable<MarvelCharactersLoadResponse> loadCharactersForSeries(@Path("seriesId") int seriesId);
+
+    @GET("/v1/public/series/{seriesId}/comics")
+    Observable<MarvelComicsLoadResponse> loadComicsForSeries(@Path("seriesId") int seriesId);
+
+    @GET("/v1/public/series/{seriesId}/stories")
+    Observable<MarvelStoriesLoadResponse> loadStoriesForSeries(@Path("seriesId") int seriesId);
+
+    @GET("/v1/public/series/{seriesId}/events")
+    Observable<MarvelEventsLoadResponse> loadEventsForSeries(@Path("seriesId") int seriesId);
+
+    @GET("/v1/public/stories/{storyId}/characters")
+    Observable<MarvelCharactersLoadResponse> loadCharactersForStory(@Path("storyId") int storyId);
+
+    @GET("/v1/public/stories/{storyId}/comics")
+    Observable<MarvelComicsLoadResponse> loadComicsForStory(@Path("storyId") int storyId);
+
+    @GET("/v1/public/stories/{storyId}/series")
+    Observable<MarvelSeriesLoadResponse> loadSeriesForStory(@Path("storyId") int storyId);
+
+    @GET("/v1/public/stories/{storyId}/events")
+    Observable<MarvelEventsLoadResponse> loadEventsForStory(@Path("storyId") int storyId);
+
+    @GET("/v1/public/events/{eventId}/characters")
+    Observable<MarvelCharactersLoadResponse> loadCharactersForEvent(@Path("eventId") int eventId);
+
+    @GET("/v1/public/events/{eventId}/comics")
+    Observable<MarvelComicsLoadResponse> loadComicsForEvent(@Path("eventId") int eventId);
+
+    @GET("/v1/public/events/{eventId}series")
+    Observable<MarvelSeriesLoadResponse> loadSeriesForEvent(@Path("eventId") int eventId);
+
+    @GET("/v1/public/events/{eventId}/stories")
+    Observable<MarvelStoriesLoadResponse> loadStoriesForEvent(@Path("eventId") int eventId);
 }

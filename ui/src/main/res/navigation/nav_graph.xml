@@ -77,6 +77,15 @@
         <action
             android:id="@+id/action_SeriesDetailFragment_to_CharacterDetailFragment"
             app:destination="@id/CharacterDetailFragment"/>
+        <action
+            android:id="@+id/action_SeriesDetailFragment_to_ComicDetailFragment"
+            app:destination="@+id/ComicDetailFragment"/>
+        <action
+            android:id="@+id/action_SeriesDetailFragment_to_StoryDetailFragment"
+            app:destination="@+id/StoryDetailFragment"/>
+        <action
+            android:id="@+id/action_SeriesDetailFragment_to_EventDetailFragment"
+            app:destination="@+id/EventDetailFragment"/>
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
@@ -90,6 +99,15 @@
         <action
             android:id="@+id/action_StoryDetailFragment_to_CharacterDetailFragment"
             app:destination="@id/CharacterDetailFragment"/>
+        <action
+            android:id="@+id/action_StoryDetailFragment_to_ComicDetailFragment"
+            app:destination="@+id/ComicDetailFragment"/>
+        <action
+            android:id="@+id/action_StoryDetailFragment_to_SeriesDetailFragment"
+            app:destination="@+id/SeriesDetailFragment"/>
+        <action
+            android:id="@+id/action_StoryDetailFragment_to_EventDetailFragment"
+            app:destination="@+id/EventDetailFragment"/>
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
@@ -103,6 +121,15 @@
         <action
             android:id="@+id/action_EventDetailFragment_to_CharacterDetailFragment"
             app:destination="@id/CharacterDetailFragment"/>
+        <action
+            android:id="@+id/action_EventDetailFragment_to_ComicDetailFragment"
+            app:destination="@+id/ComicDetailFragment"/>
+        <action
+            android:id="@+id/action_EventDetailFragment_to_StoryDetailFragment"
+            app:destination="@+id/StoryDetailFragment"/>
+        <action
+            android:id="@+id/action_EventDetailFragment_to_SeriesDetailFragment"
+            app:destination="@+id/SeriesDetailFragment"/>
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>

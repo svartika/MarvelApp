@@ -51,13 +51,13 @@
                 android:textAlignment="center"
                 android:textColor="#FF000000"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@id/rvComics"
+                app:layout_constraintBottom_toTopOf="@id/rvCharacters"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image"
                 app:hideLabelList="@{state.characters}"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvComics"
+                android:id="@+id/rvCharacters"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 app:charactersDatasource="@{state.characters}"
@@ -78,7 +78,7 @@
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/rvSeries"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvComics"
+                app:layout_constraintTop_toBottomOf="@id/rvCharacters"
                 app:hideLabelList="@{state.series}"/>
 
             <androidx.recyclerview.widget.RecyclerView

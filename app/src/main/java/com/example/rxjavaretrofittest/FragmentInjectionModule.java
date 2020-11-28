@@ -21,6 +21,24 @@ import com.example.controllers.comicdetail.ComicDetailViewModelFactory;
 import com.example.controllers.comicdetail.ComicDetailViewModelImpl;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
+import com.example.controllers.commons.ProcessedMarvelEvent;
+import com.example.controllers.commons.ProcessedMarvelSeries;
+import com.example.controllers.commons.ProcessedMarvelStory;
+import com.example.controllers.eventdetail.EventDetailNetworkInterface;
+import com.example.controllers.eventdetail.EventDetailViewModel;
+import com.example.controllers.eventdetail.EventDetailViewModelDelegate;
+import com.example.controllers.eventdetail.EventDetailViewModelFactory;
+import com.example.controllers.eventdetail.EventDetailViewModelImpl;
+import com.example.controllers.seriesdetail.SeriesDetailNetworkInterface;
+import com.example.controllers.seriesdetail.SeriesDetailViewModel;
+import com.example.controllers.seriesdetail.SeriesDetailViewModelDelegate;
+import com.example.controllers.seriesdetail.SeriesDetailViewModelFactory;
+import com.example.controllers.seriesdetail.SeriesDetailViewModelImpl;
+import com.example.controllers.storydetail.StoryDetailNetworkInterface;
+import com.example.controllers.storydetail.StoryDetailViewModel;
+import com.example.controllers.storydetail.StoryDetailViewModelDelegate;
+import com.example.controllers.storydetail.StoryDetailViewModelFactory;
+import com.example.controllers.storydetail.StoryDetailViewModelImpl;
 
 import dagger.Module;
 import dagger.Provides;
@@ -52,5 +70,29 @@ public class FragmentInjectionModule {
         ProcessedMarvelComic item = (ProcessedMarvelComic)ComicDetailFragmentArgs.fromBundle(fragment.getArguments()).getItem();
         ViewModelProvider.Factory factory = new ComicDetailViewModelFactory(new ComicDetailViewModelDelegate(networkInterface, item));
         return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(ComicDetailViewModelImpl.class);
+    }
+
+    @FragmentScoped
+    @Provides
+    SeriesDetailViewModel getSeriesDetailViewModel(Fragment fragment, SeriesDetailNetworkInterface networkInterface) {
+        ProcessedMarvelSeries item = (ProcessedMarvelSeries)SeriesDetailFragmentArgs.fromBundle(fragment.getArguments()).getItem();
+        ViewModelProvider.Factory factory = new SeriesDetailViewModelFactory(new SeriesDetailViewModelDelegate(networkInterface, item));
+        return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(SeriesDetailViewModelImpl.class);
+    }
+
+    @FragmentScoped
+    @Provides
+    StoryDetailViewModel getStoryDetailViewModel(Fragment fragment, StoryDetailNetworkInterface networkInterface) {
+        ProcessedMarvelStory item = (ProcessedMarvelStory) StoryDetailFragmentArgs.fromBundle(fragment.getArguments()).getItem();
+        ViewModelProvider.Factory factory = new StoryDetailViewModelFactory(new StoryDetailViewModelDelegate(networkInterface, item));
+        return new ViewModelProvider((ViewModelStoreOwner)fragment, factory).get(StoryDetailViewModelImpl.class);
+    }
+
+    @FragmentScoped
+    @Provides
+    EventDetailViewModel getEventDetailViewModel(Fragment fragment, EventDetailNetworkInterface networkInterface) {
+        ProcessedMarvelEvent item = (ProcessedMarvelEvent) EventDetailFragmentArgs.fromBundle(fragment.getArguments()).getItem();
+        ViewModelProvider.Factory factory = new EventDetailViewModelFactory(new EventDetailViewModelDelegate(networkInterface, item));
+        return new ViewModelProvider((ViewModelStoreOwner)fragment, factory).get(EventDetailViewModelImpl.class);
     }
 }

@@ -63,7 +63,7 @@ public class ComicDetailFragment extends Fragment {
 
         name = binding.getRoot().findViewById(R.id.name);
         imageView = binding.getRoot().findViewById(R.id.image);
-        rvCharacters = binding.getRoot().findViewById(R.id.rvComics);
+        rvCharacters = binding.getRoot().findViewById(R.id.rvCharacters);
         rvSeries = binding.getRoot().findViewById(R.id.rvSeries);
         rvStories = binding.getRoot().findViewById(R.id.rvStories);
         rvEvents = binding.getRoot().findViewById(R.id.rvEvents);
