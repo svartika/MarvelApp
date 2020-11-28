@@ -15,11 +15,12 @@ import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.ui.BR;
 import com.example.ui.R;
-import com.example.ui.databinding.MarvelCharacterRvItemBinding;
+import com.example.ui.databinding.CharacterRvItemBindingImpl;
+import com.example.ui.databinding.LandingCharacterRvItemBindingImpl;
 
 import java.util.List;
 
-public class MarvelCharacterListAdapter extends RecyclerView.Adapter<MarvelCharacterListAdapter.MarvelCharacterViewHolder> {
+public class CharacterDetailAdapter extends RecyclerView.Adapter<CharacterDetailAdapter.MarvelCharacterViewHolder> {
 
     CardClickListener marvelCharacterClickedListener;
     private final AsyncListDiffer<ProcessedMarvelCharacter> differ = new AsyncListDiffer<ProcessedMarvelCharacter>(this, diffCallBack);
@@ -35,7 +36,7 @@ public class MarvelCharacterListAdapter extends RecyclerView.Adapter<MarvelChara
         }
     };
 
-    public MarvelCharacterListAdapter(CardClickListener marvelCharacterClickedListener) {
+    public CharacterDetailAdapter(CardClickListener marvelCharacterClickedListener) {
         this.marvelCharacterClickedListener = marvelCharacterClickedListener;
     }
 
@@ -49,7 +50,7 @@ public class MarvelCharacterListAdapter extends RecyclerView.Adapter<MarvelChara
        /* View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.marvel_character_rv_item, parent, false);
         return new MarvelCharacterViewHolder(v);*/
        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-       MarvelCharacterRvItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.marvel_character_rv_item, parent, false);
+       CharacterRvItemBindingImpl binding = DataBindingUtil.inflate(inflater, R.layout.character_rv_item, parent, false);
        return new MarvelCharacterViewHolder(binding);
     }
 

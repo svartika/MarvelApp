@@ -79,15 +79,15 @@ public class BindingUtils {
     @BindingAdapter(value = {"datasource", "characterClickHandler"}, requireAll = true)
     public static void loadDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvCharacters.getAdapter();
-        MarvelCharacterListAdapter marvelCharacterListAdapter = null;
-        if (adapter instanceof MarvelCharacterListAdapter) {
-            marvelCharacterListAdapter = (MarvelCharacterListAdapter) adapter;
-            marvelCharacterListAdapter.marvelCharacterClickedListener = clickListener;
+        CharacterListAdapterLanding characterListAdapterLanding = null;
+        if (adapter instanceof CharacterListAdapterLanding) {
+            characterListAdapterLanding = (CharacterListAdapterLanding) adapter;
+            characterListAdapterLanding.marvelCharacterClickedListener = clickListener;
         } else {
-            marvelCharacterListAdapter = new MarvelCharacterListAdapter(clickListener);
-            rvCharacters.setAdapter(marvelCharacterListAdapter);
+            characterListAdapterLanding = new CharacterListAdapterLanding(clickListener);
+            rvCharacters.setAdapter(characterListAdapterLanding);
         }
-        marvelCharacterListAdapter.submitList(charactersList);
+        characterListAdapterLanding.submitList(charactersList);
     }
 
     @BindingAdapter(value = {"charactersDatasource", "cardClickHandler"}, requireAll = true)
@@ -95,12 +95,12 @@ public class BindingUtils {
         // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
         RecyclerView.Adapter adapter = rvCharacters.getAdapter();
         if (adapter == null) {
-            MarvelCharacterListAdapter charactersListAdapter = new MarvelCharacterListAdapter(clickListener);
-            rvCharacters.setAdapter(charactersListAdapter);
-            charactersListAdapter.submitList(charactersList);
+            CharacterDetailAdapter charactersDetailAdapter = new CharacterDetailAdapter(clickListener);
+            rvCharacters.setAdapter(charactersDetailAdapter);
+            charactersDetailAdapter.submitList(charactersList);
         } else {
-            ((MarvelCharacterListAdapter) adapter).marvelCharacterClickedListener = clickListener;
-            ((MarvelCharacterListAdapter) adapter).submitList(charactersList);
+            ((CharacterDetailAdapter) adapter).marvelCharacterClickedListener = clickListener;
+            ((CharacterDetailAdapter) adapter).submitList(charactersList);
         }
     }
     @BindingAdapter(value = {"comicsDatasource", "cardClickHandler"}, requireAll = true)
@@ -108,12 +108,12 @@ public class BindingUtils {
         // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
         RecyclerView.Adapter adapter = rvComics.getAdapter();
         if (adapter == null) {
-            ComicsListAdapter comicsListAdapter = new ComicsListAdapter(clickListener);
-            rvComics.setAdapter(comicsListAdapter);
-            comicsListAdapter.submitList(comicsList);
+            ComicsDetailAdapter comicsDetailAdapter = new ComicsDetailAdapter(clickListener);
+            rvComics.setAdapter(comicsDetailAdapter);
+            comicsDetailAdapter.submitList(comicsList);
         } else {
-            ((ComicsListAdapter) adapter).clickListener = clickListener;
-            ((ComicsListAdapter) adapter).submitList(comicsList);
+            ((ComicsDetailAdapter) adapter).clickListener = clickListener;
+            ((ComicsDetailAdapter) adapter).submitList(comicsList);
         }
     }
 
@@ -121,12 +121,12 @@ public class BindingUtils {
     public static void loadSeriesDataSource(RecyclerView rvSeries, List<ProcessedMarvelSeries> seriesList, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvSeries.getAdapter();
         if (adapter == null) {
-            SeriesListAdapter seriesListAdapter = new SeriesListAdapter(clickListener);
-            rvSeries.setAdapter(seriesListAdapter);
-            seriesListAdapter.submitList(seriesList);
+            SeriesDetailAdapter seriesDetailAdapter = new SeriesDetailAdapter(clickListener);
+            rvSeries.setAdapter(seriesDetailAdapter);
+            seriesDetailAdapter.submitList(seriesList);
         } else {
-            ((SeriesListAdapter) adapter).clickListener = clickListener;
-            ((SeriesListAdapter) adapter).submitList(seriesList);
+            ((SeriesDetailAdapter) adapter).clickListener = clickListener;
+            ((SeriesDetailAdapter) adapter).submitList(seriesList);
         }
     }
 
@@ -134,12 +134,12 @@ public class BindingUtils {
     public static void loadStoriesDataSource(RecyclerView rvStories, List<ProcessedMarvelStory> storiesList, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvStories.getAdapter();
         if (adapter == null) {
-            StoriesListAdapter storiesListAdapter = new StoriesListAdapter(clickListener);
-            rvStories.setAdapter(storiesListAdapter);
-            storiesListAdapter.submitList(storiesList);
+            StoriesDetailAdapter storiesDetailAdapter = new StoriesDetailAdapter(clickListener);
+            rvStories.setAdapter(storiesDetailAdapter);
+            storiesDetailAdapter.submitList(storiesList);
         } else {
-            ((StoriesListAdapter) adapter).clickListener = clickListener;
-            ((StoriesListAdapter) adapter).submitList(storiesList);
+            ((StoriesDetailAdapter) adapter).clickListener = clickListener;
+            ((StoriesDetailAdapter) adapter).submitList(storiesList);
         }
     }
 
@@ -147,12 +147,12 @@ public class BindingUtils {
     public static void loadEventsDataSource(RecyclerView rvEvents, List<ProcessedMarvelEvent> eventsList, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvEvents.getAdapter();
         if (adapter == null) {
-            EventsListAdapter eventsListAdapter = new EventsListAdapter(clickListener);
-            rvEvents.setAdapter(eventsListAdapter);
-            eventsListAdapter.submitList(eventsList);
+            EventsDetailAdapter eventsDetailAdapter = new EventsDetailAdapter(clickListener);
+            rvEvents.setAdapter(eventsDetailAdapter);
+            eventsDetailAdapter.submitList(eventsList);
         } else {
-            ((EventsListAdapter) adapter).clickListener = clickListener;
-            ((EventsListAdapter) adapter).submitList(eventsList);
+            ((EventsDetailAdapter) adapter).clickListener = clickListener;
+            ((EventsDetailAdapter) adapter).submitList(eventsList);
         }
     }
 

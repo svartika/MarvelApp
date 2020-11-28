@@ -18,7 +18,7 @@ import com.example.ui.databinding.ComicsRvItemBinding;
 
 import java.util.List;
 
-public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.ComicsViewHolder> {
+public class ComicsDetailAdapter extends RecyclerView.Adapter<ComicsDetailAdapter.ComicsViewHolder> {
 
     CardClickListener clickListener;
     private final AsyncListDiffer<ProcessedMarvelComic> differ = new AsyncListDiffer<ProcessedMarvelComic>(this, diffCallback);
@@ -56,7 +56,7 @@ public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.Co
         return differ.getCurrentList().size();
     }
 
-    ComicsListAdapter(CardClickListener clickListener) {
+    ComicsDetailAdapter(CardClickListener clickListener) {
         this.clickListener = clickListener;
     }
 

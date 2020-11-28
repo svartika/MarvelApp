@@ -18,9 +18,9 @@ import com.example.ui.databinding.EventRvItemBinding;
 
 import java.util.List;
 
-public class EventsListAdapter extends RecyclerView.Adapter<EventsListAdapter.EventViewHolder> {
+public class EventsDetailAdapter extends RecyclerView.Adapter<EventsDetailAdapter.EventViewHolder> {
     CardClickListener clickListener;
-    public EventsListAdapter(CardClickListener clickListener) {
+    public EventsDetailAdapter(CardClickListener clickListener) {
         this.clickListener = clickListener;
     }
 

@@ -415,9 +415,9 @@ In BindingUtils, we define the BindingAdapter for datasource and set the adapter
 
     @BindingAdapter("datasource")
         public static void loadDataSource(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList) {
-            MarvelCharacterListAdapter marvelCharacterListAdapter = new MarvelCharacterListAdapter();
-            rvMarvelCharacters.setAdapter(marvelCharacterListAdapter);
-            marvelCharacterListAdapter.submitList(marvelCharactersList); // using submitList instead of notify data set changed  was a whole new topic for me. I will cover it next :)
+            MarvelCharacterListAdapter characterListAdapterLanding = new MarvelCharacterListAdapter();
+            rvMarvelCharacters.setAdapter(characterListAdapterLanding);
+            characterListAdapterLanding.submitList(marvelCharactersList); // using submitList instead of notify data set changed  was a whole new topic for me. I will cover it next :)
         }
 	
 Next, we need to pass this to the individual elements in the recycler view.  In the item layout, marvel_character_rv_item.xml, i just added the data element and used it to populate the items.
@@ -610,9 +610,9 @@ I declared the tags app:marvelCharacterClickHandler and app:onClick as BindingAd
 
 	    @BindingAdapter(value = {"datasource", "marvelCharacterClickHandler"}, requireAll = true)  
 	    public static void loadDataSource(RecyclerView rvMarvelCharacters, List<ProcessedMarvelCharacter>marvelCharactersList, AbsCharactersListPageController.AbsMarvelCharacterClickedListener marvelCharacterClickedListener) {   
-	      MarvelCharacterListAdapter marvelCharacterListAdapter = new MarvelCharacterListAdapter(marvelCharacterClickedListener);  
-	      rvMarvelCharacters.setAdapter(marvelCharacterListAdapter);  
-		  marvelCharacterListAdapter.submitList(marvelCharactersList);  
+	      MarvelCharacterListAdapter characterListAdapterLanding = new MarvelCharacterListAdapter(marvelCharacterClickedListener);  
+	      rvMarvelCharacters.setAdapter(characterListAdapterLanding);  
+		  characterListAdapterLanding.submitList(marvelCharactersList);  
 	    }  
 	    
 	    @BindingAdapter(value = {"onClick", "item"}, requireAll = true)  

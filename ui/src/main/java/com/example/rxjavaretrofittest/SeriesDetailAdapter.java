@@ -18,9 +18,9 @@ import com.example.ui.databinding.SeriesRvItemBinding;
 
 import java.util.List;
 
-public class SeriesListAdapter extends RecyclerView.Adapter<SeriesListAdapter.SeriesViewHolder> {
+public class SeriesDetailAdapter extends RecyclerView.Adapter<SeriesDetailAdapter.SeriesViewHolder> {
     CardClickListener clickListener;
-    public SeriesListAdapter(CardClickListener clickListener) {
+    public SeriesDetailAdapter(CardClickListener clickListener) {
         this.clickListener = clickListener;
     }
     private final AsyncListDiffer<ProcessedMarvelSeries> differ = new AsyncListDiffer<ProcessedMarvelSeries>(this, differCallback);

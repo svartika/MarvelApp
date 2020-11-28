@@ -18,9 +18,9 @@ import com.example.ui.databinding.StoryRvItemBinding;
 
 import java.util.List;
 
-public class StoriesListAdapter extends RecyclerView.Adapter<StoriesListAdapter.StoryViewHolder> {
+public class StoriesDetailAdapter extends RecyclerView.Adapter<StoriesDetailAdapter.StoryViewHolder> {
     CardClickListener clickListener;
-    public StoriesListAdapter(CardClickListener clickListener) {
+    public StoriesDetailAdapter(CardClickListener clickListener) {
         this.clickListener = clickListener;
     }
     private final AsyncListDiffer<ProcessedMarvelStory> differ = new AsyncListDiffer<ProcessedMarvelStory>(this, differCallback);
