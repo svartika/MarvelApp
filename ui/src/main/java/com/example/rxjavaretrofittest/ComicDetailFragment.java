@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +32,9 @@ import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.entitiy.models.logs.Logger;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentComicDetailBinding;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -50,6 +55,7 @@ public class ComicDetailFragment extends Fragment {
     @Inject
     Logger logger;
 
+    TransitionNaming transitionNaming = new TransitionNamingImpl();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,6 +87,7 @@ public class ComicDetailFragment extends Fragment {
                 consume(effect);
             }
         });
+        setSharedElementReturnTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
 
         return binding.getRoot();
     }
@@ -88,8 +95,20 @@ public class ComicDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        imageView.setTransitionName("marvelTransition");
-        name.setTransitionName("marvelTransitionName");
+        imageView.setTransitionName(transitionNaming.getEndAnimationTag(Screen.ComicDetail, ViewElement.Image));
+        name.setTransitionName(transitionNaming.getEndAnimationTag(Screen.ComicDetail, ViewElement.Name));
+
+        postponeEnterTransition();
+        ViewGroup parentView = (ViewGroup) view.getParent();
+        parentView.getViewTreeObserver()
+                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        parentView.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startPostponedEnterTransition();
+                        return true;
+                    }
+                });
     }
 
     void setUpRecyclerView() {
@@ -125,17 +144,45 @@ public class ComicDetailFragment extends Fragment {
             Effect.ClickCardEffect clickCardEffect = (Effect.ClickCardEffect) effect;
             ProcessedMarvelItemBase item = (ProcessedMarvelItemBase) clickCardEffect.item;
             if (item instanceof ProcessedMarvelCharacter) {
-                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.ComicDetailFragment)
-                    NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToCharacterDetailFragment((ProcessedMarvelItemBase) item));
+                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.ComicDetailFragment) {
+                    ImageView imageView = clickCardEffect.view.findViewById(R.id.mCharacterImage);
+                    TextView textView =clickCardEffect.view.findViewById(R.id.mCharacter);
+                    Map<View, String> map = new HashMap<>();
+                    map.put(imageView, transitionNaming.getEndAnimationTag(Screen.CharacterDetail, ViewElement.Image));
+                    map.put(textView, transitionNaming.getEndAnimationTag(Screen.CharacterDetail, ViewElement.Name));
+                    FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
+                    NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToCharacterDetailFragment((ProcessedMarvelItemBase) item), extras);
+                }
             } else if (item instanceof ProcessedMarvelSeries) {
-                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.ComicDetailFragment)
-                    NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToSeriesDetailFragment((ProcessedMarvelItemBase) item));
+                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.ComicDetailFragment) {
+                    ImageView imageView = clickCardEffect.view.findViewById(R.id.seriesImage);
+                    TextView textView =clickCardEffect.view.findViewById(R.id.seriesName);
+                    Map<View, String> map = new HashMap<>();
+                    map.put(imageView, transitionNaming.getEndAnimationTag(Screen.SeriesDetail, ViewElement.Image));
+                    map.put(textView, transitionNaming.getEndAnimationTag(Screen.SeriesDetail, ViewElement.Name));
+                    FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
+                    NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToSeriesDetailFragment((ProcessedMarvelItemBase) item), extras);
+                }
             } else if (item instanceof ProcessedMarvelStory) {
-                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.ComicDetailFragment)
-                    NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToStoryDetailFragment((ProcessedMarvelItemBase) item));
+                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.ComicDetailFragment) {
+                    ImageView imageView = clickCardEffect.view.findViewById(R.id.storyImage);
+                    TextView textView =clickCardEffect.view.findViewById(R.id.storyName);
+                    Map<View, String> map = new HashMap<>();
+                    map.put(imageView, transitionNaming.getEndAnimationTag(Screen.StoriesDetail, ViewElement.Image));
+                    map.put(textView, transitionNaming.getEndAnimationTag(Screen.StoriesDetail, ViewElement.Name));
+                    FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
+                    NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToStoryDetailFragment((ProcessedMarvelItemBase) item), extras);
+                }
             } else if (item instanceof ProcessedMarvelEvent) {
-                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.ComicDetailFragment)
-                    NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToEventDetailFragment((ProcessedMarvelItemBase) item));
+                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.ComicDetailFragment) {
+                    ImageView imageView = clickCardEffect.view.findViewById(R.id.eventImage);
+                    TextView textView =clickCardEffect.view.findViewById(R.id.eventName);
+                    Map<View, String> map = new HashMap<>();
+                    map.put(imageView, transitionNaming.getEndAnimationTag(Screen.EventDetail, ViewElement.Image));
+                    map.put(textView, transitionNaming.getEndAnimationTag(Screen.EventDetail, ViewElement.Name));
+                    FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
+                    NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToEventDetailFragment((ProcessedMarvelItemBase) item), extras);
+                }
             }
         }
     }

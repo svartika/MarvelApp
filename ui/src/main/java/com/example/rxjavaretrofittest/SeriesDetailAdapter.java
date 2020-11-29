@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.AsyncListDiffer;
@@ -20,8 +21,11 @@ import java.util.List;
 
 public class SeriesDetailAdapter extends RecyclerView.Adapter<SeriesDetailAdapter.SeriesViewHolder> {
     CardClickListener clickListener;
-    public SeriesDetailAdapter(CardClickListener clickListener) {
+    TransitionNaming transitionNaming = new TransitionNamingImpl();
+    Screen screen;
+    public SeriesDetailAdapter(CardClickListener clickListener, Screen screen) {
         this.clickListener = clickListener;
+        this.screen = screen;
     }
     private final AsyncListDiffer<ProcessedMarvelSeries> differ = new AsyncListDiffer<ProcessedMarvelSeries>(this, differCallback);
     public static final DiffUtil.ItemCallback<ProcessedMarvelSeries> differCallback = new DiffUtil.ItemCallback<ProcessedMarvelSeries>() {
@@ -68,6 +72,11 @@ public class SeriesDetailAdapter extends RecyclerView.Adapter<SeriesDetailAdapte
             this.binding = binding;
         }
         public void bind(ProcessedMarvelSeries seriesItem) {
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.seriesImage),
+                    transitionNaming.getStartAnimationTag(screen, Listing.Series, ViewElement.Image, String.valueOf(seriesItem.id))
+            );
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.seriesName),
+                    transitionNaming.getStartAnimationTag(screen, Listing.Series, ViewElement.Name, String.valueOf(seriesItem.id)));
             binding.setVariable(BR.seriesItem, seriesItem);
             binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();

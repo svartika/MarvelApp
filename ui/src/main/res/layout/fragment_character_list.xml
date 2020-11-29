@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.example.rxjavaretrofittest.Screen"/>
         <variable
             name="state"
             type="com.example.controllers.characterslist.State" />
@@ -22,6 +22,7 @@
             android:layout_margin="10dp"
             app:characterClickHandler="@{state.clickListener}"
             app:datasource="@{state.charactersList}"
+            app:screen="@{Screen.Landing}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

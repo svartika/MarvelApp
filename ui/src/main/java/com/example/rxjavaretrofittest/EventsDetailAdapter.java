@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.AsyncListDiffer;
@@ -19,9 +20,12 @@ import com.example.ui.databinding.EventRvItemBinding;
 import java.util.List;
 
 public class EventsDetailAdapter extends RecyclerView.Adapter<EventsDetailAdapter.EventViewHolder> {
+    Screen screen;
+    TransitionNaming transitionNaming = new TransitionNamingImpl();
     CardClickListener clickListener;
-    public EventsDetailAdapter(CardClickListener clickListener) {
+    public EventsDetailAdapter(CardClickListener clickListener, Screen screen) {
         this.clickListener = clickListener;
+        this.screen = screen;
     }
 
     private final AsyncListDiffer<ProcessedMarvelEvent> differ = new AsyncListDiffer<ProcessedMarvelEvent>(this, differCallback);
@@ -67,6 +71,10 @@ public class EventsDetailAdapter extends RecyclerView.Adapter<EventsDetailAdapte
             this.binding = binding;
         }
         public void bind(ProcessedMarvelEvent event) {
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.eventImage),
+                    transitionNaming.getStartAnimationTag(screen, Listing.Events, ViewElement.Image, String.valueOf(event.id)));
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.eventName),
+                    transitionNaming.getStartAnimationTag(screen, Listing.Events, ViewElement.Name, String.valueOf(event.id)));
             binding.setVariable(BR.eventItem, event);
             binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();

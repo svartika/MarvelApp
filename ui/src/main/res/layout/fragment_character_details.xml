@@ -5,7 +5,7 @@
     <data>
 
         <import type="android.view.View" />
-
+        <import type="com.example.rxjavaretrofittest.Screen"/>
         <variable
             name="state"
             type="com.example.controllers.characterdetail.State" />
@@ -22,7 +22,7 @@
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{state.character.name}"
                 android:textAlignment="center"
@@ -69,7 +69,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/charactersLabel"
-                app:hideLabelList="@{state.comics}"/>
+                app:hideLabelList="@{state.comics}"
+                app:screen="@{Screen.CharacterDetail}"
+                />
 
             <TextView
                 android:id="@+id/seriesLabel"
@@ -93,8 +95,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/seriesLabel"
                 app:seriesDatasource="@{state.series}"
+                app:screen="@{Screen.CharacterDetail}"
                 app:cardClickHandler="@{state.clickListener}"
-                app:hideLabelList="@{state.series}"/>
+                app:hideLabelList="@{state.series}"
+                />
 
             <TextView
                 android:id="@+id/storiesLabel"
@@ -119,7 +123,9 @@
                 app:layout_constraintTop_toBottomOf="@id/storiesLabel"
                 app:storiesDatasource="@{state.stories}"
                 app:cardClickHandler="@{state.clickListener}"
-                app:hideLabelList="@{state.stories}"/>
+                app:hideLabelList="@{state.stories}"
+                app:screen="@{Screen.CharacterDetail}"
+                />
 
             <TextView
                 android:id="@+id/eventsLabel"
@@ -144,7 +150,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/eventsLabel"
-                app:hideLabelList="@{state.events}"/>
+                app:hideLabelList="@{state.events}"
+                app:screen="@{Screen.CharacterDetail}"
+                />
 
             <ProgressBar
                 android:layout_width="40dp"

@@ -44,6 +44,7 @@ public class SeriesDetailFragment extends Fragment {
     TextView name;
     ImageView imageView;
     RecyclerView rvCharacters, rvComics, rvStories, rvEvents;
+    TransitionNaming transitionNaming = new TransitionNamingImpl();
 
     @Inject
     Logger logger;
@@ -88,8 +89,8 @@ public class SeriesDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        imageView.setTransitionName("marvelTransition");
-        name.setTransitionName("marvelTransitionName");
+        imageView.setTransitionName(transitionNaming.getEndAnimationTag(Screen.SeriesDetail, ViewElement.Image));
+        name.setTransitionName(transitionNaming.getEndAnimationTag(Screen.SeriesDetail, ViewElement.Name));
     }
 
     void setUpRecyclerView() {

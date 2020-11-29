@@ -48,6 +48,7 @@ public class CharacterListFragment extends Fragment {
     EditText searchView;
     SearchTextChangedCallbackListener searchCallback;
     ViewGroup parentView;
+    TransitionNaming transitionNaming = new TransitionNamingImpl();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -124,8 +125,8 @@ public class CharacterListFragment extends Fragment {
             ImageView imageView = clickEffect.view.findViewById(R.id.mCharacterImage);
             TextView textView = clickEffect.view.findViewById(R.id.mCharacter);
             Map<View,String> map = new HashMap<>();
-            map.put(imageView, "marvelTransition");
-            map.put(textView, "marvelTransitionName");
+            map.put(imageView, transitionNaming.getEndAnimationTag(Screen.CharacterDetail, ViewElement.Image));
+            map.put(textView, transitionNaming.getEndAnimationTag(Screen.CharacterDetail, ViewElement.Name));
             FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                     .addSharedElements(map)
                     /*.addSharedElement(clickEffect.view.findViewById(R.id.mCharacter), "marvelTransitionName")*/

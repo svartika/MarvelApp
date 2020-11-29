@@ -9,5 +9,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="character_search_hint">Enter Character Name</string>
+    <string name="character_detail_tag">CharacterDetail</string>
+    <string name="comic_detail_tag">ComicDetail</string>
+    <string name="event_detail_tag">EventDetail</string>
+    <string name="series_detail_tag">SeriesDetail</string>
+    <string name="stories_detail_tag">StoriesDetail</string>
 
 </resources>

@@ -23,6 +23,7 @@ import java.util.List;
 public class CharacterDetailAdapter extends RecyclerView.Adapter<CharacterDetailAdapter.MarvelCharacterViewHolder> {
 
     CardClickListener marvelCharacterClickedListener;
+    TransitionNaming transitionNaming = new TransitionNamingImpl();
     private final AsyncListDiffer<ProcessedMarvelCharacter> differ = new AsyncListDiffer<ProcessedMarvelCharacter>(this, diffCallBack);
     public static final DiffUtil.ItemCallback<ProcessedMarvelCharacter> diffCallBack = new DiffUtil.ItemCallback<ProcessedMarvelCharacter>() {
         @Override
@@ -36,10 +37,11 @@ public class CharacterDetailAdapter extends RecyclerView.Adapter<CharacterDetail
         }
     };
 
-    public CharacterDetailAdapter(CardClickListener marvelCharacterClickedListener) {
+    public CharacterDetailAdapter(CardClickListener marvelCharacterClickedListener, Screen screen) {
         this.marvelCharacterClickedListener = marvelCharacterClickedListener;
+        this.screen = screen;
     }
-
+    Screen screen;
     // List<ProcessedMarvelCharacter> marvelCharacters;
    /* void setMarvelCharacters(List<ProcessedMarvelCharacter> marvelCharacters) {
         this.marvelCharacters = marvelCharacters;
@@ -89,8 +91,11 @@ public class CharacterDetailAdapter extends RecyclerView.Adapter<CharacterDetail
         }
 
         public void bind(ProcessedMarvelCharacter obj) {
-            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.mCharacterImage), String.valueOf(obj.id));
-            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.mCharacter), obj.id+obj.name.replaceAll(" ", ""));
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.mCharacterImage),
+                    transitionNaming.getStartAnimationTag(screen, Listing.Characters, ViewElement.Image, String.valueOf(obj.id))
+                    );
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.mCharacter),
+                    transitionNaming.getStartAnimationTag(screen, Listing.Characters, ViewElement.Name, String.valueOf(obj.id)));
             binding.setVariable(BR.marvelItem, obj);
             binding.setVariable(BR.clickHandler, marvelCharacterClickedListener);
             binding.executePendingBindings();

@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.AsyncListDiffer;
@@ -19,10 +20,11 @@ import com.example.ui.databinding.ComicsRvItemBinding;
 import java.util.List;
 
 public class ComicsDetailAdapter extends RecyclerView.Adapter<ComicsDetailAdapter.ComicsViewHolder> {
-
+    Screen screen;
+    TransitionNaming transitionNaming = new TransitionNamingImpl();
     CardClickListener clickListener;
     private final AsyncListDiffer<ProcessedMarvelComic> differ = new AsyncListDiffer<ProcessedMarvelComic>(this, diffCallback);
-    public static final DiffUtil.ItemCallback<ProcessedMarvelComic>diffCallback = new DiffUtil.ItemCallback<ProcessedMarvelComic>() {
+    public static final DiffUtil.ItemCallback<ProcessedMarvelComic> diffCallback = new DiffUtil.ItemCallback<ProcessedMarvelComic>() {
         @Override
         public boolean areItemsTheSame(@NonNull ProcessedMarvelComic oldItem, @NonNull ProcessedMarvelComic newItem) {
             return oldItem.id == newItem.id;
@@ -30,7 +32,7 @@ public class ComicsDetailAdapter extends RecyclerView.Adapter<ComicsDetailAdapte
 
         @Override
         public boolean areContentsTheSame(@NonNull ProcessedMarvelComic oldItem, @NonNull ProcessedMarvelComic newItem) {
-            return oldItem.title.compareToIgnoreCase(newItem.title)==0;
+            return oldItem.title.compareToIgnoreCase(newItem.title) == 0;
         }
     };
     public void submitList(List<ProcessedMarvelComic> list) {
@@ -56,17 +58,24 @@ public class ComicsDetailAdapter extends RecyclerView.Adapter<ComicsDetailAdapte
         return differ.getCurrentList().size();
     }
 
-    ComicsDetailAdapter(CardClickListener clickListener) {
+    ComicsDetailAdapter(CardClickListener clickListener, Screen screen) {
         this.clickListener = clickListener;
+        this.screen = screen;
     }
 
     public class ComicsViewHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding binding;
+
         public ComicsViewHolder(ViewDataBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
+
         public void bind(ProcessedMarvelComic comicItem) {
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.comicImage),
+                    transitionNaming.getStartAnimationTag(screen, Listing.Series, ViewElement.Image, String.valueOf(comicItem.id)));
+            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.comicName),
+                    transitionNaming.getStartAnimationTag(screen, Listing.Series, ViewElement.Name, String.valueOf(comicItem.id)));
             binding.setVariable(BR.comicItem, comicItem);
             binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();

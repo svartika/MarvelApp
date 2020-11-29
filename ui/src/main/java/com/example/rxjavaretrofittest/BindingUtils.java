@@ -76,26 +76,26 @@ public class BindingUtils {
         });
     }
 
-    @BindingAdapter(value = {"datasource", "characterClickHandler"}, requireAll = true)
-    public static void loadDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, CardClickListener clickListener) {
+    @BindingAdapter(value = {"datasource", "screen", "characterClickHandler"}, requireAll = true)
+    public static void loadDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, Screen screen, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvCharacters.getAdapter();
         CharacterListAdapterLanding characterListAdapterLanding = null;
         if (adapter instanceof CharacterListAdapterLanding) {
             characterListAdapterLanding = (CharacterListAdapterLanding) adapter;
             characterListAdapterLanding.marvelCharacterClickedListener = clickListener;
         } else {
-            characterListAdapterLanding = new CharacterListAdapterLanding(clickListener);
+            characterListAdapterLanding = new CharacterListAdapterLanding(clickListener, screen);
             rvCharacters.setAdapter(characterListAdapterLanding);
         }
         characterListAdapterLanding.submitList(charactersList);
     }
 
-    @BindingAdapter(value = {"charactersDatasource", "cardClickHandler"}, requireAll = true)
-    public static void loadCharactersDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, CardClickListener clickListener) {
+    @BindingAdapter(value = {"charactersDatasource", "screen","cardClickHandler"}, requireAll = true)
+    public static void loadCharactersDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, Screen screen, CardClickListener clickListener) {
         // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
         RecyclerView.Adapter adapter = rvCharacters.getAdapter();
         if (adapter == null) {
-            CharacterDetailAdapter charactersDetailAdapter = new CharacterDetailAdapter(clickListener);
+            CharacterDetailAdapter charactersDetailAdapter = new CharacterDetailAdapter(clickListener, screen);
             rvCharacters.setAdapter(charactersDetailAdapter);
             charactersDetailAdapter.submitList(charactersList);
         } else {
@@ -103,12 +103,12 @@ public class BindingUtils {
             ((CharacterDetailAdapter) adapter).submitList(charactersList);
         }
     }
-    @BindingAdapter(value = {"comicsDatasource", "cardClickHandler"}, requireAll = true)
-    public static void loadComicsDataSource(RecyclerView rvComics, List<ProcessedMarvelComic> comicsList, CardClickListener clickListener) {
+    @BindingAdapter(value = {"comicsDatasource", "screen", "cardClickHandler"}, requireAll = true)
+    public static void loadComicsDataSource(RecyclerView rvComics, List<ProcessedMarvelComic> comicsList, Screen screen, CardClickListener clickListener) {
         // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
         RecyclerView.Adapter adapter = rvComics.getAdapter();
         if (adapter == null) {
-            ComicsDetailAdapter comicsDetailAdapter = new ComicsDetailAdapter(clickListener);
+            ComicsDetailAdapter comicsDetailAdapter = new ComicsDetailAdapter(clickListener, screen);
             rvComics.setAdapter(comicsDetailAdapter);
             comicsDetailAdapter.submitList(comicsList);
         } else {
@@ -117,11 +117,11 @@ public class BindingUtils {
         }
     }
 
-    @BindingAdapter(value = {"seriesDatasource", "cardClickHandler"}, requireAll = true)
-    public static void loadSeriesDataSource(RecyclerView rvSeries, List<ProcessedMarvelSeries> seriesList, CardClickListener clickListener) {
+    @BindingAdapter(value = {"seriesDatasource", "screen", "cardClickHandler"}, requireAll = true)
+    public static void loadSeriesDataSource(RecyclerView rvSeries, List<ProcessedMarvelSeries> seriesList, Screen screen,CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvSeries.getAdapter();
         if (adapter == null) {
-            SeriesDetailAdapter seriesDetailAdapter = new SeriesDetailAdapter(clickListener);
+            SeriesDetailAdapter seriesDetailAdapter = new SeriesDetailAdapter(clickListener, screen);
             rvSeries.setAdapter(seriesDetailAdapter);
             seriesDetailAdapter.submitList(seriesList);
         } else {
@@ -130,11 +130,11 @@ public class BindingUtils {
         }
     }
 
-    @BindingAdapter(value = {"storiesDatasource", "cardClickHandler"}, requireAll = true)
-    public static void loadStoriesDataSource(RecyclerView rvStories, List<ProcessedMarvelStory> storiesList, CardClickListener clickListener) {
+    @BindingAdapter(value = {"storiesDatasource", "screen", "cardClickHandler"}, requireAll = true)
+    public static void loadStoriesDataSource(RecyclerView rvStories, List<ProcessedMarvelStory> storiesList, Screen screen, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvStories.getAdapter();
         if (adapter == null) {
-            StoriesDetailAdapter storiesDetailAdapter = new StoriesDetailAdapter(clickListener);
+            StoriesDetailAdapter storiesDetailAdapter = new StoriesDetailAdapter(clickListener, screen);
             rvStories.setAdapter(storiesDetailAdapter);
             storiesDetailAdapter.submitList(storiesList);
         } else {
@@ -143,11 +143,11 @@ public class BindingUtils {
         }
     }
 
-    @BindingAdapter(value = {"eventsDatasource", "cardClickHandler"}, requireAll = true)
-    public static void loadEventsDataSource(RecyclerView rvEvents, List<ProcessedMarvelEvent> eventsList, CardClickListener clickListener) {
+    @BindingAdapter(value = {"eventsDatasource", "screen", "cardClickHandler"}, requireAll = true)
+    public static void loadEventsDataSource(RecyclerView rvEvents, List<ProcessedMarvelEvent> eventsList, Screen screen, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvEvents.getAdapter();
         if (adapter == null) {
-            EventsDetailAdapter eventsDetailAdapter = new EventsDetailAdapter(clickListener);
+            EventsDetailAdapter eventsDetailAdapter = new EventsDetailAdapter(clickListener, screen);
             rvEvents.setAdapter(eventsDetailAdapter);
             eventsDetailAdapter.submitList(eventsList);
         } else {

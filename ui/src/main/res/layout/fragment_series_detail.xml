@@ -4,6 +4,7 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="com.example.rxjavaretrofittest.Screen"/>
         <variable
             name="state"
             type="com.example.controllers.seriesdetail.State"/>
@@ -61,12 +62,14 @@
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 app:charactersDatasource="@{state.characters}"
+                app:screen="@{Screen.SeriesDetail}"
                 app:cardClickHandler="@{state.clickListener}"
                 app:layout_constraintBottom_toTopOf="@+id/comicsLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/charactersLabel"
-                app:hideLabelList="@{state.characters}"/>
+                app:hideLabelList="@{state.characters}"
+                />
 
             <TextView
                 android:id="@+id/comicsLabel"
@@ -91,7 +94,9 @@
                 app:layout_constraintTop_toBottomOf="@id/comicsLabel"
                 app:comicsDatasource="@{state.comics}"
                 app:cardClickHandler="@{state.clickListener}"
-                app:hideLabelList="@{state.comics}"/>
+                app:hideLabelList="@{state.comics}"
+                app:screen="@{Screen.SeriesDetail}"
+                />
 
             <TextView
                 android:id="@+id/storiesLabel"
@@ -116,7 +121,9 @@
                 app:layout_constraintTop_toBottomOf="@id/storiesLabel"
                 app:storiesDatasource="@{state.stories}"
                 app:cardClickHandler="@{state.clickListener}"
-                app:hideLabelList="@{state.stories}"/>
+                app:hideLabelList="@{state.stories}"
+                app:screen="@{Screen.SeriesDetail}"
+                />
 
             <TextView
                 android:id="@+id/eventsLabel"
@@ -141,7 +148,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/eventsLabel"
-                app:hideLabelList="@{state.events}"/>
+                app:hideLabelList="@{state.events}"
+                app:screen="@{Screen.SeriesDetail}"
+                />
 
             <ProgressBar
                 android:layout_width="40dp"

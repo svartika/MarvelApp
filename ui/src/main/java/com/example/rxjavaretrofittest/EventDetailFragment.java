@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,9 @@ import com.example.controllers.eventdetail.State;
 import com.example.entitiy.models.logs.Logger;
 import com.example.ui.R;
 import com.example.ui.databinding.FragmentEventDetailBinding;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -49,6 +53,7 @@ public class EventDetailFragment extends Fragment {
     Logger logger;
 
     FragmentEventDetailBinding binding;
+    TransitionNaming transitionNaming = new TransitionNamingImpl();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,8 +93,8 @@ public class EventDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        imageView.setTransitionName("marvelTransition");
-        name.setTransitionName("marvelTransitionName");
+        imageView.setTransitionName(transitionNaming.getEndAnimationTag(Screen.EventDetail, ViewElement.Image));
+        name.setTransitionName(transitionNaming.getEndAnimationTag(Screen.EventDetail, ViewElement.Name));
     }
 
     void setUpRecyclerView() {
@@ -119,19 +124,47 @@ public class EventDetailFragment extends Fragment {
         if (effect instanceof Effect.ImageLoaded) {
             startPostponedEnterTransition();
         } else if (effect instanceof Effect.CardClickedEffect) {
+            Effect.CardClickedEffect clickCardEffect = (Effect.CardClickedEffect) effect;
             ProcessedMarvelItemBase item = (ProcessedMarvelItemBase) ((Effect.CardClickedEffect) effect).item;
             if (item instanceof ProcessedMarvelCharacter) {
-                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.EventDetailFragment)
+                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.EventDetailFragment) {
+                    ImageView imageView = clickCardEffect.view.findViewById(R.id.mCharacterImage);
+                    TextView textView =clickCardEffect.view.findViewById(R.id.mCharacter);
+                    Map<View, String> map = new HashMap<>();
+                    map.put(imageView, transitionNaming.getEndAnimationTag(Screen.CharacterDetail, ViewElement.Image));
+                    map.put(textView, transitionNaming.getEndAnimationTag(Screen.CharacterDetail, ViewElement.Name));
+                    FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
                     NavHostFragment.findNavController(this).navigate(EventDetailFragmentDirections.actionEventDetailFragmentToCharacterDetailFragment(item));
+                }
             } else if (item instanceof ProcessedMarvelComic) {
-                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.EventDetailFragment)
+                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.EventDetailFragment) {
+                    ImageView imageView = clickCardEffect.view.findViewById(R.id.comicImage);
+                    TextView textView =clickCardEffect.view.findViewById(R.id.comicName);
+                    Map<View, String> map = new HashMap<>();
+                    map.put(imageView, transitionNaming.getEndAnimationTag(Screen.ComicDetail, ViewElement.Image));
+                    map.put(textView, transitionNaming.getEndAnimationTag(Screen.ComicDetail, ViewElement.Name));
+                    FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
                     NavHostFragment.findNavController(this).navigate(EventDetailFragmentDirections.actionEventDetailFragmentToComicDetailFragment(item));
+                }
             } else if (item instanceof ProcessedMarvelSeries) {
-                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.EventDetailFragment)
+                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.EventDetailFragment) {
+                    ImageView imageView = clickCardEffect.view.findViewById(R.id.seriesImage);
+                    TextView textView =clickCardEffect.view.findViewById(R.id.seriesName);
+                    Map<View, String> map = new HashMap<>();
+                    map.put(imageView, transitionNaming.getEndAnimationTag(Screen.SeriesDetail, ViewElement.Image));
+                    map.put(textView, transitionNaming.getEndAnimationTag(Screen.SeriesDetail, ViewElement.Name));
                     NavHostFragment.findNavController(this).navigate(EventDetailFragmentDirections.actionEventDetailFragmentToSeriesDetailFragment(item));
+                }
             } else if (item instanceof ProcessedMarvelStory) {
-                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.EventDetailFragment)
+                if (NavHostFragment.findNavController(this).getCurrentDestination().getId() == R.id.EventDetailFragment) {
+                    ImageView imageView = clickCardEffect.view.findViewById(R.id.storyImage);
+                    TextView textView =clickCardEffect.view.findViewById(R.id.storyName);
+                    Map<View, String> map = new HashMap<>();
+                    map.put(imageView, transitionNaming.getEndAnimationTag(Screen.StoriesDetail, ViewElement.Image));
+                    map.put(textView, transitionNaming.getEndAnimationTag(Screen.StoriesDetail, ViewElement.Name));
+                    FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
                     NavHostFragment.findNavController(this).navigate(EventDetailFragmentDirections.actionEventDetailFragmentToStoryDetailFragment(item));
+                }
             }
         }
     }
