@@ -57,4 +57,9 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+
+    def paging_version = "2.1.2"
+    api "androidx.paging:paging-runtime:$paging_version"
+    api "androidx.paging:paging-runtime-ktx:$paging_version"
+    api "androidx.paging:paging-rxjava2:$paging_version"
 }

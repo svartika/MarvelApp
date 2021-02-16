@@ -2,23 +2,23 @@ package com.example.controllers.characterslist;
 
 import android.view.View;
 
+import androidx.paging.PagedList;
+
+import com.example.controllers.characterslist.inmemoryrepository.CharactersListRepository;
+import com.example.controllers.characterslist.inmemoryrepository.PagedResponse;
 import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.mviframework.BaseMviDelegate;
 import com.example.mviframework.Change;
 import com.example.mviframework.Reducer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 public class CharactersListModelDelegate extends BaseMviDelegate<State, CharactersListModelDelegate.InnerState, Effect> {
 
     CharactersListNetworkInterface charactersListNetworkInterface;
+    CharactersListRepository repository;
     PublishSubject<String> searchKeywords = PublishSubject.create();
 
     CardClickListener clickListener = new CardClickListener<ProcessedMarvelCharacter>() {
@@ -28,7 +28,7 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
             enqueue(new Reducer<InnerState, Effect>() {
                 @Override
                 public Change<InnerState, Effect> reduce(InnerState innerState) {
-                    return withEffects(innerState, new Effect.ClickCharacterEffect<ProcessedMarvelCharacter>(view,character));
+                    return withEffects(innerState, new Effect.ClickCharacterEffect<ProcessedMarvelCharacter>(view, character));
                 }
             });
         }
@@ -43,14 +43,15 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
                 public Change<InnerState, Effect> reduce(InnerState innerState) {
                     InnerState newInnerState = innerState.copy();
                     newInnerState.searchStr = searchKeyword;
-                    return  asChange(newInnerState);
+                    return asChange(newInnerState);
                 }
             });
         }
     };
 
-    public CharactersListModelDelegate(CharactersListNetworkInterface charactersListNetworkInterface) {
+    public CharactersListModelDelegate(CharactersListNetworkInterface charactersListNetworkInterface, CharactersListRepository repository) {
         this.charactersListNetworkInterface = charactersListNetworkInterface;
+        this.repository = repository;
         loadCharacters();
     }
 
@@ -65,10 +66,10 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
     }
 
     static class InnerState {
-        List<ProcessedMarvelCharacter> charactersList;
+        PagedList<ProcessedMarvelCharacter> charactersList;
         String searchStr;
 
-        InnerState(List<ProcessedMarvelCharacter> charactersList, String searchStr) {
+        InnerState(PagedList<ProcessedMarvelCharacter> charactersList, String searchStr) {
             this.charactersList = charactersList;
             this.searchStr = searchStr;
         }
@@ -78,32 +79,32 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
         }
     }
 
-    static InnerState clear = new InnerState(new ArrayList<>(), "");
+    static InnerState clear = new InnerState(null, "");
+    Observable<PagedResponse<ProcessedMarvelCharacter>> observable = searchKeywords
+            .startWith("")
+            .distinctUntilChanged()
+            .map(keyword -> {
+                return repository.searchCharacter(keyword);
+
+            }).onErrorReturn(throwable -> {
+                return null;
+            });
+    Observable<PagedList<ProcessedMarvelCharacter>> characters = observable.switchMap(result -> result.getList());
 
     private void/*Observable<List<ProcessedMarvelCharacter>>*/ loadCharacters() {
         if (charactersListNetworkInterface == null) {
             return;// Observable.just(new ArrayList<>());
         }
-        Observable<List<ProcessedMarvelCharacter>> observable = searchKeywords
-                .startWith("")
-                .distinctUntilChanged()
-                .switchMap(keyword -> {
-                    return charactersListNetworkInterface
-                            .searchCharacter(keyword)
-                            .onErrorReturn(throwable -> {
-                                return new ArrayList<>();
-                            });
-                });
 
-        Observable<Reducer<InnerState, Effect>> reducerObservable = observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(processedMarvelCharacters -> {
+
+        Observable<Reducer<InnerState, Effect>> reducerObservable = characters
+                .map(list -> {
                     return new Reducer<InnerState, Effect>() {
 
                         @Override
                         public Change<InnerState, Effect> reduce(InnerState innerState) {
                             InnerState newInnerState = innerState.copy();
-                            newInnerState.charactersList = processedMarvelCharacters;
+                            newInnerState.charactersList = list;
                             return asChange(newInnerState);
                         }
                     };

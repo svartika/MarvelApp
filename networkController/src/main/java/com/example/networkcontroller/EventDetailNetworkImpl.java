@@ -14,7 +14,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 
 public class EventDetailNetworkImpl extends EventDetailNetworkInterface {
-    @Inject
     Logger logger;
     @Inject
     MarvelRetrofitEndpointApi marvelRetrofitEndpointApi;

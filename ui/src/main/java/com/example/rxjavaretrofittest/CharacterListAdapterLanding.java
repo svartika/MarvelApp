@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +20,7 @@ import com.example.ui.databinding.LandingCharacterRvItemBindingImpl;
 
 import java.util.List;
 
-public class CharacterListAdapterLanding extends RecyclerView.Adapter<CharacterListAdapterLanding.MarvelCharacterViewHolder> {
+public class CharacterListAdapterLanding extends PagedListAdapter<ProcessedMarvelCharacter, CharacterListAdapterLanding.MarvelCharacterViewHolder> {
     TransitionNaming transitionNaming = new TransitionNamingImpl();
     Screen screen;
     CardClickListener marvelCharacterClickedListener;
@@ -36,7 +37,8 @@ public class CharacterListAdapterLanding extends RecyclerView.Adapter<CharacterL
         }
     };
 
-    public CharacterListAdapterLanding(CardClickListener marvelCharacterClickedListener,  Screen screen) {
+    public CharacterListAdapterLanding(CardClickListener marvelCharacterClickedListener, Screen screen) {
+        super(diffCallBack);
         this.marvelCharacterClickedListener = marvelCharacterClickedListener;
         this.screen = screen;
     }
@@ -50,36 +52,24 @@ public class CharacterListAdapterLanding extends RecyclerView.Adapter<CharacterL
     public MarvelCharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        /* View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.marvel_character_rv_item, parent, false);
         return new MarvelCharacterViewHolder(v);*/
-       LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-       LandingCharacterRvItemBindingImpl binding = DataBindingUtil.inflate(inflater, R.layout.landing_character_rv_item, parent, false);
-       return new MarvelCharacterViewHolder(binding);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        LandingCharacterRvItemBindingImpl binding = DataBindingUtil.inflate(inflater, R.layout.landing_character_rv_item, parent, false);
+        return new MarvelCharacterViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MarvelCharacterViewHolder holder, int position) {
-        //holder.mCharacter.setText(marvelCharacters.get(position).name);
-        ProcessedMarvelCharacter marvelCharacter = differ.getCurrentList().get(position);
-        holder.bind(marvelCharacter);
-        //holder.mCharacter.setText(marvelCharacter.name);
-    }
-
-    @Override
-    public int getItemCount() {
-       /* if(marvelCharacters==null || marvelCharacters.size()==0) return 0;
-        return marvelCharacters.size();*/
-        return differ.getCurrentList().size();
-    }
-
-    public void submitList(List<ProcessedMarvelCharacter> list) {
-        differ.submitList(list);
+        ProcessedMarvelCharacter o = getItem(position);
+        if (o != null)
+            holder.bind(o);
     }
 
     class MarvelCharacterViewHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding binding;
 
         public MarvelCharacterViewHolder(ViewDataBinding binding) {
-           super(binding.getRoot());
-           this.binding = binding;
+            super(binding.getRoot());
+            this.binding = binding;
 
            /* public TextView mCharacter;
             public ImageView mCharacterImage;

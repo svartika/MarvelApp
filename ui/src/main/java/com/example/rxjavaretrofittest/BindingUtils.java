@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -77,9 +78,10 @@ public class BindingUtils {
     }
 
     @BindingAdapter(value = {"datasource", "screen", "characterClickHandler"}, requireAll = true)
-    public static void loadDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, Screen screen, CardClickListener clickListener) {
+    public static void loadDataSource(RecyclerView rvCharacters, PagedList<ProcessedMarvelCharacter> charactersList, Screen screen, CardClickListener clickListener) {
         RecyclerView.Adapter adapter = rvCharacters.getAdapter();
         CharacterListAdapterLanding characterListAdapterLanding = null;
+        //check for missing adapter in case the screen is opened for the first time.
         if (adapter instanceof CharacterListAdapterLanding) {
             characterListAdapterLanding = (CharacterListAdapterLanding) adapter;
             characterListAdapterLanding.marvelCharacterClickedListener = clickListener;

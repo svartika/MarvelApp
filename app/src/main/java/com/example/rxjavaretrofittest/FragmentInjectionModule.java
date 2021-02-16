@@ -14,6 +14,7 @@ import com.example.controllers.characterslist.CharactersListNetworkInterface;
 import com.example.controllers.characterslist.CharactersListViewModel;
 import com.example.controllers.characterslist.CharactersListViewModelFactory;
 import com.example.controllers.characterslist.CharactersListViewModelImpl;
+import com.example.controllers.characterslist.inmemoryrepository.CharactersListRepository;
 import com.example.controllers.comicdetail.ComicDetailNetworkInterface;
 import com.example.controllers.comicdetail.ComicDetailViewModel;
 import com.example.controllers.comicdetail.ComicDetailViewModelDelegate;
@@ -51,8 +52,8 @@ import dagger.hilt.android.scopes.FragmentScoped;
 public class FragmentInjectionModule {
     @FragmentScoped
     @Provides
-    CharactersListViewModel getCharactersListViewModel(Fragment fragment, CharactersListNetworkInterface charactersListNetworkInterface) {
-        ViewModelProvider.Factory factory = new CharactersListViewModelFactory(new CharactersListModelDelegate(charactersListNetworkInterface));
+    CharactersListViewModel getCharactersListViewModel(Fragment fragment, CharactersListNetworkInterface charactersListNetworkInterface, CharactersListRepository repository) {
+        ViewModelProvider.Factory factory = new CharactersListViewModelFactory(new CharactersListModelDelegate(charactersListNetworkInterface, repository));
         return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(CharactersListViewModelImpl.class);
     }
 

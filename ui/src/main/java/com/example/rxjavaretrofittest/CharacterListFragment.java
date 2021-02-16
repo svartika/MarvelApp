@@ -139,7 +139,7 @@ public class CharacterListFragment extends Fragment {
     }
 
     void render(State state) {
-        searchCallback = state.searchCallback;
+        searchCallback = state.getSearchCallback();
 
         binding.setState(state);
         binding.executePendingBindings();

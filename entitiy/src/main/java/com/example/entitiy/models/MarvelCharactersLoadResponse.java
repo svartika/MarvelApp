@@ -24,7 +24,7 @@ public class MarvelCharactersLoadResponse {
         @SerializedName("limit")
         int limit;
         @SerializedName("total")
-        int total;
+        public int total;
         @SerializedName("count")
         int count;
         @SerializedName("results")

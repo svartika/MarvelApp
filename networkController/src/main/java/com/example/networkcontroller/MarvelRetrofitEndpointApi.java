@@ -15,10 +15,10 @@ public interface MarvelRetrofitEndpointApi {
 
 
     @GET("/v1/public/characters")
-    Observable<MarvelCharactersLoadResponse> loadCharacters();
+    Observable<MarvelCharactersLoadResponse> loadCharacters(@Query("offset") int offset, @Query("limit") int limit);
 
     @GET("/v1/public/characters")
-    Observable<MarvelCharactersLoadResponse> searchNameStartsWith(@Query("nameStartsWith") String nameStartsWith);
+    Observable<MarvelCharactersLoadResponse> searchNameStartsWith(@Query("nameStartsWith") String nameStartsWith, @Query("offset") int offset, @Query("limit") int limit);
 
     @GET("/v1/public/characters/{characterId}/comics")
     Observable<MarvelComicsLoadResponse> loadComics(@Path("characterId") int characterId);

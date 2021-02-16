@@ -5,6 +5,8 @@ package com.example.rxjavaretrofittest;
 
 import com.example.controllers.characterdetail.CharacterDetailNetworkInterface;
 import com.example.controllers.characterslist.CharactersListNetworkInterface;
+import com.example.controllers.characterslist.inmemoryrepository.CharactersListRepository;
+import com.example.controllers.characterslist.inmemoryrepository.CharactersListRepositoryImpl;
 import com.example.controllers.comicdetail.ComicDetailNetworkInterface;
 import com.example.controllers.eventdetail.EventDetailNetworkInterface;
 import com.example.controllers.seriesdetail.SeriesDetailNetworkInterface;
@@ -52,5 +54,10 @@ public abstract class InjectionModule {
     @Binds
     public abstract EventDetailNetworkInterface createEventDetailNetworkInterface(
         EventDetailNetworkImpl eventDetailNetworkImpl
+    );
+
+    @Binds
+    public abstract CharactersListRepository createCharactersListRepository(
+            CharactersListRepositoryImpl retrofitImpl
     );
 }
