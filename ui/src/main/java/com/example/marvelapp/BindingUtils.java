@@ -92,7 +92,7 @@ public class BindingUtils {
         characterListAdapterLanding.submitList(charactersList);
     }
 
-    @BindingAdapter(value = {"charactersDatasource", "screen","cardClickHandler"}, requireAll = true)
+    @BindingAdapter(value = {"charactersDatasource", "screen", "cardClickHandler"}, requireAll = true)
     public static void loadCharactersDataSource(RecyclerView rvCharacters, List<ProcessedMarvelCharacter> charactersList, Screen screen, CardClickListener clickListener) {
         // Log.d("Vartika3", "loadComicsDataSource: "+comicsList);
         RecyclerView.Adapter adapter = rvCharacters.getAdapter();

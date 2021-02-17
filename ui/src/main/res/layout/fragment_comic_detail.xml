@@ -37,11 +37,31 @@
                 android:scaleType="fitCenter"
                 android:src="@color/cardview_dark_background"
                 app:callbackListener="@{state.callbackRunner}"
-                app:layout_constraintBottom_toTopOf="@id/charactersLabel"
+                app:layout_constraintBottom_toTopOf="@id/desc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name"
                 app:url="@{state.comic.imageurl}" />
+
+            <TextView
+                android:id="@+id/desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{state.comic.description}"
+                style="@style/desc"
+                app:layout_constraintBottom_toTopOf="@id/space1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image"
+                app:visibility="@{!state.comic.description.empty}"/>
+
+            <View
+                android:id="@+id/space1"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/colorBackground"
+                app:layout_constraintBottom_toTopOf="@id/charactersLabel"
+                app:layout_constraintTop_toBottomOf="@id/desc"
+                app:hideLabelList="@{state.characters}"/>
 
             <TextView
                 android:id="@+id/charactersLabel"
@@ -51,7 +71,7 @@
                 style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@id/rvCharacters"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image"
+                app:layout_constraintTop_toBottomOf="@id/space1"
                 app:hideLabelList="@{state.characters}"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -61,12 +81,21 @@
                 app:charactersDatasource="@{state.characters}"
                 app:screen="@{Screen.ComicDetail}"
                 app:cardClickHandler="@{state.clickListener}"
-                app:layout_constraintBottom_toTopOf="@+id/seriesLabel"
+                app:layout_constraintBottom_toTopOf="@+id/space2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/charactersLabel"
                 app:hideLabelList="@{state.characters}"
                 />
+
+            <View
+                android:id="@+id/space2"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/colorBackground"
+                app:layout_constraintBottom_toTopOf="@id/seriesLabel"
+                app:layout_constraintTop_toBottomOf="@id/rvCharacters"
+                app:hideLabelList="@{state.series}"/>
 
             <TextView
                 android:id="@+id/seriesLabel"
@@ -76,14 +105,14 @@
                 style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@+id/rvSeries"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvCharacters"
+                app:layout_constraintTop_toBottomOf="@id/space2"
                 app:hideLabelList="@{state.series}"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvSeries"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                app:layout_constraintBottom_toTopOf="@+id/storiesLabel"
+                app:layout_constraintBottom_toTopOf="@+id/space3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/seriesLabel"
@@ -93,6 +122,15 @@
                 app:hideLabelList="@{state.series}"
                 />
 
+            <View
+                android:id="@+id/space3"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/colorBackground"
+                app:layout_constraintBottom_toTopOf="@id/storiesLabel"
+                app:layout_constraintTop_toBottomOf="@id/rvSeries"
+                app:hideLabelList="@{state.stories}"/>
+
             <TextView
                 android:id="@+id/storiesLabel"
                 android:layout_width="0dp"
@@ -101,14 +139,14 @@
                 style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@+id/rvStories"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvSeries"
+                app:layout_constraintTop_toBottomOf="@id/space3"
                 app:hideLabelList="@{state.stories}"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvStories"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                app:layout_constraintBottom_toTopOf="@+id/eventsLabel"
+                app:layout_constraintBottom_toTopOf="@+id/space4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/storiesLabel"
@@ -118,6 +156,15 @@
                 app:screen="@{Screen.ComicDetail}"
                 />
 
+            <View
+                android:id="@+id/space4"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/colorBackground"
+                app:layout_constraintBottom_toTopOf="@id/eventsLabel"
+                app:layout_constraintTop_toBottomOf="@id/rvStories"
+                app:hideLabelList="@{state.events}"/>
+
             <TextView
                 android:id="@+id/eventsLabel"
                 android:layout_width="0dp"
@@ -126,7 +173,7 @@
                 style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@+id/rvEvents"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvStories"
+                app:layout_constraintTop_toBottomOf="@id/space4"
                 app:hideLabelList="@{state.events}"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -135,13 +182,21 @@
                 android:layout_height="200dp"
                 app:eventsDatasource="@{state.events}"
                 app:cardClickHandler="@{state.clickListener}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/space5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/eventsLabel"
                 app:hideLabelList="@{state.events}"
                 app:screen="@{Screen.ComicDetail}"
                 />
+
+            <View
+                android:id="@+id/space5"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/colorBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvEvents"/>
 
             <ProgressBar
                 android:layout_width="40dp"
