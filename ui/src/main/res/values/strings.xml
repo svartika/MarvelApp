@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RxJavaRetrofitTest</string>
+    <string name="app_name">Marvel Gallery</string>
     <string name="title_activity_second_screen">SecondScreen</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Marvel Characters List</string>

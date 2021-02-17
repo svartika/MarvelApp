@@ -4,7 +4,7 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.example.rxjavaretrofittest.Screen"/>
+        <import type="com.example.marvelapp.Screen"/>
         <variable
             name="state"
             type="com.example.controllers.eventdetail.State"/>

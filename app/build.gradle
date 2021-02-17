@@ -16,7 +16,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.example.rxjavaretrofittest"
+        applicationId "com.example.marvelapp"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1

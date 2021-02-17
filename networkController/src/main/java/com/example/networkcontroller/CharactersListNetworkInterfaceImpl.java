@@ -5,8 +5,6 @@ import com.example.controllers.characterslist.CharactersListNetworkInterface;
 import com.example.entitiy.models.MarvelCharacter;
 import com.example.entitiy.models.logs.Logger;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
 import io.reactivex.Observable;

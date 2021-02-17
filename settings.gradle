@@ -8,4 +8,4 @@ include ':networkController'
 include ':entitiy'
 include ':controllers'
 include ':app'
-rootProject.name = "RxJavaRetrofitTest"
+rootProject.name = "MarvelApp"

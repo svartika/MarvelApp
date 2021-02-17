@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.rxjavaretrofittest.Screen"/>
+        <import type="com.example.marvelapp.Screen"/>
         <variable
             name="state"
             type="com.example.controllers.characterslist.State" />
@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.rxjavaretrofittest.MarvelActivity">
+        tools:context="com.example.marvelapp.MarvelActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMarvelCharacters"

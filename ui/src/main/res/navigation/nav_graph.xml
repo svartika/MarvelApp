@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/CharactersListFragment"
-        android:name="com.example.rxjavaretrofittest.CharacterListFragment"
+        android:name="com.example.marvelapp.CharacterListFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_character_list">
         <action
@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/CharacterDetailFragment"
-        android:name="com.example.rxjavaretrofittest.CharacterDetailFragment"
+        android:name="com.example.marvelapp.CharacterDetailFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_character_details">
         <action
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/ComicDetailFragment"
-        android:name="com.example.rxjavaretrofittest.ComicDetailFragment"
+        android:name="com.example.marvelapp.ComicDetailFragment"
         android:label="Comic Details"
         tools:layout="@layout/fragment_comic_detail">
         <action
@@ -71,7 +71,7 @@
 
     <fragment
         android:id="@+id/SeriesDetailFragment"
-        android:name="com.example.rxjavaretrofittest.SeriesDetailFragment"
+        android:name="com.example.marvelapp.SeriesDetailFragment"
         android:label="Series Details"
         tools:layout="@layout/fragment_series_detail">
         <action
@@ -93,7 +93,7 @@
 
     <fragment
         android:id="@+id/StoryDetailFragment"
-        android:name="com.example.rxjavaretrofittest.StoryDetailFragment"
+        android:name="com.example.marvelapp.StoryDetailFragment"
         android:label="Story Details"
         tools:layout="@layout/fragment_story_detail">
         <action
@@ -115,7 +115,7 @@
 
     <fragment
         android:id="@+id/EventDetailFragment"
-        android:name="com.example.rxjavaretrofittest.EventDetailFragment"
+        android:name="com.example.marvelapp.EventDetailFragment"
         android:label="Event Details"
         tools:layout="@layout/fragment_event_detail">
         <action

@@ -5,7 +5,7 @@
     <data>
 
         <import type="android.view.View" />
-        <import type="com.example.rxjavaretrofittest.Screen"/>
+        <import type="com.example.marvelapp.Screen"/>
         <variable
             name="state"
             type="com.example.controllers.characterdetail.State" />
@@ -25,8 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{state.character.name}"
-                android:textAlignment="center"
-                android:textColor="#FF000000"
+                style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@id/image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,13 +46,11 @@
                 app:url="@{state.character.imageurl}" />
 
             <TextView
-                android:id="@+id/charactersLabel"
+                android:id="@+id/comicsLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Comics"
-                android:textAlignment="center"
-                android:textColor="#FF000000"
-                android:textSize="18sp"
+                style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@id/rvComics"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image"
@@ -68,7 +65,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/seriesLabel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/charactersLabel"
+                app:layout_constraintTop_toBottomOf="@id/comicsLabel"
                 app:hideLabelList="@{state.comics}"
                 app:screen="@{Screen.CharacterDetail}"
                 />
@@ -78,9 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Series"
-                android:textAlignment="center"
-                android:textColor="#FF000000"
-                android:textSize="18sp"
+                style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@+id/rvSeries"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvComics"
@@ -105,9 +100,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Stories"
-                android:textAlignment="center"
-                android:textColor="#FF000000"
-                android:textSize="18sp"
+                style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@+id/rvStories"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvSeries"
@@ -132,9 +125,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Events"
-                android:textAlignment="center"
-                android:textColor="#FF000000"
-                android:textSize="18sp"
+                style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@+id/rvEvents"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rvStories"
