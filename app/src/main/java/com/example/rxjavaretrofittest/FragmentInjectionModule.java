@@ -52,8 +52,8 @@ import dagger.hilt.android.scopes.FragmentScoped;
 public class FragmentInjectionModule {
     @FragmentScoped
     @Provides
-    CharactersListViewModel getCharactersListViewModel(Fragment fragment, CharactersListNetworkInterface charactersListNetworkInterface, CharactersListRepository repository) {
-        ViewModelProvider.Factory factory = new CharactersListViewModelFactory(new CharactersListModelDelegate(charactersListNetworkInterface, repository));
+    CharactersListViewModel getCharactersListViewModel(Fragment fragment, CharactersListRepository repository) {
+        ViewModelProvider.Factory factory = new CharactersListViewModelFactory(new CharactersListModelDelegate(repository));
         return new ViewModelProvider((ViewModelStoreOwner) fragment, factory).get(CharactersListViewModelImpl.class);
     }
 

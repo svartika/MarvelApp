@@ -17,7 +17,6 @@ import io.reactivex.subjects.PublishSubject;
 
 public class CharactersListModelDelegate extends BaseMviDelegate<State, CharactersListModelDelegate.InnerState, Effect> {
 
-    CharactersListNetworkInterface charactersListNetworkInterface;
     CharactersListRepository repository;
     PublishSubject<String> searchKeywords = PublishSubject.create();
 
@@ -49,8 +48,7 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
         }
     };
 
-    public CharactersListModelDelegate(CharactersListNetworkInterface charactersListNetworkInterface, CharactersListRepository repository) {
-        this.charactersListNetworkInterface = charactersListNetworkInterface;
+    public CharactersListModelDelegate(CharactersListRepository repository) {
         this.repository = repository;
         loadCharacters();
     }
@@ -92,11 +90,6 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
     Observable<PagedList<ProcessedMarvelCharacter>> characters = observable.switchMap(result -> result.getList());
 
     private void/*Observable<List<ProcessedMarvelCharacter>>*/ loadCharacters() {
-        if (charactersListNetworkInterface == null) {
-            return;// Observable.just(new ArrayList<>());
-        }
-
-
         Observable<Reducer<InnerState, Effect>> reducerObservable = characters
                 .map(list -> {
                     return new Reducer<InnerState, Effect>() {
@@ -110,7 +103,5 @@ public class CharactersListModelDelegate extends BaseMviDelegate<State, Characte
                     };
                 });
         enqueue(reducerObservable);
-
-
     }
 }
