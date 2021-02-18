@@ -1,8 +1,10 @@
 package com.example.marvelapp;
 
 import android.graphics.Bitmap;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
@@ -169,5 +171,11 @@ public class BindingUtils {
         if (items == null) view.setVisibility(View.GONE);
         else if (items != null && items.size() == 0) view.setVisibility(View.GONE);
         else view.setVisibility(View.VISIBLE);
+    }
+
+    @BindingAdapter("applyHtmlFormatting")
+    public static void applyHtmlTags(View view, String text) {
+        if(text!=null && !text.isEmpty())
+            ((TextView)view).setText(android.text.Html.fromHtml("<font color=\"Red\">"+text+"</font>", Html.FROM_HTML_MODE_LEGACY));
     }
 }

@@ -55,7 +55,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:visibility="@{!state.character.description.empty}"/>
+                app:visibility="@{!state.character.description.empty}"
+                app:applyHtmlFormatting="@{state.character.description}"/>
             
             <View
                 android:id="@+id/space1"

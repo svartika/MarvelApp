@@ -52,7 +52,8 @@
                 app:layout_constraintBottom_toTopOf="@id/space1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image"
-                app:visibility="@{!state.series.description.empty}"/>
+                app:visibility="@{!state.series.description.empty}"
+                app:applyHtmlFormatting="@{state.series.description}"/>
 
             <View
                 android:id="@+id/space1"
@@ -61,7 +62,7 @@
                 android:background="@color/colorBackground"
                 app:layout_constraintBottom_toTopOf="@id/charactersLabel"
                 app:layout_constraintTop_toBottomOf="@id/desc"
-                app:hideLabelList="@{state.characters}"/>
+                app:hideLabelList="@{state.characters}" />
 
             <TextView
                 android:id="@+id/charactersLabel"
