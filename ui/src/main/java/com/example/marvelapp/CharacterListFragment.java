@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.transition.TransitionInflater;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +89,21 @@ public class CharacterListFragment extends Fragment {
             }
         });
         setSharedElementReturnTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
+        binding.getRoot().setOnKeyListener( new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event )
+            {
+                if( keyCode == KeyEvent.KEYCODE_BACK )
+                {
+                    if(searchView.getText().length()>0) {
+                        searchView.setText("");
+                        return true;
+                    }
+                }
+                return false;
+            }
+        } );
         return binding.getRoot();
     }
     void setUpRecyclerView() {

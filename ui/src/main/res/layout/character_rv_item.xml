@@ -24,7 +24,7 @@
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="2dp"
         app:item="@{marvelItem}"
-        app:onClick="@{clickHandler}">
+        app:onClickJava="@{clickHandler}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"

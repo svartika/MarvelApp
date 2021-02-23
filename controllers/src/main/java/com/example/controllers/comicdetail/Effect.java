@@ -16,4 +16,10 @@ public class Effect {
             this.item = item;
         }
     }
+    public static class OpenUrl extends Effect {
+        public String url;
+        public OpenUrl(String url) {
+            this.url = url;
+        }
+    }
 }

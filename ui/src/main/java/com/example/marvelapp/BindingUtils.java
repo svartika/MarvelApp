@@ -22,7 +22,6 @@ import com.example.controllers.commons.CardClickListener;
 import com.example.controllers.commons.ProcessedMarvelCharacter;
 import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
-import com.example.controllers.commons.ProcessedMarvelItemBase;
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.entitiy.models.logs.Logger;
@@ -69,7 +68,7 @@ public class BindingUtils {
 
     }
 
-    @BindingAdapter(value = {"onClick", "item"}, requireAll = true)
+    @BindingAdapter(value = {"onClickJava", "item"}, requireAll = true)
     public static void onCharacterClicked(View view, CardClickListener clickedListener, Object item) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +166,7 @@ public class BindingUtils {
     }
 
     @BindingAdapter("hideLabelList")
-    public static void setLabelListVisibility(View view, List<? extends ProcessedMarvelItemBase> items) {
+    public static void setLabelListVisibility(View view, List items) {
         if (items == null) view.setVisibility(View.GONE);
         else if (items != null && items.size() == 0) view.setVisibility(View.GONE);
         else view.setVisibility(View.VISIBLE);
@@ -176,6 +175,6 @@ public class BindingUtils {
     @BindingAdapter("applyHtmlFormatting")
     public static void applyHtmlTags(View view, String text) {
         if(text!=null && !text.isEmpty())
-            ((TextView)view).setText(android.text.Html.fromHtml("<font color=\"Red\">"+text+"</font>", Html.FROM_HTML_MODE_LEGACY));
+            ((TextView)view).setText(android.text.Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
     }
 }

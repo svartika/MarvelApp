@@ -1,5 +1,7 @@
 package com.example.marvelapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.util.Log;
@@ -184,6 +186,10 @@ public class ComicDetailFragment extends Fragment {
                     NavHostFragment.findNavController(this).navigate(ComicDetailFragmentDirections.actionComicDetailFragmentToEventDetailFragment((ProcessedMarvelItemBase) item), extras);
                 }
             }
+        } else if(effect instanceof Effect.OpenUrl) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(((Effect.OpenUrl) effect).url));
+            startActivity(intent);
         }
     }
 }

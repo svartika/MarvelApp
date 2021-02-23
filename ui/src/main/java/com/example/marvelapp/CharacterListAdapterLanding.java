@@ -1,6 +1,7 @@
 package com.example.marvelapp;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,9 @@ public class CharacterListAdapterLanding extends PagedListAdapter<ProcessedMarve
         ProcessedMarvelCharacter o = getItem(position);
         if (o != null)
             holder.bind(o);
+        else {
+            holder.bindClean();
+        }
     }
 
     class MarvelCharacterViewHolder extends RecyclerView.ViewHolder {
@@ -85,6 +89,17 @@ public class CharacterListAdapterLanding extends PagedListAdapter<ProcessedMarve
                     transitionNaming.getStartAnimationTag(screen, Listing.Characters, ViewElement.Name, String.valueOf(obj.id)));
             binding.setVariable(BR.marvelItem, obj);
             binding.setVariable(BR.clickHandler, marvelCharacterClickedListener);
+            binding.executePendingBindings();
+        }
+
+        public void bindClean() {
+            binding.setVariable(BR.marvelItem, null);
+            binding.setVariable(BR.clickHandler, new CardClickListener<ProcessedMarvelCharacter>() {
+                @Override
+                public void invoke(View view, ProcessedMarvelCharacter character) {
+
+                }
+            });
             binding.executePendingBindings();
         }
     }

@@ -8,6 +8,7 @@ import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.controllers.commons.ProcessedMarvelStory;
+import com.example.controllers.commons.ProcessedURLItem;
 import com.example.controllers.commons.Utils;
 import com.example.mviframework.Runner;
 
@@ -18,6 +19,7 @@ public class State {
     boolean loading;
     boolean error;
     ProcessedMarvelComic comic;
+    List<ProcessedURLItem> urls;
     List<ProcessedMarvelCharacter> characters;
     List<ProcessedMarvelSeries> series;
     List<ProcessedMarvelStory> stories;
@@ -25,14 +27,17 @@ public class State {
     Runner callbackRunner;
     public CardClickListener clickListener;
 
-    State(ProcessedMarvelComic comic, List<ProcessedMarvelCharacter> characters, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
+    State(ProcessedMarvelComic comic, List<ProcessedURLItem> urls, List<ProcessedMarvelCharacter> characters, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events,
+          boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
         this.comic = comic;
+        this.urls = urls;
         this.characters = characters;
         this.loading = loading;
         this.error = error;
         this.series = series;
         this.stories = stories;
         this.events = events;
+
         this.callbackRunner = callbackRunner;
         this.clickListener = clickListener;
     }
@@ -43,6 +48,7 @@ public class State {
                 "loading=" + loading +
                 ", error=" + error +
                 ", comic=" + comic +
+                ", urls=" + urls +
                 ", characters=" + characters +
                 ", series=" + series +
                 ", stories=" + stories +
@@ -68,6 +74,7 @@ public class State {
         return callbackRunner;
     }
 
+    public List<ProcessedURLItem> getUrls() { return urls; }
     public List<ProcessedMarvelCharacter> getCharacters() {
         return characters;
     }
@@ -92,6 +99,7 @@ public class State {
                 isError() == state.isError() &&
                 getComic().equals(state.getComic()) &&
                 getCallbackRunner()==state.getCallbackRunner() &&
+
                 Utils.compareLists(characters, state.characters) &&
                 Utils.compareLists(series, state.series) &&
                 Utils.compareLists(stories, state.stories) &&
