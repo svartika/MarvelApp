@@ -65,6 +65,7 @@ public class CharacterListFragment extends Fragment {
                         return true;
                     }
                 });
+
     }
 
     @Nullable
@@ -147,7 +148,7 @@ public class CharacterListFragment extends Fragment {
                     .addSharedElements(map)
                     /*.addSharedElement(clickEffect.view.findViewById(R.id.mCharacter), "marvelTransitionName")*/
                     .build();
-            CharacterListFragmentDirections.ActionListToDetail directions = CharacterListFragmentDirections.actionListToDetail(marvelCharacter);
+            CharacterListFragmentDirections.ActionListToDetail directions = CharacterListFragmentDirections.actionListToDetail(marvelCharacter, marvelCharacter.name);
             if(NavHostFragment.findNavController(CharacterListFragment.this).getCurrentDestination().getId()==R.id.CharactersListFragment)
                 NavHostFragment.findNavController(CharacterListFragment.this).navigate(directions, extras);
 

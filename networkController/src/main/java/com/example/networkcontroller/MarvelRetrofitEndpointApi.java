@@ -74,7 +74,7 @@ public interface MarvelRetrofitEndpointApi {
     @GET("/v1/public/events/{eventId}/comics")
     Observable<MarvelComicsLoadResponse> loadComicsForEvent(@Path("eventId") int eventId);
 
-    @GET("/v1/public/events/{eventId}series")
+    @GET("/v1/public/events/{eventId}/series")
     Observable<MarvelSeriesLoadResponse> loadSeriesForEvent(@Path("eventId") int eventId);
 
     @GET("/v1/public/events/{eventId}/stories")

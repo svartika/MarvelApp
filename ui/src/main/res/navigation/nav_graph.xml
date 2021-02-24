@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/CharacterDetailFragment"
         android:name="com.example.marvelapp.CharacterDetailFragment"
-        android:label="@string/second_fragment_label"
+        android:label="{characterName}"
         tools:layout="@layout/fragment_character_details">
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
@@ -45,12 +45,15 @@
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase" />
+        <argument
+            android:name="characterName"
+            app:argType="string"/>
     </fragment>
 
     <fragment
         android:id="@+id/ComicDetailFragment"
         android:name="com.example.marvelapp.ComicDetailFragment"
-        android:label="Comic Details"
+        android:label="{comicName}"
         tools:layout="@layout/fragment_comic_detail">
         <action
             android:id="@+id/action_ComicDetailFragment_to_CharacterDetailFragment"
@@ -67,12 +70,15 @@
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
+        <argument
+            android:name="comicName"
+            app:argType="string"/>
     </fragment>
 
     <fragment
         android:id="@+id/SeriesDetailFragment"
         android:name="com.example.marvelapp.SeriesDetailFragment"
-        android:label="Series Details"
+        android:label="{seriesName}"
         tools:layout="@layout/fragment_series_detail">
         <action
             android:id="@+id/action_SeriesDetailFragment_to_CharacterDetailFragment"
@@ -89,12 +95,15 @@
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
+        <argument
+            android:name="seriesName"
+            app:argType="string"/>
     </fragment>
 
     <fragment
         android:id="@+id/StoryDetailFragment"
         android:name="com.example.marvelapp.StoryDetailFragment"
-        android:label="Story Details"
+        android:label="{storyName}"
         tools:layout="@layout/fragment_story_detail">
         <action
             android:id="@+id/action_StoryDetailFragment_to_CharacterDetailFragment"
@@ -111,12 +120,15 @@
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
+        <argument
+            android:name="storyName"
+            app:argType="string"/>
     </fragment>
 
     <fragment
         android:id="@+id/EventDetailFragment"
         android:name="com.example.marvelapp.EventDetailFragment"
-        android:label="Event Details"
+        android:label="{eventName}"
         tools:layout="@layout/fragment_event_detail">
         <action
             android:id="@+id/action_EventDetailFragment_to_CharacterDetailFragment"
@@ -133,6 +145,9 @@
         <argument
             android:name="item"
             app:argType="com.example.controllers.commons.ProcessedMarvelItemBase"/>
+        <argument
+            android:name="eventName"
+            app:argType="string"/>
     </fragment>
 
 </navigation>

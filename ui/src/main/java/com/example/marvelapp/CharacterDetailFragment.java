@@ -46,6 +46,7 @@ public class CharacterDetailFragment extends Fragment {
     CharacterDetailViewModel viewModel;
 
     int characterId;
+    String characterName;
     TextView name;
     ImageView imageView;
     RecyclerView rvComics, rvSeries, rvStories, rvEvents;
@@ -126,6 +127,7 @@ public class CharacterDetailFragment extends Fragment {
 
     void render(State state) {
         //Log.d("Vartika3", "render: "+state.getComics());
+        characterName = state.getCharacter().name;
         binding.setState(state);
         binding.executePendingBindings();
     }
@@ -146,7 +148,7 @@ public class CharacterDetailFragment extends Fragment {
                     map.put(imageView, transitionNaming.getEndAnimationTag(Screen.ComicDetail, ViewElement.Image));
                     map.put(textView, transitionNaming.getEndAnimationTag(Screen.ComicDetail, ViewElement.Name));
                     FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
-                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToComicDetailFragment((ProcessedMarvelItemBase) item), extras);
+                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToComicDetailFragment((ProcessedMarvelItemBase) item, item.title), extras);
                 }
             } else if (item instanceof ProcessedMarvelSeries) {
                 if (NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId() == R.id.CharacterDetailFragment) {
@@ -156,7 +158,7 @@ public class CharacterDetailFragment extends Fragment {
                     map.put(imageView, transitionNaming.getEndAnimationTag(Screen.SeriesDetail, ViewElement.Image));
                     map.put(textView, transitionNaming.getEndAnimationTag(Screen.SeriesDetail, ViewElement.Name));
                     FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
-                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToSeriesDetailFragment((ProcessedMarvelItemBase) item), extras);
+                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToSeriesDetailFragment((ProcessedMarvelItemBase) item, item.title ), extras);
                 }
             } else if (item instanceof ProcessedMarvelStory) {
                 if (NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId() == R.id.CharacterDetailFragment) {
@@ -166,7 +168,7 @@ public class CharacterDetailFragment extends Fragment {
                     map.put(imageView, transitionNaming.getEndAnimationTag(Screen.StoriesDetail, ViewElement.Image));
                     map.put(textView, transitionNaming.getEndAnimationTag(Screen.StoriesDetail, ViewElement.Name));
                     FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
-                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToStoryDetailFragment((ProcessedMarvelItemBase) item), extras);
+                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToStoryDetailFragment((ProcessedMarvelItemBase) item, item.title), extras);
                 }
             } else if (item instanceof ProcessedMarvelEvent) {
                 if (NavHostFragment.findNavController(CharacterDetailFragment.this).getCurrentDestination().getId() == R.id.CharacterDetailFragment) {
@@ -176,7 +178,7 @@ public class CharacterDetailFragment extends Fragment {
                     map.put(imageView, transitionNaming.getEndAnimationTag(Screen.EventDetail, ViewElement.Image));
                     map.put(textView, transitionNaming.getEndAnimationTag(Screen.EventDetail, ViewElement.Name));
                     FragmentNavigator.Extras extras =  new FragmentNavigator.Extras.Builder().addSharedElements(map).build();
-                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToEventDetailFragment((ProcessedMarvelItemBase) item), extras);
+                    NavHostFragment.findNavController(CharacterDetailFragment.this).navigate(CharacterDetailFragmentDirections.actionCharacterDetailFragmentToEventDetailFragment((ProcessedMarvelItemBase) item, item.title), extras);
                 }
             }
         }

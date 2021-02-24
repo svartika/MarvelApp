@@ -24,7 +24,9 @@ class MarvelActivity: AppCompatActivity() {
         /* Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);*/setUpToolBar()
+        getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+        setUpToolBar()
+        //listen()
     }
 
     private fun setUpToolBar() {
@@ -41,13 +43,16 @@ class MarvelActivity: AppCompatActivity() {
     fun listen() {
         navController.addOnDestinationChangedListener(object: OnDestinationChangedListener{
             override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+                val id = destination.id;
                 when(destination.id) {
-                    
+                    R.id.CharacterDetailFragment -> ""
+                    R.id.ComicDetailFragment -> ""
+                    R.id.SeriesDetailFragment -> ""
+                    R.id.StoryDetailFragment -> ""
+                    R.id.EventDetailFragment -> ""
                 }
-                R.id.SeriesDetailFragment
             }
         })
-        R.id.SeriesDetailFragment
     }
 
     /*  @Override
