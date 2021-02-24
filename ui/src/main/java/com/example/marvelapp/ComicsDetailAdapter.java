@@ -74,8 +74,6 @@ public class ComicsDetailAdapter extends RecyclerView.Adapter<ComicsDetailAdapte
         public void bind(ProcessedMarvelComic comicItem) {
             ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.comicImage),
                     transitionNaming.getStartAnimationTag(screen, Listing.Series, ViewElement.Image, String.valueOf(comicItem.id)));
-            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.comicName),
-                    transitionNaming.getStartAnimationTag(screen, Listing.Series, ViewElement.Name, String.valueOf(comicItem.id)));
             binding.setVariable(BR.comicItem, comicItem);
             binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();

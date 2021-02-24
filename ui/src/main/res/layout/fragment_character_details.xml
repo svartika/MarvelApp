@@ -20,17 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{state.character.name}"
-                style="@style/subHeader"
-                app:layout_constraintBottom_toTopOf="@id/image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="@dimen/character_image_width"
@@ -42,13 +31,14 @@
                 app:layout_constraintBottom_toTopOf="@id/desc"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/name"
+                app:layout_constraintTop_toTopOf="parent"
                 app:url="@{state.character.imageurl}" />
 
             <TextView
                 android:id="@+id/desc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:text="@{state.character.description}"
                 style="@style/desc"
                 app:layout_constraintBottom_toTopOf="@id/space1"

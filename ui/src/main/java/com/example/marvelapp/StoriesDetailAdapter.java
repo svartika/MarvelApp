@@ -73,8 +73,6 @@ public class StoriesDetailAdapter extends RecyclerView.Adapter<StoriesDetailAdap
         public void bind(ProcessedMarvelStory story) {
             ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.storyImage),
                     transitionNaming.getStartAnimationTag(screen, Listing.Stories, ViewElement.Image, String.valueOf(story.id)));
-            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.storyName),
-                    transitionNaming.getStartAnimationTag(screen, Listing.Stories, ViewElement.Name, String.valueOf(story.id)));
             binding.setVariable(BR.storyItem, story);
             binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();

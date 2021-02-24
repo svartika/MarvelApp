@@ -93,8 +93,6 @@ public class CharacterDetailAdapter extends RecyclerView.Adapter<CharacterDetail
             ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.mCharacterImage),
                     transitionNaming.getStartAnimationTag(screen, Listing.Characters, ViewElement.Image, String.valueOf(obj.id))
                     );
-            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.mCharacter),
-                    transitionNaming.getStartAnimationTag(screen, Listing.Characters, ViewElement.Name, String.valueOf(obj.id)));
             binding.setVariable(BR.marvelItem, obj);
             binding.setVariable(BR.clickHandler, marvelCharacterClickedListener);
             binding.executePendingBindings();

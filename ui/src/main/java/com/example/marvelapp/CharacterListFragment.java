@@ -143,7 +143,6 @@ public class CharacterListFragment extends Fragment {
             TextView textView = clickEffect.view.findViewById(R.id.mCharacter);
             Map<View,String> map = new HashMap<>();
             map.put(imageView, transitionNaming.getEndAnimationTag(Screen.CharacterDetail, ViewElement.Image));
-            map.put(textView, transitionNaming.getEndAnimationTag(Screen.CharacterDetail, ViewElement.Name));
             FragmentNavigator.Extras extras = new FragmentNavigator.Extras.Builder()
                     .addSharedElements(map)
                     /*.addSharedElement(clickEffect.view.findViewById(R.id.mCharacter), "marvelTransitionName")*/

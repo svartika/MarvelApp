@@ -73,8 +73,6 @@ public class EventsDetailAdapter extends RecyclerView.Adapter<EventsDetailAdapte
         public void bind(ProcessedMarvelEvent event) {
             ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.eventImage),
                     transitionNaming.getStartAnimationTag(screen, Listing.Events, ViewElement.Image, String.valueOf(event.id)));
-            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.eventName),
-                    transitionNaming.getStartAnimationTag(screen, Listing.Events, ViewElement.Name, String.valueOf(event.id)));
             binding.setVariable(BR.eventItem, event);
             binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();

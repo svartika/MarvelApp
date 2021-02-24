@@ -75,8 +75,6 @@ public class SeriesDetailAdapter extends RecyclerView.Adapter<SeriesDetailAdapte
             ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.seriesImage),
                     transitionNaming.getStartAnimationTag(screen, Listing.Series, ViewElement.Image, String.valueOf(seriesItem.id))
             );
-            ViewCompat.setTransitionName(binding.getRoot().findViewById(R.id.seriesName),
-                    transitionNaming.getStartAnimationTag(screen, Listing.Series, ViewElement.Name, String.valueOf(seriesItem.id)));
             binding.setVariable(BR.seriesItem, seriesItem);
             binding.setVariable(BR.cardClickedListener, clickListener);
             binding.executePendingBindings();
