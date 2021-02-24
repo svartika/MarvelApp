@@ -21,7 +21,8 @@
         android:elevation="3dp"
         app:cardCornerRadius="2dp"
         app:item="@{seriesItem}"
-        app:onClickJava="@{cardClickedListener}">
+        app:onClickJava="@{cardClickedListener}"
+        app:cardBackgroundColor="@color/colorBackground">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -57,7 +58,11 @@
                 android:layout_height="wrap_content"
                 app:visibility="@{seriesItem.displayName()}"
                 android:text="@{seriesItem.title}"
-                android:textColor="@color/cardview_light_background"
+                android:textAppearance="@style/Text.White.Itemheader.Bold"
+                android:textAlignment="center"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_margin="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

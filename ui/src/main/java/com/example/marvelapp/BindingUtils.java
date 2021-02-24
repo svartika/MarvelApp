@@ -27,6 +27,7 @@ import com.example.controllers.commons.ProcessedMarvelStory;
 import com.example.entitiy.models.logs.Logger;
 import com.example.marvelapp.utils.bitmap.BlurTransformation;
 import com.example.mviframework.Runner;
+import com.example.ui.R;
 
 import java.util.List;
 
@@ -40,7 +41,8 @@ public class BindingUtils {
         }
         RequestBuilder rb = Glide.with(imageView.getContext()).asBitmap()
                 .load(url)
-
+                .error(R.drawable.rounded_corner_bg)
+                .fallback(R.drawable.rounded_corner_bg)
                 .addListener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {

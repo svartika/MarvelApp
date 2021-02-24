@@ -14,5 +14,5 @@
     <string name="event_detail_tag">EventDetail</string>
     <string name="series_detail_tag">SeriesDetail</string>
     <string name="stories_detail_tag">StoriesDetail</string>
-
+    <string name="copyright">Data provided by Marvel. © 2021 MARVEL</string>
 </resources>

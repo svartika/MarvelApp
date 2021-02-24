@@ -19,7 +19,7 @@
             android:id="@+id/rvMarvelCharacters"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
+            android:layout_marginHorizontal="10dp"
             app:characterClickHandler="@{state.clickListener}"
             app:datasource="@{state.charactersList}"
             app:screen="@{Screen.Landing}"

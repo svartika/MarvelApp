@@ -43,4 +43,11 @@
         <item name="android:layout_margin">10dp</item>
     </style>
 
+    <style name="copyrightText">
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
 </resources>
