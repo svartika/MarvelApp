@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -18,7 +17,6 @@
         android:id="@+id/card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         app:cardCornerRadius="2dp"
         style="@style/card.bkground"
         app:item="@{marvelItem}"
@@ -28,7 +26,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner_bg">
+            android:foreground="@drawable/rounded_corner_bg">
 
             <ImageView
                 android:id="@+id/mCharacterImage"

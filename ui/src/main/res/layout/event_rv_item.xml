@@ -15,7 +15,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/character_image_height"
+        android:layout_height="wrap_content"
         style="@style/card.bkground"
         app:cardCornerRadius="2dp"
         app:item="@{eventItem}"
@@ -25,20 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner_bg">
-
-           <!-- <TextView
-                android:id="@+id/eventName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="@{eventItem.title}"
-                android:textAlignment="center"
-                android:textColor="#FF000000"
-                app:layout_constraintBottom_toTopOf="@id/eventImage"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />-->
+            android:foreground="@drawable/rounded_corner_bg">
 
             <ImageView
                 android:id="@+id/eventImage"

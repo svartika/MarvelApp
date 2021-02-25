@@ -14,8 +14,8 @@
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/character_image_width"
-        android:layout_height="@dimen/character_image_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="@style/card.bkground"
         app:cardCornerRadius="2dp"
         app:item="@{seriesItem}"
@@ -25,20 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner_bg">
-
-           <!-- <TextView
-                android:id="@+id/seriesName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="@{seriesItem.title}"
-                android:textAlignment="center"
-                android:textColor="#FF000000"
-                app:layout_constraintBottom_toTopOf="@id/seriesImage"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />-->
+            android:foreground="@drawable/rounded_corner_bg">
 
             <ImageView
                 android:id="@+id/seriesImage"
