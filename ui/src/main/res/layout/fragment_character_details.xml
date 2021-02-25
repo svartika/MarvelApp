@@ -55,7 +55,7 @@
                 android:background="@color/colorBackground"
                 app:layout_constraintBottom_toTopOf="@id/urls"
                 app:layout_constraintTop_toBottomOf="@id/desc"
-                app:hideLabelList="@{state.comics}"/>
+                app:hideLabelList="@{state.character.urls}"/>
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/urls"

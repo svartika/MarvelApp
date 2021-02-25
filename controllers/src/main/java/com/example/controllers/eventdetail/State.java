@@ -6,6 +6,7 @@ import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.controllers.commons.ProcessedMarvelStory;
+import com.example.controllers.commons.ProcessedURLItem;
 import com.example.controllers.commons.Utils;
 import com.example.mviframework.Runner;
 
@@ -16,6 +17,7 @@ public class State {
     boolean loading;
     boolean error;
     ProcessedMarvelEvent event;
+    List<ProcessedURLItem> urls;
     List<ProcessedMarvelCharacter> characters;
     List<ProcessedMarvelComic> comics;
     List<ProcessedMarvelSeries> series;
@@ -23,8 +25,9 @@ public class State {
     Runner callbackRunner;
     CardClickListener clickListener;
 
-    State(ProcessedMarvelEvent event, List<ProcessedMarvelCharacter> characters, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, boolean loading, boolean error, Runner runner, CardClickListener clickListener ) {
+    State(ProcessedMarvelEvent event, List<ProcessedURLItem> urls, List<ProcessedMarvelCharacter> characters, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, boolean loading, boolean error, Runner runner, CardClickListener clickListener ) {
         this.event = event;
+        this.urls = urls;
         this.characters = characters;
         this.comics = comics;
         this.series = series;
@@ -36,6 +39,7 @@ public class State {
     }
 
     public ProcessedMarvelEvent getEvent() { return event; }
+    public List<ProcessedURLItem> getUrls() { return urls; }
     public List<ProcessedMarvelCharacter> getCharacters() { return characters;}
     public List<ProcessedMarvelComic> getComics() {  return comics; }
     public List<ProcessedMarvelSeries> getSeries() { return series; }
@@ -51,6 +55,7 @@ public class State {
                 "loading=" + loading +
                 ", error=" + error +
                 ", event=" + event +
+                ", urls=" + urls +
                 ", characters=" + characters +
                 ", comics=" + comics +
                 ", series=" + series +

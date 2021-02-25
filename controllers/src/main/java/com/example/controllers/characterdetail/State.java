@@ -104,27 +104,9 @@ public class State {
                 Utils.compareLists(events, state.events) &&
                 getClickListener()==state.getClickListener();
         Log.d("Vartika", "Character Detail state comparison: " + ret);
-        //Log.d("Vartika", "Character Detail value 1: " + ((State) o).toString());
-        //Log.d("Vartika", "Character Detail value 2: " + this.toString());
         return ret;
     }
 
-   /* boolean compareLists(List<? extends ProcessedMarvelItemBase> first, List<? extends  ProcessedMarvelItemBase> second) {
-        if(first==null && second==null) return true;
-        else if(first==null || second==null) return false;
-        else if(first.size()!=second.size()) return false;
-        else {
-            boolean ret = true;
-            for(int i = 0; i < first.size(); i++) {
-                if(first.get(i).id!=second.get(i).id) {
-                    ret = false;
-                    break;
-                }
-            }
-
-            return ret;
-         }
-    }*/
     @Override
     public int hashCode() {
         return Objects.hash(isLoading(), isError(), getCharacter(), getComics(), getSeries(), getStories(), getEvents(), getCallbackRunner(), getClickListener());

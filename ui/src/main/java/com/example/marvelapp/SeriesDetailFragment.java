@@ -1,12 +1,13 @@
 package com.example.marvelapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -158,6 +159,10 @@ public class SeriesDetailFragment extends Fragment {
                     NavHostFragment.findNavController(this).navigate(SeriesDetailFragmentDirections.actionSeriesDetailFragmentToEventDetailFragment(item, item.title), extras);
                 }
             }
+        } else if(effect instanceof Effect.OpenUrl) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(((Effect.OpenUrl) effect).url));
+            startActivity(intent);
         }
     }
 }

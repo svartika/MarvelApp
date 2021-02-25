@@ -6,6 +6,7 @@ import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.controllers.commons.ProcessedMarvelStory;
+import com.example.controllers.commons.ProcessedURLItem;
 import com.example.controllers.commons.Utils;
 import com.example.mviframework.Runner;
 
@@ -16,6 +17,7 @@ public class State {
     boolean loading;
     boolean error;
     ProcessedMarvelSeries series;
+    List<ProcessedURLItem> urls;
     List<ProcessedMarvelCharacter> characters;
     List<ProcessedMarvelComic> comics;
     List<ProcessedMarvelStory> stories;
@@ -23,10 +25,12 @@ public class State {
     Runner callbackRunner;
     CardClickListener clickListener;
 
-    public State(ProcessedMarvelSeries series, List<ProcessedMarvelCharacter> characters, List<ProcessedMarvelComic> comics, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
+    public State(ProcessedMarvelSeries series, List<ProcessedURLItem> urls, List<ProcessedMarvelCharacter> characters, List<ProcessedMarvelComic> comics, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events,
+                 boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
         this.loading = loading;
         this.error = error;
         this.series = series;
+        this.urls = urls;
         this.characters = characters;
         this.comics = comics;
         this.stories = stories;
@@ -38,6 +42,7 @@ public class State {
     public boolean isLoading() { return loading; }
     public boolean isError() { return error; }
     public ProcessedMarvelSeries getSeries() { return series; }
+    public List<ProcessedURLItem> getUrls() { return urls; }
     public List<ProcessedMarvelCharacter> getCharacters() { return characters; }
     public List<ProcessedMarvelComic> getComics() { return comics; }
     public List<ProcessedMarvelStory> getStories() { return stories; }
@@ -72,6 +77,7 @@ public class State {
                 "loading=" + loading +
                 ", error=" + error +
                 ", series=" + series +
+                ", urls=" + urls +
                 ", characters=" + characters +
                 ", comics=" + comics +
                 ", stories=" + stories +

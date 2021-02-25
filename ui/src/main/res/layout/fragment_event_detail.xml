@@ -51,8 +51,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
                 android:background="@color/colorBackground"
-                app:layout_constraintBottom_toTopOf="@id/charactersLabel"
+                app:layout_constraintBottom_toTopOf="@id/urls"
                 app:layout_constraintTop_toBottomOf="@id/desc"
+                app:hideLabelList="@{state.urls}"/>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/urls"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/space6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/space1">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvURLs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:urlsDatasource="@{state.urls}"
+                    app:screen="@{Screen.EventDetail}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    app:hideLabelList="@{state.urls}"
+                    />
+            </androidx.core.widget.NestedScrollView>
+
+
+            <View
+                android:id="@+id/space6"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/colorBackground"
+                app:layout_constraintBottom_toTopOf="@id/charactersLabel"
+                app:layout_constraintTop_toBottomOf="@id/urls"
                 app:hideLabelList="@{state.characters}"/>
 
             <TextView
@@ -63,7 +93,7 @@
                 style="@style/subHeader"
                 app:layout_constraintBottom_toTopOf="@id/rvCharacters"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/space1"
+                app:layout_constraintTop_toBottomOf="@id/space6"
                 app:hideLabelList="@{state.characters}"/>
 
             <androidx.recyclerview.widget.RecyclerView

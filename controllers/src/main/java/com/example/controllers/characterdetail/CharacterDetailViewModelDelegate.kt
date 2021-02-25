@@ -10,7 +10,7 @@ import java.util.*
 
 class CharacterDetailViewModelDelegate(val networkInterface: CharacterDetailNetworkInterface?, val character: ProcessedMarvelCharacter) : BaseMviDelegate<State, CharacterDetailViewModelDelegate.InnerState, Effect>() {
     var cardClickListener: CardClickListener<*> = object : CardClickListener<ProcessedMarvelItemBase> {
-        override fun invoke(view: View?, item: ProcessedMarvelItemBase?) {
+        override fun invoke(view: View, item: ProcessedMarvelItemBase) {
             enqueue { innerState -> withEffects(innerState, Effect.ClickCardEffect(view, item)) }
         }
     }

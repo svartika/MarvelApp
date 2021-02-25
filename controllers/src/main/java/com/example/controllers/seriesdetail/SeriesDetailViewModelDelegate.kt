@@ -1,165 +1,114 @@
-package com.example.controllers.seriesdetail;
+package com.example.controllers.seriesdetail
 
-import android.view.View;
+import android.view.View
+import com.example.controllers.commons.*
+import com.example.mviframework.BaseMviDelegate
+import com.example.mviframework.Change
+import com.example.mviframework.Reducer
+import java.util.*
 
-import com.example.controllers.commons.CardClickListener;
-import com.example.controllers.commons.ProcessedMarvelCharacter;
-import com.example.controllers.commons.ProcessedMarvelComic;
-import com.example.controllers.commons.ProcessedMarvelEvent;
-import com.example.controllers.commons.ProcessedMarvelItemBase;
-import com.example.controllers.commons.ProcessedMarvelSeries;
-import com.example.controllers.commons.ProcessedMarvelStory;
-import com.example.mviframework.BaseMviDelegate;
-import com.example.mviframework.Change;
-import com.example.mviframework.Reducer;
-import com.example.mviframework.Runner;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Observable;
-
-public class SeriesDetailViewModelDelegate extends BaseMviDelegate<State, SeriesDetailViewModelDelegate.InnerState, Effect> {
-    SeriesDetailNetworkInterface networkInterface;
-    ProcessedMarvelSeries series;
-    Runner callbackRunner = dispatch(new Reducer<InnerState, Effect>() {
-        @Override
-        public Change<InnerState, Effect> reduce(InnerState innerState) {
-            InnerState newInnerState = innerState.copy();
-            newInnerState.loading = false;
-            newInnerState.error = false;
-            return withEffects(newInnerState, new Effect.ImageLoaded<>());
+class SeriesDetailViewModelDelegate(val networkInterface: SeriesDetailNetworkInterface, val series: ProcessedMarvelSeries) : BaseMviDelegate<State, SeriesDetailViewModelDelegate.InnerState, Effect>() {
+    var callbackRunner = dispatch { innerState ->
+        val newInnerState = innerState.copy()
+        newInnerState.loading = false
+        newInnerState.error = false
+        withEffects(newInnerState, Effect.ImageLoaded<Any>())
+    }
+    var clickListener: CardClickListener<*> = object : CardClickListener<ProcessedMarvelItemBase> {
+        override fun invoke(view: View, item: ProcessedMarvelItemBase) {
+            enqueue { innerState -> withEffects(innerState, Effect.CardClickedEffect(view, item)) }
         }
-    });
-    CardClickListener clickListener = new CardClickListener<ProcessedMarvelItemBase>() {
-        @Override
-        public void invoke(View view, ProcessedMarvelItemBase item) {
-            enqueue(new Reducer<InnerState, Effect>() {
-                @Override
-                public Change<InnerState, Effect> reduce(InnerState innerState) {
-                    return withEffects(innerState, new Effect.CardClickedEffect<ProcessedMarvelItemBase>(view, item));
-                }
-            });
+    }
+    fun onUrlLinkClicked(url: String) {
+        enqueue {
+            withEffects(it, Effect.OpenUrl(url))
         }
-    };
-
-    public SeriesDetailViewModelDelegate(SeriesDetailNetworkInterface networkInterface, ProcessedMarvelSeries series) {
-        this.networkInterface = networkInterface;
-        this.series = series;
-        loadCharacters();
-        loadComics();
-        loadStories();
-        loadEvents();
+    }
+    override fun getInitialChange(): Change<InnerState, Effect> {
+        return asChange(InnerState(series, null,null, null, null, null, true, false))
     }
 
-    @Override
-    public Change<InnerState, Effect> getInitialChange() {
-        return asChange(new InnerState(series, null, null, null, null, true, false));
+    override fun mapState(innerState: InnerState): State {
+        return State(innerState.series,
+                innerState.series.urls.map {
+                    ProcessedURLItem(it.type, {this::onUrlLinkClicked.invoke(it.url)});
+                },
+                innerState.characters, innerState.comics, innerState.stories, innerState.events, innerState.loading, innerState.error, callbackRunner, clickListener)
     }
 
-    @Override
-    public State mapState(InnerState innerState) {
-        return new State(innerState.series, innerState.characters, innerState.comics, innerState.stories, innerState.events, innerState.loading, innerState.error, callbackRunner, clickListener);
-    }
-
-    public static class InnerState{
-        boolean loading;
-        boolean error;
-        ProcessedMarvelSeries series;
-        List<ProcessedMarvelCharacter> characters;
-        List<ProcessedMarvelComic> comics;
-        List<ProcessedMarvelStory> stories;
-        List<ProcessedMarvelEvent> events;
-
-        public InnerState(ProcessedMarvelSeries series, List<ProcessedMarvelCharacter> characters, List<ProcessedMarvelComic> comics, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error) {
-            this.loading = loading;
-            this.error = error;
-            this.series = series;
-            this.characters = characters;
-            this.comics = comics;
-            this.stories = stories;
-            this.events = events;
-        }
-
-        public InnerState copy() {
-            return new InnerState(series, characters, comics, stories, events, loading, error);
+    class InnerState(var series: ProcessedMarvelSeries, var urls: List<ProcessedURLItem>?, var characters: List<ProcessedMarvelCharacter>?, var comics: List<ProcessedMarvelComic>?, var stories: List<ProcessedMarvelStory>?, var events: List<ProcessedMarvelEvent>?,
+                     var loading: Boolean, var error: Boolean) {
+        fun copy(): InnerState {
+            return InnerState(series, urls, characters, comics, stories, events, loading, error)
         }
     }
 
-    void loadCharacters() {
-        if(networkInterface==null) { return; }
-        Observable<List<ProcessedMarvelCharacter>> observable = networkInterface
+    fun loadCharacters() {
+        if (networkInterface == null) {
+            return
+        }
+        val observable = networkInterface
                 .loadMarvelCharactersForSeries(series.id)
-                .onErrorReturn( throwable -> {
-                    return new ArrayList<>();
-                });
-        Observable<Reducer<InnerState, Effect>> reducerObservable = observable.map( characters -> {
-            return new Reducer<InnerState, Effect>() {
-                @Override
-                public Change<InnerState, Effect> reduce(InnerState innerState) {
-                    InnerState newInnerState = innerState.copy();
-                    newInnerState.characters = characters;
-                    return asChange(newInnerState);
-                }
-            };
-        });
-        enqueue(reducerObservable);
+                .onErrorReturn { throwable: Throwable? -> ArrayList() }
+        val reducerObservable = observable.map<Reducer<InnerState, Effect>> { characters: List<ProcessedMarvelCharacter> ->
+            Reducer { innerState ->
+                val newInnerState = innerState.copy()
+                newInnerState.characters = characters
+                asChange(newInnerState)
+            }
+        }
+        enqueue(reducerObservable)
     }
-    void loadComics(){
-        if(networkInterface==null) return;
-        Observable<List<ProcessedMarvelComic>> observable = networkInterface
+
+    fun loadComics() {
+        if (networkInterface == null) return
+        val observable = networkInterface
                 .loadMarvelComicsForSeries(series.id)
-                .onErrorReturn(throwable -> {
-                    return new ArrayList<>();
-                });
-        Observable<Reducer<InnerState, Effect>> reducerObservable = observable.map(comics -> {
-           return new Reducer<InnerState, Effect>() {
-               @Override
-               public Change<InnerState, Effect> reduce(InnerState innerState) {
-                   InnerState newInnerState = innerState.copy();
-                   newInnerState.comics = comics;
-                   return asChange(newInnerState);
-               }
-           };
-        });
-        enqueue(reducerObservable);
+                .onErrorReturn { throwable: Throwable? -> ArrayList() }
+        val reducerObservable = observable.map<Reducer<InnerState, Effect>> { comics: List<ProcessedMarvelComic> ->
+            Reducer { innerState ->
+                val newInnerState = innerState.copy()
+                newInnerState.comics = comics
+                asChange(newInnerState)
+            }
+        }
+        enqueue(reducerObservable)
     }
-    void loadStories(){
-        if(networkInterface==null)return;
-        Observable<List<ProcessedMarvelStory>> observable = networkInterface
+
+    fun loadStories() {
+        if (networkInterface == null) return
+        val observable = networkInterface
                 .loadMarvelStoriesForSeries(series.id)
-                .onErrorReturn( throwable -> {
-                    return new ArrayList<>();
-                });
-        Observable<Reducer<InnerState, Effect>> reducerObservable = observable.map(stories-> {
-           return new Reducer<InnerState, Effect>() {
-               @Override
-               public Change<InnerState, Effect> reduce(InnerState innerState) {
-                   InnerState newInnerState = innerState.copy();
-                   newInnerState.stories = stories;
-                   return asChange(newInnerState);
-               }
-           } ;
-        });
-        enqueue(reducerObservable);
+                .onErrorReturn { throwable: Throwable? -> ArrayList() }
+        val reducerObservable = observable.map<Reducer<InnerState, Effect>> { stories: List<ProcessedMarvelStory> ->
+            Reducer { innerState ->
+                val newInnerState = innerState.copy()
+                newInnerState.stories = stories
+                asChange(newInnerState)
+            }
+        }
+        enqueue(reducerObservable)
     }
-    void loadEvents(){
-        if(networkInterface==null) return;
-        Observable<List<ProcessedMarvelEvent>> observable = networkInterface
+
+    fun loadEvents() {
+        if (networkInterface == null) return
+        val observable = networkInterface
                 .loadMarvelForEvents(series.id)
-                .onErrorReturn( throwable ->  {
-                    return new ArrayList<>();
-                });
-        Observable<Reducer<InnerState, Effect>> reducerObservable = observable.map(events -> {
-           return  new Reducer<InnerState, Effect>() {
-               @Override
-               public Change<InnerState, Effect> reduce(InnerState innerState) {
-                   InnerState newInnerState = innerState.copy();
-                   newInnerState.events = events;
-                   return asChange(newInnerState);
-               }
-           };
-        });
-        enqueue(reducerObservable);
+                .onErrorReturn { throwable: Throwable? -> ArrayList() }
+        val reducerObservable = observable.map<Reducer<InnerState, Effect>> { events: List<ProcessedMarvelEvent> ->
+            Reducer { innerState ->
+                val newInnerState = innerState.copy()
+                newInnerState.events = events
+                asChange(newInnerState)
+            }
+        }
+        enqueue(reducerObservable)
+    }
+
+    init {
+        loadCharacters()
+        loadComics()
+        loadStories()
+        loadEvents()
     }
 }
