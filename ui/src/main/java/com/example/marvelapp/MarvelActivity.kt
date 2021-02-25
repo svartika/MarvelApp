@@ -25,16 +25,25 @@ class MarvelActivity: AppCompatActivity() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);*/
+
         setUpToolBar()
-        //listen()
+        listen()
     }
 
+    lateinit var toolbar : Toolbar
     private fun setUpToolBar() {
 
 
         //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         val appBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+      //  actionBar?.setDisplayUseLogoEnabled(true)
+
+        //actionBar?.setDisplayShowCustomEnabled(true)
+        //setSupportActionBar(toolbar)
+      /*  supportActionBar?.setDisplayUseLogoEnabled(true)
+        supportActionBar?.setDisplayShowCustomEnabled(true)*/
         NavigationUI.setupWithNavController(
                 toolbar, navController, appBarConfiguration)
 
@@ -45,11 +54,12 @@ class MarvelActivity: AppCompatActivity() {
             override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
                 val id = destination.id;
                 when(destination.id) {
-                    R.id.CharacterDetailFragment -> ""
-                    R.id.ComicDetailFragment -> ""
-                    R.id.SeriesDetailFragment -> ""
-                    R.id.StoryDetailFragment -> ""
-                    R.id.EventDetailFragment -> ""
+                    R.id.CharactersListFragment -> toolbar.setLogo(R.drawable.nav_icon)
+                    R.id.CharacterDetailFragment -> toolbar.setLogo(null)
+                    R.id.ComicDetailFragment -> toolbar.setLogo(null)
+                    R.id.SeriesDetailFragment -> toolbar.setLogo(null)
+                    R.id.StoryDetailFragment -> toolbar.setLogo(null)
+                    R.id.EventDetailFragment -> toolbar.setLogo(null)
                 }
             }
         })

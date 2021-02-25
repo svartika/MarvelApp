@@ -65,7 +65,6 @@ public class CharacterListFragment extends Fragment {
                         return true;
                     }
                 });
-
     }
 
     @Nullable
