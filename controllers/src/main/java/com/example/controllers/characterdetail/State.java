@@ -8,6 +8,7 @@ import com.example.controllers.commons.ProcessedMarvelComic;
 import com.example.controllers.commons.ProcessedMarvelEvent;
 import com.example.controllers.commons.ProcessedMarvelSeries;
 import com.example.controllers.commons.ProcessedMarvelStory;
+import com.example.controllers.commons.ProcessedURLItem;
 import com.example.controllers.commons.Utils;
 import com.example.mviframework.Runner;
 
@@ -18,6 +19,7 @@ public class State {
     boolean loading;
     boolean error;
     ProcessedMarvelCharacter character;
+    List<ProcessedURLItem> urls;
     List<ProcessedMarvelComic> comics;
     List<ProcessedMarvelSeries> series;
     List<ProcessedMarvelStory> stories;
@@ -25,8 +27,10 @@ public class State {
     Runner callbackRunner;
     public CardClickListener clickListener;
 
-    State(ProcessedMarvelCharacter character, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events, boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
+    State(ProcessedMarvelCharacter character, List<ProcessedURLItem> urls, List<ProcessedMarvelComic> comics, List<ProcessedMarvelSeries> series, List<ProcessedMarvelStory> stories, List<ProcessedMarvelEvent> events,
+          boolean loading, boolean error, Runner callbackRunner, CardClickListener clickListener) {
         this.character = character;
+        this.urls = urls;
         this.comics = comics;
         this.loading = loading;
         this.error = error;
@@ -43,6 +47,7 @@ public class State {
                 "loading=" + loading +
                 ", error=" + error +
                 ", character=" + character +
+                ", urls=" + urls +
                 ", comics=" + comics +
                 ", series=" + series +
                 ", stories=" + stories +
@@ -68,6 +73,7 @@ public class State {
         return callbackRunner;
     }
 
+    public List<ProcessedURLItem> getUrls() { return urls; }
     public List<ProcessedMarvelComic> getComics() {
         return comics;
     }

@@ -11,7 +11,7 @@ import java.util.List;
 public class ProcessedMarvelCharacter extends ProcessedMarvelItemBase implements Parcelable {
     public int id;
     public String name, imageurl, description, modified;
-    List<MarvelCharacter.URL> urls;
+    public List<MarvelCharacter.URL> urls;
 
     public ProcessedCollection comics, series, stories, events;
 

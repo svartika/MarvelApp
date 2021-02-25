@@ -36,7 +36,10 @@ public class MarvelCharacter {
     @SerializedName("urls")
     public List<URL> urls;
     public static class URL {
-
+        @SerializedName("type")
+        public String type;
+        @SerializedName("url")
+        public String url;
     }
 
 }
