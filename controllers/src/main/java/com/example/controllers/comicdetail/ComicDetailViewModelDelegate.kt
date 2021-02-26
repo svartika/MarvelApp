@@ -27,6 +27,10 @@ class ComicDetailViewModelDelegate(val networkInterface: ComicDetailNetworkInter
         }
     }
 
+    var shareListener: () -> Unit = {
+        enqueue{ innerState -> withEffects(innerState, Effect.Share(innerState.comic.urls.firstOrNull{ it.type == "detail"}?.url )) }
+    }
+
     private fun loadEvents(id: Int) {
         if (networkInterface == null) {
             return
@@ -105,18 +109,19 @@ class ComicDetailViewModelDelegate(val networkInterface: ComicDetailNetworkInter
 
     override fun mapState(innerState: InnerState): State {
         val state = State(
-                innerState.comic,
-                innerState.comic.urls.map {
+                comic = innerState.comic,
+                urls = innerState.comic.urls.map {
                     ProcessedURLItem(it.type, {this::onUrlLinkClicked.invoke(it.url)});
                 },
-                innerState.characters,
-                innerState.series,
-                innerState.stories,
-                innerState.events,
-                innerState.loading,
-                innerState.error,
-                callbackRunner,
-                cardClickListener)
+                characters = innerState.characters,
+                series = innerState.series,
+                stories = innerState.stories,
+                events = innerState.events,
+                loading = innerState.loading,
+                error = innerState.error,
+                callbackRunner = callbackRunner,
+                clickListener = cardClickListener, shareListener = shareListener,
+                showShare = innerState.comic.urls.firstOrNull {it.type=="detail"}!=null )
         Log.d("Vartika", "Comic Detail mapState: $state")
         return state
     }

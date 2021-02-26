@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <import type="android.view.View"/>
@@ -28,9 +29,30 @@
                 app:callbackListener="@{state.callbackRunner}"
                 app:layout_constraintBottom_toTopOf="@id/desc"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.23"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:url="@{state.comic.imageurl}" />
+
+            <ImageButton
+                android:id="@+id/share"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_share_white_24dp"
+                android:textColor="@color/textColorPrimary"
+                app:layout_constraintBottom_toTopOf="@id/desc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:onClick="@{state.shareListener}"
+                app:visibility="@{state.showShare}"
+                tools:text="Share" />
 
             <TextView
                 android:id="@+id/desc"

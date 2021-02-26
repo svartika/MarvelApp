@@ -182,6 +182,13 @@ public class ComicDetailFragment extends Fragment {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(((Effect.OpenUrl) effect).url));
             startActivity(intent);
+        } else if(effect instanceof  Effect.Share) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, ((Effect.Share)effect).url);
+            sendIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
         }
     }
 }

@@ -34,7 +34,7 @@
                 app:callbackListener="@{state.callbackRunner}"
                 app:layout_constraintBottom_toTopOf="@id/desc"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.23"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:url="@{state.character.imageurl}" />
