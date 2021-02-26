@@ -24,16 +24,22 @@ class SeriesDetailViewModelDelegate(val networkInterface: SeriesDetailNetworkInt
             withEffects(it, Effect.OpenUrl(url))
         }
     }
+    var shareListener : () -> Unit = {
+        enqueue { innerState -> withEffects(innerState, Effect.Share(innerState.series.urls.firstOrNull {it.type == "detail"}?.url)) }
+    }
     override fun getInitialChange(): Change<InnerState, Effect> {
         return asChange(InnerState(series, null,null, null, null, null, true, false))
     }
 
     override fun mapState(innerState: InnerState): State {
-        return State(innerState.series,
-                innerState.series.urls.map {
+        return State(series = innerState.series,
+                urls = innerState.series.urls.map {
                     ProcessedURLItem(it.type, {this::onUrlLinkClicked.invoke(it.url)});
                 },
-                innerState.characters, innerState.comics, innerState.stories, innerState.events, innerState.loading, innerState.error, callbackRunner, clickListener)
+                characters = innerState.characters, comics =  innerState.comics, stories =  innerState.stories, events =  innerState.events,
+                loading = innerState.loading,  error = innerState.error, callbackRunner = callbackRunner, clickListener = clickListener, shareListener = shareListener,
+                showShare = innerState.series.urls.firstOrNull {it.type=="detail"} != null
+        )
     }
 
     class InnerState(var series: ProcessedMarvelSeries, var urls: List<ProcessedURLItem>?, var characters: List<ProcessedMarvelCharacter>?, var comics: List<ProcessedMarvelComic>?, var stories: List<ProcessedMarvelStory>?, var events: List<ProcessedMarvelEvent>?,

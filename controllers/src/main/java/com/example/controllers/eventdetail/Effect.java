@@ -24,4 +24,11 @@ public class Effect {
             this.url = url;
         }
     }
+
+    public static class Share extends Effect {
+        public String url;
+        public Share(String url) {
+            this.url = url;
+        }
+    }
 }
