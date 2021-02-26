@@ -20,21 +20,31 @@ class CharacterDetailViewModelDelegate(val networkInterface: CharacterDetailNetw
         newInnerState.error = false
         withEffects(newInnerState, Effect.ImageLoaded<Any?>())
     }
+
     fun onUrlLinkClicked(url: String) {
         enqueue {
             withEffects(it, Effect.OpenUrl(url))
         }
     }
+
+    var shareListener: () -> Unit = {
+        enqueue { innerState -> withEffects(innerState, Effect.Share(innerState.character.urls.firstOrNull { it.type == "detail" }?.url)) }
+    }
+
     override fun getInitialChange(): Change<InnerState, Effect?> {
         return asChange(InnerState(character, null, null, null, null, true, false))
     }
 
     override fun mapState(innerState: InnerState): State {
-        val state = State(innerState.character,
-                innerState.character.urls.map {
-                    ProcessedURLItem(it.type, {this::onUrlLinkClicked.invoke(it.url)});
+        val state = State(character = innerState.character,
+                urls = innerState.character.urls.map {
+                    ProcessedURLItem(it.type, { this::onUrlLinkClicked.invoke(it.url) });
                 },
-                innerState.comics, innerState.series, innerState.stories, innerState.events, innerState.loading, innerState.error, callbackRunner, cardClickListener)
+                comics = innerState.comics,
+                series = innerState.series,
+                stories = innerState.stories, events = innerState.events, loading = innerState.loading, error = innerState.error, callbackRunner = callbackRunner,
+                clickListener = cardClickListener, shareListener = shareListener,
+                showShare = innerState.character.urls.firstOrNull { it.type == "detail" } != null)
         Log.d("Vartika", "Character Detail mapState: $state")
         return state
     }

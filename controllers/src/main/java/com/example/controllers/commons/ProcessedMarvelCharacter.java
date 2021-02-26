@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ProcessedMarvelCharacter extends ProcessedMarvelItemBase implements Parcelable {
     public int id;
-    public String name, imageurl, description, modified;
+    public String name, imageurl, description, modified, resourceURI;
     public List<MarvelCharacter.URL> urls;
 
     public ProcessedCollection comics, series, stories, events;
@@ -32,6 +32,7 @@ public class ProcessedMarvelCharacter extends ProcessedMarvelItemBase implements
         events.set(character.events);
         urls = character.urls;
         modified = character.modified;
+        resourceURI = character.resourceURI;
     }
 
     protected ProcessedMarvelCharacter(Parcel in) {
@@ -40,6 +41,7 @@ public class ProcessedMarvelCharacter extends ProcessedMarvelItemBase implements
         imageurl = in.readString();
         description = in.readString();
         modified = in.readString();
+        resourceURI = in.readString();
     }
 
     public static final Creator<ProcessedMarvelCharacter> CREATOR = new Creator<ProcessedMarvelCharacter>() {
@@ -66,5 +68,6 @@ public class ProcessedMarvelCharacter extends ProcessedMarvelItemBase implements
         parcel.writeString(imageurl);
         parcel.writeString(description);
         parcel.writeString(modified);
+        parcel.writeString(resourceURI);
     }
 }

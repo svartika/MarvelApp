@@ -66,5 +66,8 @@
         <item name="android:maxLines">3</item>
     </style>
 
+
+
+
     <style name="card"></style>
 </resources>

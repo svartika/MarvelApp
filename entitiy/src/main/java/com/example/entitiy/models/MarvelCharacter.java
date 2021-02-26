@@ -42,4 +42,7 @@ public class MarvelCharacter {
         public String url;
     }
 
+    @SerializedName("resourceURI")
+    public String resourceURI;
+
 }
