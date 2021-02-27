@@ -6,10 +6,10 @@
 
         <variable
             name="seriesItem"
-            type="com.example.controllers.commons.ProcessedMarvelSeries" />
+            type="com.perpy.controllers.commons.ProcessedMarvelSeries" />
         <variable
             name="cardClickedListener"
-            type="com.example.controllers.commons.CardClickListener" />
+            type="com.perpy.controllers.commons.CardClickListener" />
     </data>
 
 

@@ -7,10 +7,10 @@
 
         <variable
             name="storyItem"
-            type="com.example.controllers.commons.ProcessedMarvelStory" />
+            type="com.perpy.controllers.commons.ProcessedMarvelStory" />
         <variable
             name="cardClickedListener"
-            type="com.example.controllers.commons.CardClickListener" />
+            type="com.perpy.controllers.commons.CardClickListener" />
     </data>
 
 

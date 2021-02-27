@@ -6,11 +6,11 @@
 
         <variable
             name="marvelItem"
-            type="com.example.controllers.commons.ProcessedMarvelCharacter" />
+            type="com.perpy.controllers.commons.ProcessedMarvelCharacter" />
 
         <variable
             name="clickHandler"
-            type="com.example.controllers.commons.CardClickListener" />
+            type="com.perpy.controllers.commons.CardClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView

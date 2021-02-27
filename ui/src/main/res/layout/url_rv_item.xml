@@ -7,7 +7,7 @@
     <data>
         <variable
             name="urlItem"
-            type="com.example.controllers.commons.ProcessedURLItem" />
+            type="com.perpy.controllers.commons.ProcessedURLItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

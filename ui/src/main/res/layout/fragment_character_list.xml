@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.marvelapp.Screen"/>
+        <import type="com.perpy.marvelapp.Screen"/>
         <variable
             name="state"
-            type="com.example.controllers.characterslist.State" />
+            type="com.perpy.controllers.characterslist.State" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.marvelapp.MarvelActivity">
+        tools:context="com.perpy.marvelapp.MarvelActivity">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMarvelCharacters"

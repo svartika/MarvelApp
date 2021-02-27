@@ -5,10 +5,10 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.example.marvelapp.Screen"/>
+        <import type="com.perpy.marvelapp.Screen"/>
         <variable
             name="state"
-            type="com.example.controllers.eventdetail.State"/>
+            type="com.perpy.controllers.eventdetail.State"/>
     </data>
 
     <ScrollView
