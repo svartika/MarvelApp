@@ -36,6 +36,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="label">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="desc">
         <item name="android:textAlignment">gravity</item>
         <item name="android:textColor">@color/textColorPrimary</item>
