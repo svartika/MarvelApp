@@ -4,24 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    /*signingConfigs {
-        release {
-            storeFile file('V:\\workbay\\git\\InstantFeedback\\documents\\keystore\\perpy.jks')
-            storePassword '1GoodLife'
-            keyAlias 'perpy'
-            keyPassword '1GoodLife'
-        }
-    }*/
 
-
-/*    signingConfigs {
-        rel {
-            storeFile file('V:\\workbay\\git4study\\RxJavaRetrofitTest\\marvel.keystore')
-            storePassword 'Bajrang@420'
-            keyAlias 'marvel'
-            keyPassword 'Bajrang@420'
-        }
-    }*/
     compileSdkVersion 29
 
     defaultConfig {
