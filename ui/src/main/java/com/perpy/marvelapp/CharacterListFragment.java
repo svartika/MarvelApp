@@ -110,7 +110,7 @@ public class CharacterListFragment extends Fragment {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
-        int span = width / getResources().getDimensionPixelSize(R.dimen.character_image_width);
+        int span = width / getResources().getDimensionPixelSize(R.dimen.character_image_width_landing);
         Log.d("VartikaHilt", "Width and span " + width + span);
         rvMarvelCharacters.setLayoutManager(new GridLayoutManager(getContext(), span));
     }

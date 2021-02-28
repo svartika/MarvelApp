@@ -31,6 +31,8 @@
                 android:id="@+id/comicImage"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/character_image_height"
+                android:src="@drawable/placeholder2"
+                android:minWidth="@dimen/character_image_width"
                 android:adjustViewBounds="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +42,7 @@
 
             <TextView
                 android:id="@+id/comicName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:visibility="@{comicItem.displayName()}"
                 android:text="@{comicItem.title}"

@@ -36,13 +36,14 @@ public class BindingUtils {
     public static void loadImage(ImageView imageView, String url, Runner callbackListener, boolean blur) {
         new Logger().d("VartikaHilt", "load image: " + url);
         if (url == null || url == "") {
+            Glide.with(imageView.getContext()).asBitmap().load(R.drawable.placeholder2).into(imageView);
             if (callbackListener != null) callbackListener.run();
             return;
         }
         RequestBuilder rb = Glide.with(imageView.getContext()).asBitmap()
                 .load(url)
-                .error(R.drawable.rounded_corner_bg)
-                .fallback(R.drawable.rounded_corner_bg)
+                .error(R.drawable.placeholder2)
+                .fallback(R.drawable.placeholder2)
                 .addListener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {

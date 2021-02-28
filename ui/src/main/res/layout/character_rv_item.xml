@@ -32,6 +32,8 @@
                 android:id="@+id/mCharacterImage"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/character_image_height"
+                android:src="@drawable/placeholder2"
+                android:minWidth="@dimen/character_image_width"
                 android:adjustViewBounds="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -24,13 +24,13 @@
 
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="@dimen/character_image_width"
+                android:layout_width="wrap_content"
+                android:minWidth="@dimen/character_image_width"
                 android:layout_height="@dimen/character_image_height"
-
+                    android:adjustViewBounds="true"
                 android:layout_marginStart="16dp"
+                android:src="@drawable/placeholder2"
                 android:layout_marginTop="16dp"
-                android:scaleType="fitCenter"
-                android:src="@color/colorBackground"
                 app:callbackListener="@{state.callbackRunner}"
                 app:layout_constraintBottom_toTopOf="@id/desc"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -62,17 +62,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_margin="8dp"
                 android:text="Character"
                 style="@style/label"
-                android:background="@drawable/rounded_label_bkground"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@id/image"
-                app:layout_constraintBottom_toTopOf="@id/desc"
-                app:layout_constraintTop_toBottomOf="@id/share"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintEnd_toEndOf="@+id/image"
+                app:layout_constraintTop_toTopOf="@+id/image"
+                />
 
             <TextView
                 android:id="@+id/desc"

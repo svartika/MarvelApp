@@ -21,19 +21,20 @@
         app:cardCornerRadius="2dp"
         app:item="@{storyItem}"
         app:onClickJava="@{cardClickedListener}"
-        app:cardBackgroundColor="@color/colorBackground">
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minWidth="160dp"
             android:foreground="@drawable/rounded_corner_bg">
 
             <ImageView
                 android:id="@+id/storyImage"
+                android:minWidth="@dimen/character_image_width"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/character_image_height"
                 android:adjustViewBounds="true"
+                android:src="@drawable/placeholder2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +43,7 @@
 
             <TextView
                 android:id="@+id/storyName"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:visibility="@{storyItem.displayName()}"
                 android:text="@{storyItem.title}"

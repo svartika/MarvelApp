@@ -21,7 +21,20 @@
     </style>
 
     <style name="Text.White">
+        <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/gray_50</item>
+    </style>
+
+    <style name="Text.Body">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="Text.Body.Grey">
+        <item name="android:textColor">@color/gray_50</item>
+    </style>
+    <style name="Text.Body.Grey.Centered">
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="Text.White.Itemheader">
