@@ -43,7 +43,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class ComicDetailFragment extends Fragment {
-
+    //TODo: Add creator Information and also year information
     @Inject
     ComicDetailViewModel viewModel;
 
